@@ -5,9 +5,9 @@
 # and edited for convinence
 
 geo="$(wget -O- -q http://geoip.ubuntu.com/lookup)"
-if grep -qi '91.148.109.98' <<< $geo; then
-    lat="44.8186"
-    lon="20.4681"
+if grep -qi '11.11.11.11' <<< $geo; then
+    lat="11.1111"
+    lon="11.1111"
 else
     lat="$(sed -r 's/.*<Latitude>(.*?)<\/Latitude>.*/\1/g' <<< $geo)"
     lon="$(sed -r 's/.*<Longitude>(.*?)<\/Longitude>.*/\1/g' <<< $geo)"
