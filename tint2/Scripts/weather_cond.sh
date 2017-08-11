@@ -3,7 +3,7 @@
 # weather_cond.sh
 # Taken from
 # https://petermolnar.net/hacking-tint2-panel-weather-cpu-temperature-and-volume-executors/
-# and edited for convinence
+# and edited for convenience
 
 geo="$(wget -O- -q http://geoip.ubuntu.com/lookup)"
 if grep -qi '11.11.11.11' <<< $geo; then
