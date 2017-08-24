@@ -1,15 +1,12 @@
 #=============================================================================================
 #                                SunForMiles.conkyrc
-# Date    : 05 July 2017
+# Date    : 24 August 2017
 # Author  : Sun For Miles
-# Version : v0.41
+# Version : v0.43
 # License : Distributed under the terms of GNU GPL version 2 or later
 # 
-# This version is a modification of conkyrc_seamod, which is modification of conkyrc_lunatico,
-# which is modification of conkyrc_orange
+# This version is a modification of conkyrc_seamod
 # 
-# conkyrc_orange:    http://gnome-look.org/content/show.php?content=137503&forumpage=0
-# conkyrc_lunatico:  http://gnome-look.org/content/show.php?content=142884
 # conkyrc_seamod:    http://custom-linux.deviantart.com/art/Conky-Seamod-v0-1-283461046
 #=============================================================================================
 
