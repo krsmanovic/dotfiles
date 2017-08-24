@@ -18,15 +18,12 @@ menu.separator.color: #
 
 menu.items.bg: flat solid
 menu.items.bg.color: #CECECE
-!!menu.items.text.color: #888888
-menu.items.text.color: #212121
+menu.items.text.color: #888888
 menu.items.disabled.text.color: #CECECE
 
 menu.items.active.bg: flat solid
-!!menu.items.active.bg.color: #CECECE
-menu.items.active.bg.color: #AAAAAA
-!!menu.items.active.text.color: #444444
-menu.items.active.text.color: #212121
+menu.items.active.bg.color: #CECECE
+menu.items.active.text.color: #444444
 menu.bullet.selected.image.color: #444444
 
 !! focused window settings
