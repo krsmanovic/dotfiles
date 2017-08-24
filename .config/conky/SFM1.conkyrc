@@ -102,9 +102,9 @@ ${voffset 28}
 ${offset 90}${font Ostrich Sans:size=14,weight:bold}${color7}${alignr}${voffset 40}DISKS
 ${voffset -5}${offset 100}${diskiograph 20,193 666666 68364B}
 ${voffset -21}
-${offset 150}${font Ubuntu:size=8,weight:normal}${color8}Free: ${font Ubuntu:size=8,weight:normal}${fs_free /}${alignr}${font Ubuntu:size=8,weight:normal}Used: ${font Ubuntu:size=8,weight:normal}${fs_used /}
-${offset 150}${font Ubuntu:size=8,weight:normal}${color8}Free: ${font Ubuntu:size=8,weight:normal}${fs_free /home}${alignr}${font Ubuntu:size=8,weight:normal}Used: ${font Ubuntu:size=8,weight:normal}${fs_used /home}
-${offset 150}${font Ubuntu:size=8,weight:normal}${color8}Free: ${font Ubuntu:size=8,weight:normal}${fs_free /media/che/data}${alignr}${font Ubuntu:size=8,weight:normal}Used: ${font Ubuntu:size=8,weight:normal}${fs_used /media/che/data}
+${offset 150}${font Ubuntu:size=8,weight:normal}${color8}Free: ${fs_free /}${alignr}Used: ${fs_used /}
+${offset 150}${font Ubuntu:size=8,weight:normal}${color8}Free: ${fs_free /home}${alignr}Used: ${fs_used /home}
+${offset 150}${font Ubuntu:size=8,weight:normal}${color8}Free: ${fs_free /media/che/data}${alignr}Used: ${fs_used /media/che/data}
 
 # Network data 
 ${voffset 20}
