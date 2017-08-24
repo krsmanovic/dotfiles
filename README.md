@@ -1,1 +1,1 @@
-## My various Linux configuration files
+## Various configuration files from my Linux desktop (BunsenLabs)
