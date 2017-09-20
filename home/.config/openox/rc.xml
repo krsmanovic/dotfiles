@@ -1054,7 +1054,7 @@
       <fullscreen>no</fullscreen>
     </application>
 
-    <application class="Firefox-esr" name="navigator">
+    <application class="Firefox-esr" name="Navigator">
       <decor>yes</decor>
       <desktop>2</desktop>
       <maximized>yes</maximized>
