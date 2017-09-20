@@ -1029,7 +1029,7 @@
     <application class="TelegramDesktop" name="Telegram">
       <decor>yes</decor>
       <desktop>2</desktop>
-      <maximized>yes</maximized>
+      <maximized>no</maximized>
       <fullscreen>no</fullscreen>
     </application>
 
@@ -1064,10 +1064,11 @@
     <!-- DESKTOP 3 -->
 
     <application class="Wine" name="dude.exe">
-      <decor>no</decor>
       <desktop>3</desktop>
-      <maximized>yes</maximized>
-      <fullscreen>no</fullscreen>
+    </application>
+
+    <application class="Wine" name="winboxnovi.exe">
+      <desktop>3</desktop>
     </application>
 
     <application class="Remmina" name="remmina">
