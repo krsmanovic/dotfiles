@@ -1022,7 +1022,6 @@
     <application class="Thunderbird" name="Mail">
       <decor>yes</decor>
       <desktop>2</desktop>
-      <maximized>yes</maximized>
       <fullscreen>no</fullscreen>
     </application>
 
@@ -1043,21 +1042,16 @@
     <application class="Bl-file-manager" name="bl-file-manager">
       <decor>yes</decor>
       <desktop>2</desktop>
-      <maximized>yes</maximized>
-      <fullscreen>no</fullscreen>
     </application>
 
     <application class="Catfish" name="Catfish">
       <decor>yes</decor>
       <desktop>2</desktop>
-      <maximized>yes</maximized>
-      <fullscreen>no</fullscreen>
     </application>
 
     <application class="Firefox-esr" name="Navigator">
       <decor>yes</decor>
       <desktop>2</desktop>
-      <maximized>yes</maximized>
       <fullscreen>no</fullscreen>
     </application>
     
@@ -1068,12 +1062,23 @@
     </application>
 
     <application class="Wine" name="winboxnovi.exe">
+      <focus>yes</focus>
+      <desktop>3</desktop>
+    </application>
+
+    <application class="Wine" name="winbox.exe">
+      <focus>yes</focus>
       <desktop>3</desktop>
     </application>
 
     <application class="Remmina" name="remmina">
+      <desktop>3</desktop>
+    </application>
+
+    <application class="Filezilla" name="filezilla">
       <decor>yes</decor>
       <desktop>3</desktop>
+      <fullscreen>no</fullscreen>
     </application>
 
   </applications>
