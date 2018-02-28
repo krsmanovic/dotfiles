@@ -1033,9 +1033,9 @@
     </application>
 
     <application class="Sublime_text" name="sublime_text">
+      <focus>yes</focus>
       <decor>yes</decor>
       <desktop>2</desktop>
-      <maximized>yes</maximized>
       <fullscreen>no</fullscreen>
     </application>
 
