@@ -12,7 +12,7 @@ background_color = #FFFFFF 0
 border_color = #FFFFFF 0
 
 # ID 3 - task active
-rounded = 1
+rounded = 3
 border_width = 0
 background_color = #FFFFFF 20
 border_color = #494949 0
