@@ -27,8 +27,6 @@ router_blacklist="vpn_blacklist_static"
 # Temporary file we are using to store stage 1 access list
 file="stage1"
 
-end_of_file=0
-
 > "$file"
 
 ssh $router_username@$router_ip -p $router_port "/system script run $router_script" >> "$file"
