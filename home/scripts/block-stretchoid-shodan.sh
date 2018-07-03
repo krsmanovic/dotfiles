@@ -21,7 +21,7 @@ router_script="ssh-export-stage1"
 #       :put $ip
 # }
 
-# Blacklist name on the more router
+# Blacklist name on the remote router
 router_blacklist="vpn_blacklist_static"
 
 # Temporary file we are using to store stage 1 access list
