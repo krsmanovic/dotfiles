@@ -32,7 +32,7 @@ do
   then
     if echo "$domain" | egrep -i "(^|[^a-zA-Z])(shodan|stretchoid)($|[^a-zA-Z])" > /dev/null
     then
-        $router_ssh "do { /ip firewall address-list add list=$router_blacklist comment=$domain address=$ip } on-error={}" < /dev/null
+        $router_ssh -n "do { /ip firewall address-list add list=$router_blacklist comment=$domain address=$ip } on-error={}"
         echo "Host $ip with PTR $domain was added to the blacklist on the remote device."
     fi
   fi
