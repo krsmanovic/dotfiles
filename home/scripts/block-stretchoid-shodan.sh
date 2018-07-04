@@ -7,34 +7,33 @@
 
 # Create ssh key pair for your router and use
 # those credentials for logging in
-router_ip="192.168.0.1"
-router_username="admin"
-router_port="22"
+router_ssh="ssh admin@192.168.0.1 -p 22"
+
 # Stage 1 dynamic address list on the remote MikroTik
-router_stage1_dynamic="fw_stage1"
+router_stage1_dynamic="vpn_stage1"
+
 # Blacklist address list on the remote MikroTik
-router_blacklist="fw_blacklist_static"
+router_blacklist="vpn_blacklist_static"
 
 # Temporary file we are using to store stage 1 access list
 file="stage1"
 
 > "$file"
 
-ssh $router_username@$router_ip -p $router_port "/ip firewall address-list print where list=$router_stage1_dynamic" | awk 'NR > 2 {print $4}' >> "$file"
+$router_ssh "/ip firewall address-list print where list=$router_stage1_dynamic" | awk 'NR > 2 {print $4}' >> "$file"
 
-while IFS='' read -r ip || [[ -n "$ip" ]]
+while read -r line || [[ "$line" ]]
+#for line in "$file"
 do 
-
-  ip=$(echo $ip | tr -d '\r')
-  domain=$(dig -x "$ip" +short | sed 's/.$//')
+  ip=$(echo $line | tr -d '\r')
+  domain=$(dig -x "$ip" +short 2>&- | sed 's/.$//')
 
   if [ ! -z "$domain" ]
   then
-    if echo $domain | egrep -i "(^|[^a-zA-Z])(stretchoid|shodan)($|[^a-zA-Z])" > /dev/null
-      then
-        ssh $router_username@$router_ip -p $router_port "do { /ip firewall address-list add list=$router_blacklist comment=$domain address=$ip } on-error={}"
+    if echo "$domain" | egrep -i "(^|[^a-zA-Z])(shodan|stretchoid)($|[^a-zA-Z])" > /dev/null
+    then
+        $router_ssh "do { /ip firewall address-list add list=$router_blacklist comment=$domain address=$ip } on-error={}" </dev/null
         echo "Host $ip with PTR $domain was added to the blacklist on the remote device."
     fi
   fi
-
 done < "$file"
