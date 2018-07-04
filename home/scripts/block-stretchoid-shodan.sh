@@ -7,8 +7,8 @@
 
 # Create ssh key pair for your router and use
 # those credentials for logging in
-router_ip="62.193.139.170"
-router_username="che"
+router_ip="192.168.0.1"
+router_username="admin"
 router_port="22"
 # Stage 1 dynamic address list on the remote MikroTik
 router_stage1_dynamic="vpn_stage1"
