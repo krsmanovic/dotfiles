@@ -10,17 +10,17 @@
 router_ssh="ssh admin@192.168.0.1 -p 22"
 
 # Stage 1 dynamic address list on the remote MikroTik
-router_stage1_dynamic="vpn_stage1"
+router_stage1="fw_stage1"
 
 # Blacklist address list on the remote MikroTik
-router_blacklist="vpn_blacklist_static"
+router_blacklist="fw_blacklist"
 
 # Temporary file we are using to store stage 1 access list
 file="stage1"
 
 > "$file"
 
-$router_ssh "/ip firewall address-list print where list=$router_stage1_dynamic" | awk 'NR > 2 {print $4}' >> "$file"
+$router_ssh "/ip firewall address-list print where list=$router_stage1" | awk 'NR > 2 {print $4}' >> "$file"
 
 while read -r line || [[ "$line" ]]
 #for line in "$file"
