@@ -11,9 +11,9 @@ router_ip="192.168.0.1"
 router_username="admin"
 router_port="22"
 # Stage 1 dynamic address list on the remote MikroTik
-router_stage1_dynamic="vpn_stage1"
+router_stage1_dynamic="fw_stage1"
 # Blacklist address list on the remote MikroTik
-router_blacklist="vpn_blacklist_static"
+router_blacklist="fw_blacklist_static"
 
 # Temporary file we are using to store stage 1 access list
 file="stage1"
