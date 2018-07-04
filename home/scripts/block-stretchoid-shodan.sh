@@ -10,18 +10,9 @@
 router_ip="192.168.0.1"
 router_username="admin"
 router_port="22"
-
-# Name of the script that extracts stage 1 dynamic access list
-# that executes locally on remote MikroTik
-router_script="ssh-export-stage1"
-# This is the example of the script:
-# :local ip;
-# :foreach i in=[/ip firewall address-list find list=vpn_stage1] do={
-#       :set ip [/ip firewall address-list get $i address];
-#       :put $ip
-# }
-
-# Blacklist name on the remote router
+# Stage 1 dynamic address list on the remote MikroTik
+router_stage1_dynamic="vpn_stage1"
+# Blacklist address list on the remote MikroTik
 router_blacklist="vpn_blacklist_static"
 
 # Temporary file we are using to store stage 1 access list
@@ -29,7 +20,7 @@ file="stage1"
 
 > "$file"
 
-ssh $router_username@$router_ip -p $router_port "/system script run $router_script" >> "$file"
+ssh $router_username@$router_ip -p $router_port "/ip firewall address-list print where list=$router_stage1_dynamic" | awk 'NR > 2 {print $4}' >> "$file"
 
 while IFS='' read -r ip || [[ -n "$ip" ]]
 do 
