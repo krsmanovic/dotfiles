@@ -23,7 +23,6 @@ file="stage1"
 $router_ssh "/ip firewall address-list print where list=$router_stage1" | awk 'NR > 2 {print $4}' >> "$file"
 
 while read -r line || [[ "$line" ]]
-#for line in "$file"
 do 
   ip=$(echo $line | tr -d '\r')
   domain=$(dig -x "$ip" +short 2>&- | sed 's/.$//')
