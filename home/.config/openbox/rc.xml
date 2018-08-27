@@ -1016,6 +1016,15 @@
       <maximized>no</maximized>
       <fullscreen>no</fullscreen>
     </application>
+    
+    <application class="Terminator" name="terminator">
+      <focus>yes</focus>
+      <decor>yes</decor>
+      <desktop>1</desktop>
+      <maximized>no</maximized>
+      <fullscreen>no</fullscreen>
+    </application>
+
 
     <!-- DESKTOP 2 -->
 
