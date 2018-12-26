@@ -1,0 +1,53 @@
+background yes
+update_interval 10
+cpu_avg_samples 2
+
+out_to_console yes
+out_to_stderr no
+
+double_buffer yes
+no_buffers yes
+text_buffer_size 2048
+
+gap_x 20
+gap_y 150
+minimum_size 150 300
+maximum_width 500
+own_window yes
+own_window_transparent yes
+own_window_argb_visual yes
+own_window_argb_value 0
+own_window_type normal
+own_window_hints undecorate,sticky,skip_taskbar,skip_pager,below
+border_inner_margin 0
+border_outer_margin 0
+alignment tr
+
+
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+
+override_utf8_locale yes
+use_xft yes
+xftfont Ubuntu:size=8,weight:normal
+xftalpha 1
+uppercase no
+
+default_color 3A3A3A
+
+lua_draw_hook_post main
+
+TEXT
+${font Ostrich Sans:size=14,weight:bold}${alignc}NOW
+${font conkyweather:size=30}${execpi 600  sed -n '2p' $HOME/Scripts/weather/1_accuweather_RSS/weather}${font}${goto 50}${voffset -20}${execpi 600 sed -n '1p' $HOME/Scripts/weather/1_accuweather_RSS/weather|sed 's/Currently: //'|awk -F ": " '{print $2}'|sed 's/C/°C/'}
+${offset 70}${goto 50}${execpi 600 sed -n '1p' $HOME/Scripts/weather/1_accuweather_RSS/weather|sed 's/Currently: //'|awk -F ": " '{print $1}'}
+
+${font Ostrich Sans:size=14,weight:bold}${alignc}${execpi 600 echo $(date +%a)|tr 'a-z' 'A-Z'}
+${font conkyweather:size=30}${execpi 600  sed -n '5p' $HOME/Scripts/weather/1_accuweather_RSS/weather}${font}${goto 50}${voffset -20}${execpi 600 sed -n '4p' $HOME/Scripts/weather/1_accuweather_RSS/weather|awk -F " C " '{print $1"°C "$2"°C"}'}
+${offset 70}${goto 50}${execpi 600 sed -n '4p' $HOME/Scripts/weather/1_accuweather_RSS/weather|sed 's/^.* C //'}
+
+${font Ostrich Sans:size=14,weight:bold}${alignc}${execpi 600 echo $(date --date="next day" +%a)|tr 'a-z' 'A-Z'}
+${font conkyweather:size=30}${execpi 600  sed -n '8p' $HOME/Scripts/weather/1_accuweather_RSS/weather}${font}${goto 50}${voffset -20}${execpi 600 sed -n '7p' $HOME/Scripts/weather/1_accuweather_RSS/weather|awk -F " C " '{print $1"°C "$2"°C"}'}
+${offset 70}${goto 50}${execpi 600 sed -n '7p' $HOME/Scripts/weather/1_accuweather_RSS/weather|sed 's/^.* C //'}
