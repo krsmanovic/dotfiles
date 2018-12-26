@@ -1,0 +1,4 @@
+0 4 1 * * /home/che/Scripts/update_hosts.sh 
+0 3 * * * /home/che/Scripts/reverse-dns-mikrotik.sh
+0 9 * * * /home/che/Scripts/telefoni.sh
+50 7-16/1 * * * /home/che/Scripts/weather/1_accuweather_RSS/1_RSS
