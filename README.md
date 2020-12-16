@@ -1,9 +1,9 @@
-## Desktop configuration files from my old [BunsenLabs Linux](./home/) and [Windows 10](./windows/) workstation
+## Configuration files from my [BunsenLabs Linux](./linux/) and [Windows 10](./windows/) workstation
 
 **Content tree:**
 
 ```
-├───home
+├───linux
 │   ├───.config
 │   │   ├───conky
 │   │   │   └───LUA
