@@ -24,6 +24,9 @@
 └───windows
     ├───PowerShell
     ├───scripts
+    ├───SublimeText3
+    ├───TotalCommander
+    │   └───GHISLER
     └───WindowsTerminal
         ├───Images
         └───LocalState
