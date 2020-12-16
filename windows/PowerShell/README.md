@@ -1,7 +1,7 @@
-Place the `Microsoft.PowerShell_profile.ps1` file in:
+Place the `Microsoft.PowerShell_profile.ps1` file to the path resulted by this this command:
 
 ```dos
-C:\Users\%USERNAME%\Documents\WindowsPowerShell
+$PROFILE
 ```
 
 ## Prerequisites
