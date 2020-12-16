@@ -1,5 +1,5 @@
 ## Total Commander settings
 
-Check the location for the folder `GHISLER` by clicking `Help / About Total Commamder...` on the main toolbar.
+Click `Help / About Total Commander...` on the main toolbar to check where to put `GHISLER` folder.
 
 Configuration files are half-anonymized. Leftovers are there on purpose.
