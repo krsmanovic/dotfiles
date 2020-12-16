@@ -1,4 +1,4 @@
-Place the `Microsoft.PowerShell_profile.ps1` file to the path resulted by this this command:
+Copy the `Microsoft.PowerShell_profile.ps1` file to the path resulted from this command:
 
 ```dos
 $PROFILE
