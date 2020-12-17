@@ -23,11 +23,12 @@
 │   └───scripts
 └───windows
     ├───PowerShell
-    ├───scripts
     ├───SublimeText3
     ├───TotalCommander
     │   └───GHISLER
-    └───WindowsTerminal
-        ├───Images
-        └───LocalState
+    ├───WindowsTerminal
+    │   ├───Images
+    │   └───LocalState
+    ├───_ScheduledTasks
+    └───_Scripts
 ```
