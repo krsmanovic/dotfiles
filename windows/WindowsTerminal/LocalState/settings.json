@@ -22,6 +22,8 @@
     // My global settings
     "launchMode": "maximized",
     "confirmCloseAllTabs": false,
+    "startOnUserLogin": true,
+    "multiLinePasteWarning": false,
 
     // A profile specifies a command to execute paired with information about how it should look and feel.
     // Each one of them will appear in the 'New Tab' dropdown,
@@ -31,10 +33,15 @@
     {
         "defaults":
         {
-            "fontFace": "Fira Code",
+            "fontFace": "Fira Code Retina",
             "fontSize": 10,
             "cursorShape": "underscore",
-            "hidden": false
+            "hidden": false,
+            "colorScheme": "One Half Dark",
+            //"useAcrylic": true,
+            //"acrylicOpacity": 0.1,
+            "backgroundImageStretchMode": "none",
+            "backgroundImageOpacity": 0.1
         },
         "list":
         [
@@ -42,29 +49,27 @@
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "name": "Windows PowerShell",
                 "commandline": "powershell.exe",
-                "colorScheme": "One Half Dark",
-                "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\powershell.png",
-                "backgroundImageStretchMode": "none",
-                "backgroundImageOpacity": 0.1
-                //"useAcrylic": true,
-                //"acrylicOpacity": 0.1,
+                "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\powershell.png"
             },
             {
                 "guid": "{07b52e3e-de2c-5db4-bd2d-ba144ed6c273}",
                 "name": "Ubuntu-20.04",
                 "source": "Windows.Terminal.Wsl",
-                "colorScheme": "One Half Dark",
-                "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\logo-ubuntu-2.png",
-                //"backgroundImageAlignment": "topRight",
-                "backgroundImageStretchMode": "none",
-                "backgroundImageOpacity": 0.1
+                "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\logo-ubuntu-2.png"
             },
             {
                 "guid": "{07b52e3e-de2c-5db4-bd2d-ba777776c273}",
-                "name": "ssh root@pi.hole",
+                "name": "ssh pi.hole",
                 "commandline": "ssh root@pi.hole",
-                "colorScheme": "One Half Dark",
-                "icon": "j:\\prgms\\_icons\\Token Light\\TokenW-ICO\\Miscellaneous\\Lock.ico"
+                "icon": "j:\\prgms\\_icons\\Token Light\\TokenW-ICO\\Miscellaneous\\Lock.ico",
+                "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\centos-logo.png"
+            },
+            {
+                "guid": "{07b52e3e-de2c-5db4-bd2d-ba777796c273}",
+                "name": "ssh fw.local",
+                "commandline": "ssh che@192.168.11.254",
+                "icon": "j:\\prgms\\_icons\\Token Light\\TokenW-ICO\\Miscellaneous\\Lock.ico",
+                "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\mikrotik.png"
             },
             {
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
@@ -75,10 +80,30 @@
                 "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
                 "name": "Azure Cloud Shell",
                 "source": "Windows.Terminal.Azure",
-                "colorScheme": "One Half Dark"
+                "hidden": true
             }
         ]
     },
+
+    // NOT YET IMPLEMENTED AS OF FEB 2021. FUTURE PROOFING CONFIG.
+    "newTabMenu": [
+        { "type": "profile", "profile": "Command Prompt" },
+        { "type": "profile", "profile": "Windows PowerShell" },
+        { "type": "separator" },
+        {
+            "type": "folder",
+            "name": "ssh",
+            "icon": "j:\\prgms\\_icons\\Token Light\\TokenW-ICO\\Miscellaneous\\Lock.ico",
+            "entries": [
+                { "type": "profile", "profile": "ssh hetzner-01-bastion" },
+                { "type": "profile", "profile": "ssh fw.local" },
+                { "type": "profile", "profile": "ssh pi.hole" }
+            ]
+        },
+        { "type": "separator" },
+        { "type": "profile", "profile": "WSL Ubuntu-20.04" },
+        { "type": "profile", "profile": "Azure Cloud Shell" }
+    ],
 
     // Add custom color schemes to this array.
     // To learn more about color schemes, visit https://aka.ms/terminal-color-schemes
