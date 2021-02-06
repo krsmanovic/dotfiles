@@ -58,6 +58,14 @@
                 "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\logo-ubuntu-2.png"
             },
             {
+                "guid": "{07b52e3e-de2c-5db4-bd2d-ba144ed6c000}",
+                "name": "Git Bash",
+                "commandline" : "\"C:\\Program Files\\Git\\usr\\bin\\bash.exe\" -i -l",
+                "icon" : "C:\\Program Files\\Git\\mingw64\\share\\git\\git-for-windows.ico",
+                "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\git-logo.png",
+                "closeOnExit" : "always",
+                "startingDirectory" : "%USERPROFILE%"
+            {
                 "guid": "{07b52e3e-de2c-5db4-bd2d-ba777776c273}",
                 "name": "ssh pi.hole",
                 "commandline": "ssh root@pi.hole",
