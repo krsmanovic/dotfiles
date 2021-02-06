@@ -65,6 +65,7 @@
                 "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\git-logo.png",
                 "closeOnExit" : "always",
                 "startingDirectory" : "%USERPROFILE%"
+            },
             {
                 "guid": "{07b52e3e-de2c-5db4-bd2d-ba777776c273}",
                 "name": "ssh pi.hole",
