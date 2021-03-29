@@ -24,6 +24,7 @@
     "confirmCloseAllTabs": false,
     "startOnUserLogin": true,
     "multiLinePasteWarning": false,
+    "largePasteWarning": false,
 
     // A profile specifies a command to execute paired with information about how it should look and feel.
     // Each one of them will appear in the 'New Tab' dropdown,
