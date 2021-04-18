@@ -82,6 +82,13 @@
                 "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\mikrotik.png"
             },
             {
+                "guid": "{07b52e3e-de2c-5db4-bd2d-ba777796c274}",
+                "name": "ssh coreos.vm.local",
+                "commandline": "ssh core@192.168.11.40",
+                "icon": "j:\\prgms\\_icons\\Token Light\\TokenW-ICO\\Miscellaneous\\Lock.ico",
+                "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\coreos-logo.png"
+            },
+            {
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "name": "Command Prompt",
                 "commandline": "cmd.exe"
