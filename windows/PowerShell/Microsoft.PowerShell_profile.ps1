@@ -1,5 +1,5 @@
 oh-my-posh --init --shell pwsh --config j:\prgms\ohmyposhv3-v2.json | Invoke-Expression
-Set-PoshPrompt -Theme powerlevel10k_rainbow
+Set-PoshPrompt -Theme hotstick.minimal
 
 function New-Guid {
     Set-Variable -Name "guidValue" -Value ([guid]::NewGuid())
