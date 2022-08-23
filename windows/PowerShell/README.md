@@ -1,4 +1,4 @@
-Copy file `ohmyposhv3-v2.json` to desired location and update `Microsoft.PowerShell_profile.ps1` to properly reference it.
+## Setting up PowerShell profile
 
 Copy the `Microsoft.PowerShell_profile.ps1` file to the path resulted from this command:
 
@@ -16,7 +16,9 @@ Install-Module oh-my-posh -Scope CurrentUser
 winget install JanDeDobbeleer.OhMyPosh
 ```
 
-More info at <https://github.com/JanDeDobbeleer/oh-my-posh>
+More info at:
+- <https://github.com/JanDeDobbeleer/oh-my-posh>
+- <https://github.com/dahlbyk/posh-git>
 
 ## Note
 

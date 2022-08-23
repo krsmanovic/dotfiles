@@ -1,12 +1,17 @@
 {
+    "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
-    // To unbind a key combination from your defaults.json, set the command to "unbound".
-    // To learn more about actions and keybindings, visit https://aka.ms/terminal-keybindings
     "actions": 
     [
-        // Copy and paste are bound to Ctrl+Shift+C and Ctrl+Shift+V in your defaults.json.
-        // These two lines additionally bind them to Ctrl+C and Ctrl+V.
-        // To learn more about selection, visit https://aka.ms/terminal-selection
+        {
+            "command": 
+            {
+                "action": "splitPane",
+                "split": "right",
+                "splitMode": "duplicate"
+            },
+            "keys": "alt+shift+v"
+        },
         {
             "command": 
             {
@@ -20,34 +25,24 @@
             "keys": "ctrl+v"
         },
         {
+            "command": 
+            {
+                "action": "splitPane",
+                "split": "down",
+                "splitMode": "duplicate"
+            },
+            "keys": "alt+shift+h"
+        },
+        {
             "command": "find",
             "keys": "ctrl+f"
         },
         {
-            "command": "closeTab",
+            "command": 
+            {
+                "action": "closeTab"
+            },
             "keys": "ctrl+shift+w"
-        },
-        // Press Alt+Shift+D to open a new pane.
-        // - "split": "auto" makes this pane open in the direction that provides the most surface area.
-        // - "splitMode": "duplicate" makes the new pane use the focused pane's profile.
-        // To learn more about panes, visit https://aka.ms/terminal-panes
-        {
-            "command": 
-            {
-                "action": "splitPane",
-                "split": "vertical",
-                "splitMode": "duplicate"
-            },
-            "keys": "alt+shift+v"
-        },
-        {
-            "command": 
-            {
-                "action": "splitPane",
-                "split": "horizontal",
-                "splitMode": "duplicate"
-            },
-            "keys": "alt+shift+h"
         },
         {
             "command": 
@@ -70,62 +65,58 @@
     {
         "defaults": 
         {
-            "backgroundImageOpacity": 0.10000000000000001,
-            "backgroundImageStretchMode": "none",
-            "tabColor": "#5A6374",
+            "backgroundImage": "c:\\Users\\Che\\Pictures\\sunset.jpg",
+            "backgroundImageOpacity": 0.29999999999999999,
+            "backgroundImageStretchMode": "uniformToFill",
             "colorScheme": "One Half Dark",
             "cursorShape": "doubleUnderscore",
-            "fontFace": "Fira Code Retina",
-            "fontSize": 10,
+            "font": 
+            {
+                "face": "FiraCode NF Retina",
+                "size": 8,
+                "weight": "light"
+            },
             "hidden": false
         },
         "list": 
         [
             {
-                "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\centos-logo.png",
-                "commandline": "ssh root@pi.hole",
-                "guid": "{07b52e3e-de2c-5db4-bd2d-ba777776c273}",
+                "commandline": "ssh root@balboa.lan",
+                "guid": "{9f63b2a3-c898-4eac-96fb-1e06bea6198a}",
                 "icon": "j:\\prgms\\_icons\\Token Light\\TokenW-ICO\\Miscellaneous\\Lock.ico",
-                "name": "ssh pi.hole"
-            },
-            {
-                "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\centos-logo.png",
-                "commandline": "ssh root@argus.lan",
-                "guid": "{07b52e3e-de2c-0000-bd2d-ba777776c273}",
-                "icon": "j:\\prgms\\_icons\\Token Light\\TokenW-ICO\\Miscellaneous\\Lock.ico",
-                "name": "ssh argus"
+                "name": "balboa"
             },
             {
                 "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\mikrotik.png",
+                "backgroundImageStretchMode": "none",
                 "commandline": "ssh che@fw.lan",
                 "guid": "{07b52e3e-de2c-5db4-bd2d-ba777796c273}",
                 "icon": "j:\\prgms\\_icons\\Token Light\\TokenW-ICO\\Miscellaneous\\Lock.ico",
-                "name": "ssh fw.lan"
+                "name": "fw.lan"
             },
             {
                 "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\mikrotik.png",
+                "backgroundImageStretchMode": "none",
                 "commandline": "ssh che@ap.lan",
                 "guid": "{07b52e3e-de2d-5db4-bd2d-ba777796c273}",
                 "icon": "j:\\prgms\\_icons\\Token Light\\TokenW-ICO\\Miscellaneous\\Lock.ico",
-                "name": "ssh ap.lan"
+                "name": "ap.lan"
             },
             {
-                "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\coreos-logo.png",
-                "commandline": "ssh core@coreos.vm.local",
-                "guid": "{07b52e3e-de2c-5db4-bd2d-ba777796c274}",
-                "icon": "j:\\prgms\\_icons\\Token Light\\TokenW-ICO\\Miscellaneous\\Lock.ico",
-                "name": "ssh coreos.vm.local"
-            },
-            {
-                "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\powershell.png",
-                "commandline": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
-                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-                "fontFace": "CaskaydiaCove NF",
                 "backgroundImageOpacity": 0.5,
-                "name": "Windows PowerShell"
+                "commandline": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+                "font": 
+                {
+                    "size": 10
+                },
+                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+                "icon": "C:\\Program Files\\PowerShell\\7\\assets\\Powershell_black.ico",
+                "name": "PowerShell",
+                "suppressApplicationTitle": false
             },
             {
                 "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\git-logo.png",
+                "backgroundImageStretchMode": "none",
                 "closeOnExit": "always",
                 "commandline": "\"C:\\Program Files\\Git\\usr\\bin\\bash.exe\" -i -l",
                 "guid": "{07b52e3e-de2c-5db4-bd2d-ba144ed6c000}",
@@ -135,6 +126,7 @@
             },
             {
                 "backgroundImage": "c:\\Users\\%USERNAME%\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\Images\\logo-ubuntu-2.png",
+                "backgroundImageStretchMode": "none",
                 "guid": "{07b52e3e-de2c-5db4-bd2d-ba144ed6c273}",
                 "hidden": false,
                 "name": "WSL Ubuntu-20.04",
@@ -142,7 +134,6 @@
             },
             {
                 "colorScheme": "Campbell",
-                "commandline": "cmd.exe",
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "name": "Command Prompt"
             },
@@ -151,6 +142,36 @@
                 "hidden": true,
                 "name": "Azure Cloud Shell",
                 "source": "Windows.Terminal.Azure"
+            },
+            {
+                "guid": "{1cd79813-5972-56cb-badb-ba5ee12693c5}",
+                "hidden": false,
+                "name": "rancher-desktop",
+                "source": "Windows.Terminal.Wsl"
+            },
+            {
+                "guid": "{1bdae7ec-8ca6-5caa-8453-8b6fe78b2748}",
+                "hidden": false,
+                "name": "rancher-desktop-data",
+                "source": "Windows.Terminal.Wsl"
+            },
+            {
+                "guid": "{df1005fd-d93d-5593-8ed4-2cd4c91bcd4c}",
+                "hidden": false,
+                "name": "Developer Command Prompt for VS 2022",
+                "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "guid": "{aa799a1c-5fb0-51c9-90df-b2011135cf05}",
+                "hidden": false,
+                "name": "Developer PowerShell for VS 2022",
+                "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "guid": "{d12f01e0-a164-5cac-8d25-292144b49a34}",
+                "hidden": true,
+                "name": "Developer Command Prompt for VS 2017",
+                "source": "Windows.Terminal.VisualStudio"
             }
         ]
     },
