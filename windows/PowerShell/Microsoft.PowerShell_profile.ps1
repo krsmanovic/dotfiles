@@ -1,6 +1,10 @@
-oh-my-posh --init --shell pwsh --config c:\Users\Che\Documents\PowerShell\Modules\oh-my-posh\5.12.1\themes\hotstick.minimal.omp.json | Invoke-Expression
+#oh-my-posh --init --shell pwsh --config c:\Users\Che\Documents\PowerShell\Modules\oh-my-posh\5.12.1\themes\powerline.omp.json | Invoke-Expression
 
 Import-Module posh-git
+
+$env:STARSHIP_CONFIG = "$env:userprofile\.starship\starship.toml"
+
+Invoke-Expression (&starship init powershell)
 
 Set-Alias -Name ll -Value Get-ChildItem
 
