@@ -30,5 +30,6 @@
     │   ├───Images
     │   └───LocalState
     ├───_ScheduledTasks
-    └───_Scripts
+    ├───_Scripts
+    └───.starship
 ```
