@@ -1,6 +1,6 @@
 ## Setting up PowerShell profile
 
-Copy the `Microsoft.PowerShell_profile.ps1` file to the path resulted from this command:
+Copy contents of the `Microsoft.PowerShell_profile.ps1` file to the path resulted from this command:
 
 ```powershell
 $PROFILE
@@ -8,17 +8,18 @@ $PROFILE
 
 ## Prerequisites
 
-Install posh-git and oh-my-posh:
+Install posh-git, starship and kubectl completion:
 
 ```powershell
-Install-Module posh-git -Scope CurrentUser
-Install-Module oh-my-posh -Scope CurrentUser
-winget install JanDeDobbeleer.OhMyPosh
+Install-Module -Name posh-git -Scope CurrentUser
+choco install starship
+Install-Module -Name PSKubectlCompletion
 ```
 
 More info at:
-- <https://github.com/JanDeDobbeleer/oh-my-posh>
 - <https://github.com/dahlbyk/posh-git>
+- <https://starship.rs/>
+- <https://kubernetes.io/docs/tasks/tools/included/optional-kubectl-configs-pwsh/>
 
 ## Note
 
