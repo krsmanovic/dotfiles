@@ -2,7 +2,9 @@ Get-Service -Name wuauserv | Stop-Service -Force -verbose -ErrorAction SilentlyC
 
 $folders = @(
     'j:\download'
+    'C:\ProgramData\Microsoft\Windows\WER'
     'C:\Windows\SoftwareDistribution'
+    'C:\Windows\Logs\CBS'
     'C:\Windows\Temp'
     'C:\Windows\prefetch'
     'C:\inetpub\logs\LogFiles'
