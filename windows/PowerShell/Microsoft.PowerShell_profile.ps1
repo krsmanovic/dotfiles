@@ -129,3 +129,16 @@ function sha1 {
 function md5 {
   Get-FileHash -Path $args -Algorithm md5 | Select-Object -ExpandProperty Hash
 }
+
+<#
+.SYNOPSIS
+    Print process start time.
+.EXAMPLE
+    starttime -app notepad
+#>
+function starttime {
+  param (
+      [Parameter(Mandatory=$false)] [string]$app = "WowClassic"
+  )
+  Get-Process | Where {$_.Name -eq "$app"} | select name, starttime
+}
