@@ -1,0 +1,27 @@
+# Configuration file can be kept in either of these locations:
+# $XDG_CONFIG_HOME/alacritty/alacritty.toml
+# $XDG_CONFIG_HOME/alacritty.toml
+# $HOME/.config/alacritty/alacritty.toml
+# $HOME/.alacritty.toml
+
+# All configuration options:
+# https://github.com/alacritty/alacritty/blob/master/extra/man/alacritty.5.scd
+
+[window]
+
+opacity = 0.9
+
+padding.x = 10
+padding.y = 10
+
+decorations = "Full"
+decorations_theme_variant = "Dark"
+
+[font]
+
+normal.family = "Fira Code Retina"
+bold.family = "Fira Code Retina"
+italic.family = "Fira Code Retina"
+bold_italic.family = "Fira Code Retina"
+
+size = 12.0
