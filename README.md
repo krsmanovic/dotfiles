@@ -3,7 +3,7 @@
 **Content tree:**
 
 ```
-├───linux
+├───bunsen-labs
 │   ├───.config
 │   │   ├───conky
 │   │   │   └───LUA
