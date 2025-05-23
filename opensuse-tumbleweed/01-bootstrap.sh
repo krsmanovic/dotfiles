@@ -2,10 +2,10 @@
 
 # set host information
 sudo hostnamectl set-hostname greenzard
-if [ `sudo dmesg | grep -q 'Hypervisor detected'` ]; then
-    CHASSIS_TYPE="desktop"
-else
+if sudo dmesg | grep --quiet 'Hypervisor detected'; then
     CHASSIS_TYPE="vm"
+else
+    CHASSIS_TYPE="desktop"
 fi
 sudo hostnamectl set-chassis $CHASSIS_TYPE
 
