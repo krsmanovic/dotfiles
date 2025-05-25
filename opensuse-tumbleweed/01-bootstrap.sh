@@ -60,7 +60,7 @@ log_message () {
 
 # install essential tools
 log_message info "Installing essential packages..."
-sudo zypper --non-interactive --quiet install curl jq git
+sudo zypper --non-interactive --quiet install curl jq git tig
 
 # set up directories
 DESKTOP_USER=che
@@ -90,7 +90,7 @@ sudo zypper --non-interactive --quiet update
 log_message info "Installing core list of packages..."
 sudo zypper $ZYPPER_PARAMS_QUIET install \
     nmap mtr whois samba-client bind-utils wireshark wget \
-    fastfetch neovim fira-code-fonts conky tmux htop btop steam-devices kitty \
+    fastfetch neovim fira-code-fonts conky tmux htop btop steam-devices kitty starship \
     go go-doc rustup cmake freetype-devel fontconfig-devel libxcb-devel libxkbcommon-devel libstartup-notification-1-0 \
     flatpak \
     discord telegram-desktop MozillaThunderbird \
