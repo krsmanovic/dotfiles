@@ -1,0 +1,74 @@
+# Basic start
+add_newline = false
+
+[character]
+error_symbol = "[❯](bold red)"
+success_symbol = "[❯](bold green)"
+vicmd_symbol = "[V](bold green)"
+
+[cmd_duration]
+disabled = true
+min_time = 500
+
+[directory]
+disabled = false
+style = "bold cyan"
+truncate_to_repo = false
+truncation_length = 6
+
+[hostname]
+disabled = true
+ssh_only = false
+trim_at = "."
+
+[line_break]
+disabled = true
+
+[username]
+disabled = true
+show_always = false
+style_root = "bold red"
+style_user = "bold yellow"
+
+[package]
+disabled = true
+# Basic end
+
+# AWS start
+[aws]
+disabled = true
+format = '[\($region\)]($style) '
+# AWS end
+
+# Git start
+[git_branch]
+format = "[$symbol$branch(:$remote_branch)]($style) "
+
+[git_metrics]
+disabled = false
+format = '(\([+$added](fg:green):[-$deleted](fg:red)\))'
+
+[git_status]
+ahead = " [⇡$count](bold fg:#6ab346)"
+behind = " [⇣$count](bold fg:red)"
+diverged = ' [⇕](bold fg:yellow)\([+$ahead_count](bold fg:#6ab346) [-$behind_count](bold fg:red)\)'
+format = '( $all_status)($ahead_behind)'
+modified = "[!](bold fg:yellow) "
+staged = "[+](bold fg:green) "
+untracked = "[?](bold fg:red) "
+# Git end
+
+# Langauge start
+[nodejs]
+disabled = false
+style = "bold green"
+symbol = "⬢ "
+
+[python]
+disabled = false
+format = "[$virtualenv]($style) "
+pyenv_prefix = "pyenv"
+pyenv_version_name = false
+style = "bright-black"
+symbol = "🐍 "
+# Language end

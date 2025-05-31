@@ -6,55 +6,10 @@ SMB_CONFIG_DIR="/home/$DESKTOP_USER/.config/smb"
 SMB_CREDENTIALS_FILE=".credentials"
 SMB_SHARE_PATH="//smb.lan/cher"
 SMB_MOUNT_DIR="/mnt/smb"
+NETWORK_MANAGER_CONFIG_OVERRIDES_PATH="/etc/NetworkManager/conf.d/99-overrides.conf"
 
-# standardize stdout timestamp
-stamp_time () {
-    TZ="Europe/Belgrade" date "+%Y-%m-%d %H:%M:%S"
-}
-
-# configure logging
-if logger -V &> /dev/null; then
-    LOGGING_FACILITY="logger"
-else
-    LOGGING_FACILITY="fd"
-fi
-
-VALID_LOG_LEVEL_NAMES=(
-    emerg
-    alert
-    crit
-    err
-    warning
-    notice
-    info
-    debug
-)
-
-log_message () {
-    local LOGGER_MESSAGE_LEVEL
-    local LOGGER_MESSAGE
-    local LOGGER_TIME
-
-    LOGGER_TIME=$(stamp_time)
-    LOGGER_MESSAGE_LEVEL=$1
-    LOGGER_MESSAGE=$2
-
-    TOLOWER_LOGGER_MESSAGE_LEVEL=$(echo $LOGGER_MESSAGE_LEVEL | awk '{print tolower($0)}')
-    # validate log level
-    if [ `echo "$VALID_LOG_LEVEL_NAMES" | grep -w -q "$TOLOWER_LOGGER_MESSAGE_LEVEL"` ]; then
-        REAL_LOG_LEVEL="$TOLOWER_LOGGER_MESSAGE_LEVEL"
-    else
-        REAL_LOG_LEVEL="info"
-    fi
-
-    # print log message
-    if [ $LOGGING_FACILITY == "logger" ]; then
-        logger --priority "local7.$REAL_LOG_LEVEL" "$LOGGER_MESSAGE"
-    else
-        TOUPPER_REAL_LOG_LEVEL=$(echo $REAL_LOG_LEVEL | awk '{print toupper($0)}')
-        echo "$LOGGER_TIME $TOUPPER_REAL_LOG_LEVEL $LOGGER_MESSAGE"
-    fi
-}
+# load common functions
+source /home/$DESKTOP_USER/lib/sh/common.sh
 
 # fix deafult postfix mess
 log_message info "Fixing postfix default configuration..."
@@ -87,3 +42,10 @@ else
 fi
 echo "$SMB_SHARE_PATH $SMB_MOUNT_DIR cifs credentials=$SMB_CONFIG_DIR/$SMB_CREDENTIALS_FILE 0 0" | sudo tee --append /etc/fstab
 echo "//smb.lan/cher /mnt/smb cifs credentials=/home/che/.config/smb/.credentials 0 0" | sudo tee --append /etc/fstab
+
+# network manager overrides
+sudo tee $NETWORK_MANAGER_CONFIG_OVERRIDES_PATH > /dev/null << EOF
+[connectivity]
+# disable connectivity checks
+interval=0
+EOF

@@ -1,10 +1,11 @@
-## Configuration files from my [BunsenLabs Linux](./linux/) and [Windows 10](./windows/) workstation
+## Configuration files from my [openSUSE Tumbleweed](./opensuse-tumbleweed/), [BunsenLabs](./bunsenlabs/) and [Windows 10](./windows/) workstation
 
 **Content tree:**
 
 ```
-├───bunsen-labs
+├───bunsenlabs
 │   ├───.config
+│   │   ├───alacritty
 │   │   ├───conky
 │   │   │   └───LUA
 │   │   ├───openbox
@@ -21,7 +22,14 @@
 │   │           └───Bunsen-Flat-Arc
 │   │               └───openbox-3
 │   └───scripts
+├───opensuse-tumbleweed
+│   └───.config
+│       ├───fastfetch
+│       ├───kitty
+│       │   └───themes
+│       └───starship
 └───windows
+    ├───.starship
     ├───PowerShell
     ├───SublimeText3
     ├───TotalCommander
@@ -30,6 +38,5 @@
     │   ├───Images
     │   └───LocalState
     ├───_ScheduledTasks
-    ├───_Scripts
-    └───.starship
+    └───_Scripts
 ```
