@@ -10,5 +10,5 @@ sudo zypper --non-interactive --quiet install curl jq git tig
 # do the magic
 cd $WORKDIR
 git clone https://github.com/krsmanovic/dotfiles.git
-cp -r dotfiles/opensuse-tumbleweed/ /home/$DESKTOP_USER/
+rsync -a dotfiles/opensuse-tumbleweed/ /home/$DESKTOP_USER/
 sudo chown -R $DESKTOP_USER:$DESKTOP_USER /home/$DESKTOP_USER/
