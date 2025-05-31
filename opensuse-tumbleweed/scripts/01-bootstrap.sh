@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# stop packageit while we are running cli ops
+sudo systemctl stop --now packagekit
+
 # set up directories
 DESKTOP_USER=che
 HOST_NAME=greenzard
@@ -13,6 +16,7 @@ mkdir -p $STEAM_LOCAL_LIBRARY $GO_DIR_CACHE $GO_DIR_BIN
 CODIUM_LOCAL_REPO_PATH=/etc/zypp/repos.d/vscodium.repo
 KUBERNETES_LOCAL_REPO_PATH=/etc/zypp/repos.d/kubernetes.repo
 OPENTOFU_LOCAL_REPO_PATH=/etc/zypp/repos.d/opentofu.repo
+NVIDIA_LOCAL_REPO_PATH=/etc/zypp/repos.d/nvidia.repo
 KUBERNETES_STABLE_VERSION_MINOR=$(curl -L -s https://dl.k8s.io/release/stable.txt | awk -F '.' '{print $1"."$2}')
 ZYPPER_PARAMS_QUIET="--non-interactive --quiet"
 FLATPAK_PARAMS_QUIET="--assumeyes --noninteractive flathub"
@@ -106,9 +110,19 @@ sslverify=1
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 metadata_expire=300
 EOF
+sudo tee $NVIDIA_LOCAL_REPO_PATH > /dev/null << EOF
+[nvidia]
+name=nvidia-opensource
+baseurl=https://download.nvidia.com/opensuse/tumbleweed
+enabled=1
+autorefresh=1
+EOF
 sudo zypper $ZYPPER_PARAMS_QUIET --gpg-auto-import-keys refresh
 sudo zypper $ZYPPER_PARAMS_QUIET update
 sudo zypper $ZYPPER_PARAMS_QUIET install codium kubectl tofu
+sudo zypper $ZYPPER_PARAMS_QUIET install --auto-agree-with-licenses nvidia-open-driver-G06-signed-kmp-default
+NVIDIA_DRIVER_VERSION=$(rpm -qa --queryformat '%{VERSION}\n' nvidia-open-driver-G06-signed-kmp-default | cut -d "_" -f1 | sort -u | tail -n 1)
+sudo zypper $ZYPPER_PARAMS_QUIET install nvidia-video-G06=${NVIDIA_DRIVER_VERSION} nvidia-compute-utils-G06=${NVIDIA_DRIVER_VERSION}
 
 # install programs from flathub
 log_message info "Installing flatpack packages..."
@@ -124,7 +138,7 @@ for pak in "${FLATPAK_PACKAGES[@]}"; do
 done
 flatpak override --user --filesystem=$STEAM_LOCAL_LIBRARY com.valvesoftware.Steam
 
-# rpm installations
+# scripted installations
 cd $WORKDIR
 log_message info "Downloading latest AWS cli version..."
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
