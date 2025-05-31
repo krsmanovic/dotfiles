@@ -10,7 +10,7 @@ SMB_FSTAB_LINE="$SMB_SHARE_PATH $SMB_MOUNT_DIR cifs credentials=$CREDENTIALS_DIR
 NETWORK_MANAGER_CONFIG_OVERRIDES_PATH="/etc/NetworkManager/conf.d/99-overrides.conf"
 
 # setup directories
-mkdir -p $CREDENTIALS_DIR
+mkdir -p $CREDENTIALS_DIR || true
 
 # load common functions
 source /home/$DESKTOP_USER/lib/sh/common.sh

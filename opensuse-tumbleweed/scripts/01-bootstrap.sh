@@ -6,11 +6,11 @@ sudo systemctl stop --now packagekit
 # set up directories
 DESKTOP_USER=che
 HOST_NAME=greenzard
-STEAM_LOCAL_LIBRARY=/home/$DESKTOP_USER/steam/library
+STEAM_LOCAL_LIBRARY=/home/$DESKTOP_USER/lib/steam/
 WORKDIR="$(mktemp -d)"
 GO_DIR_CACHE=$WORKDIR/cache
 GO_DIR_BIN=$WORKDIR/bin
-mkdir -p $STEAM_LOCAL_LIBRARY $GO_DIR_CACHE $GO_DIR_BIN
+mkdir -p $STEAM_LOCAL_LIBRARY $GO_DIR_CACHE $GO_DIR_BIN || true
 
 # package manager variables
 CODIUM_LOCAL_REPO_PATH=/etc/zypp/repos.d/vscodium.repo
