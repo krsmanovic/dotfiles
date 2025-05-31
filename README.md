@@ -25,6 +25,7 @@
 ├───opensuse-tumbleweed
 │   ├───.config
 │   │   ├───fastfetch
+│   │   ├───keepassxc
 │   │   ├───kitty
 │   │   │   └───themes
 │   │   └───starship
