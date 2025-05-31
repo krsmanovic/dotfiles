@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# stop packageit while we are running cli ops
+# stop packagekit while we are running cli ops
 if systemctl list-unit-files packagekit.service &>/dev/null; then
     sudo systemctl stop --now packagekit
 fi
@@ -151,7 +151,7 @@ sudo ./aws/install
 GOMODCACHE=$GO_DIR_CACHE GOBIN=$GO_DIR_BIN go install github.com/openrdap/rdap/cmd/rdap@master
 sudo cp $GO_DIR_BIN/rdap /usr/local/bin/rdap
 
-# start packageit
+# start packagekit
 if systemctl list-unit-files packagekit.service &>/dev/null; then
     sudo systemctl start --now packagekit
 fi
