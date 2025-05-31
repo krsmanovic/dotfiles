@@ -1,7 +1,12 @@
 #!/bin/bash
 
+# load common functions
+source /home/$DESKTOP_USER/lib/sh/common.sh
+
 # stop packageit while we are running cli ops
-sudo systemctl stop --now packagekit
+if systemctl list-unit-files packagekit.service &>/dev/null; then
+    sudo systemctl stop --now packagekit
+fi
 
 # set up directories
 DESKTOP_USER=che
@@ -31,9 +36,6 @@ FLATPAK_PACKAGES=(
     com.microsoft.Edge
     org.videolan.VLC
 )
-
-# load common functions
-source /home/$DESKTOP_USER/lib/sh/common.sh
 
 # set host information
 log_message info "Setting host information..."
@@ -148,3 +150,8 @@ sudo ./aws/install
 # golang program installations
 GOMODCACHE=$GO_DIR_CACHE GOBIN=$GO_DIR_BIN go install github.com/openrdap/rdap/cmd/rdap@master
 sudo cp $GO_DIR_BIN/rdap /usr/local/bin/rdap
+
+# start packageit
+if systemctl list-unit-files packagekit.service &>/dev/null; then
+    sudo systemctl start --now packagekit
+fi
