@@ -32,6 +32,7 @@
 │   ├───lib
 │   │   └───sh
 │   └───scripts
+│       └───setup
 └───windows
     ├───.starship
     ├───PowerShell
