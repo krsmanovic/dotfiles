@@ -1,3 +1,6 @@
+# start measuring script duration
+INITIAL_SECONDS=$SECONDS
+
 # common shell functions
 if [ -f ~/lib/sh/common.sh ]; then
     source ~/lib/sh/common.sh
@@ -26,4 +29,10 @@ if which tofu &> /dev/null; then
     complete -C /usr/bin/tofu tofu
 else
     echo "Failed to load tofu completions."
+fi
+
+# decide if we want to print duration
+DURATION_SECONDS=$(( SECONDS - INITIAL_SECONDS ))
+if [ $DURATION_SECONDS -gt 0 ]; then
+    echo ".bashrc took ${DURATION_SECONDS}s to start."
 fi
