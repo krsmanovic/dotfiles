@@ -23,11 +23,15 @@
 │   │               └───openbox-3
 │   └───scripts
 ├───opensuse-tumbleweed
-│   └───.config
-│       ├───fastfetch
-│       ├───kitty
-│       │   └───themes
-│       └───starship
+│   ├───.config
+│   │   ├───fastfetch
+│   │   ├───kitty
+│   │   │   └───themes
+│   │   └───starship
+│   ├───.credentials
+│   ├───lib
+│   │   └───sh
+│   └───scripts
 └───windows
     ├───.starship
     ├───PowerShell
