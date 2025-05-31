@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# load common functions
-source /home/$DESKTOP_USER/lib/sh/common.sh
-
 # stop packageit while we are running cli ops
 if systemctl list-unit-files packagekit.service &>/dev/null; then
     sudo systemctl stop --now packagekit
@@ -16,6 +13,9 @@ WORKDIR="$(mktemp -d)"
 GO_DIR_CACHE=$WORKDIR/cache
 GO_DIR_BIN=$WORKDIR/bin
 mkdir -p $STEAM_LOCAL_LIBRARY $GO_DIR_CACHE $GO_DIR_BIN || true
+
+# load common functions
+source /home/$DESKTOP_USER/lib/sh/common.sh
 
 # package manager variables
 CODIUM_LOCAL_REPO_PATH=/etc/zypp/repos.d/vscodium.repo
