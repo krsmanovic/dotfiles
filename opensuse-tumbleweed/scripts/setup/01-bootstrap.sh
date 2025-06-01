@@ -22,6 +22,7 @@ CODIUM_LOCAL_REPO_PATH=/etc/zypp/repos.d/vscodium.repo
 KUBERNETES_LOCAL_REPO_PATH=/etc/zypp/repos.d/kubernetes.repo
 OPENTOFU_LOCAL_REPO_PATH=/etc/zypp/repos.d/opentofu.repo
 NVIDIA_LOCAL_REPO_PATH=/etc/zypp/repos.d/nvidia.repo
+PACKMAN_LOCAL_REPO_PATH=/etc/zypp/repos.d/packman.repo
 KUBERNETES_STABLE_VERSION_MINOR=$(curl -L -s https://dl.k8s.io/release/stable.txt | awk -F '.' '{print $1"."$2}')
 ZYPPER_PARAMS_QUIET="--non-interactive --quiet"
 FLATPAK_PARAMS_QUIET="--assumeyes --noninteractive flathub"
@@ -58,7 +59,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     flatpak \
     discord telegram-desktop MozillaThunderbird \
     wine virtualbox \
-    deadbeef audacity ffmpeg \
+    deadbeef audacity \
     keepassxc gimp calibre okular k3b qbittorrent nextcloud xorriso
 
 # install rust
@@ -67,6 +68,13 @@ rustup toolchain install stable
 
 # install programs from external repos
 log_message info "Installing packages from external repositories..."
+sudo tee $PACKMAN_LOCAL_REPO_PATH > /dev/null << "EOF"
+[packman]
+enabled=1
+autorefresh=1
+baseurl=https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/
+priority=90
+EOF
 sudo tee $CODIUM_LOCAL_REPO_PATH > /dev/null << "EOF" 
 [vscodium]
 name=VSCodium RPM
@@ -121,6 +129,7 @@ autorefresh=1
 EOF
 sudo zypper $ZYPPER_PARAMS_QUIET --gpg-auto-import-keys refresh
 sudo zypper $ZYPPER_PARAMS_QUIET update
+sudo zypper $ZYPPER_PARAMS_QUIET install --allow-vendor-change --from packman ffmpeg gstreamer-plugins-{good,bad,ugly,libav} libavcodec vlc-codecs
 sudo zypper $ZYPPER_PARAMS_QUIET install codium kubectl tofu
 sudo zypper $ZYPPER_PARAMS_QUIET install --auto-agree-with-licenses nvidia-open-driver-G06-signed-kmp-default
 NVIDIA_DRIVER_VERSION=$(rpm -qa --queryformat '%{VERSION}\n' nvidia-open-driver-G06-signed-kmp-default | cut -d "_" -f1 | sort -u | tail -n 1)
