@@ -30,11 +30,18 @@
         {
             "type": "memory",
             "key": "│ ├󰍛",
-            "keyColor": "green"
+            "keyColor": "green",
+            "format": "{total} ({percentage})"
         },
         {
             "type": "disk",
-            "key": "└ └",
+            "key": "│ ├",
+            "keyColor": "green",
+            "format": "{mountpoint} ({filesystem}) {size-total} ({size-percentage})"
+        },
+        {
+            "type": "board",
+            "key": "└ └󰍛",
             "keyColor": "green"
         },
         {
@@ -108,13 +115,13 @@
         },
         {
             "type": "command",
-            "key": "  OS Age ",
+            "key": "  OS Age   ",
             "keyColor": "magenta",
             "text": "birth_install=$(stat -c %W /); current=$(date +%s); time_progression=$((current - birth_install)); days_difference=$((time_progression / 86400)); echo  $days_difference days"
         },
         {
             "type": "uptime",
-            "key": "  Uptime ",
+            "key": "  Uptime   ",
             "keyColor": "magenta"
         },
         {
