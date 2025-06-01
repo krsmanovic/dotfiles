@@ -1,7 +1,17 @@
 {
     "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
     "logo": {
-    	"type": "none"
+        "type": "raw",
+        "source": "/home/che/.config/fastfetch/images/chameleon-kitty.bin",
+        "position": "left",
+        "color": {
+            "1": "green"
+        },
+        "padding": {
+            "top": 9,
+            "left": 2,
+            "right": 0
+        }
     },
     "display": {
         "separator": " "
