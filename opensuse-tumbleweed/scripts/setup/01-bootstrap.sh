@@ -151,6 +151,11 @@ sudo ./aws/install
 GOMODCACHE=$GO_DIR_CACHE GOBIN=$GO_DIR_BIN go install github.com/openrdap/rdap/cmd/rdap@master
 sudo cp $GO_DIR_BIN/rdap /usr/local/bin/rdap
 
+# setup plasmoids
+# BW_MONITOR_PLASMOID_NAME="NetworkBandwidthMonitorQt6.plasmoid"
+# wget -O $BW_MONITOR_PLASMOID_NAME "https://ocs-dl.fra1.cdn.digitaloceanspaces.com/data/files/1744930465/NetworkBandwidthMonitorQt6-6.2025.4.20.plasmoid?response-content-disposition=attachment%3B%2520NetworkBandwidthMonitorQt6-6.2025.4.20.plasmoid&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=RWJAQUNCHT7V2NCLZ2AL%2F20250601%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250601T092834Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Signature=e2a72a5cb8e57c6d42fb1fe103c3ffd8ca4746c3f540312474875ff1f35ecf83"
+# kpackagetool6 -i $BW_MONITOR_PLASMOID_NAME
+
 # start packagekit
 if systemctl list-unit-files packagekit.service &>/dev/null; then
     sudo systemctl start --now packagekit
