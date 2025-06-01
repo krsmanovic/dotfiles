@@ -48,6 +48,5 @@ interval=0
 EOF
 
 # convert opensuse logo from svg to raw image format for fastfetch
-# curl -s https://en.opensuse.org/images/6/6c/OpenSUSE-hellcp.svg -O logo.svg
-# kitten icat -n --align=left --transfer-mode=stream logo.svg > /home/$DESKTOP_USER/.config/fastfetch/images/chameleon-kitty.bin
-# rm -rf logo.svg
+# i have only changed green tone; original was fetched from https://en.opensuse.org/images/6/6c/OpenSUSE-hellcp.svg
+# kitten icat -n --align=left --transfer-mode=stream /home/$DESKTOP_USER/.config/fastfetch/images/chameleon-kitty.svg > /home/$DESKTOP_USER/.config/fastfetch/images/chameleon-kitty.bin
