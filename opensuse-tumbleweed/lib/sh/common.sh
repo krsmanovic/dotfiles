@@ -40,11 +40,15 @@ log_message () {
         REAL_LOG_LEVEL="info"
     fi
 
+    TOUPPER_REAL_LOG_LEVEL=$(echo $REAL_LOG_LEVEL | awk '{print toupper($0)}')
+
     # print log message
     if [ $LOGGING_FACILITY == "logger" ]; then
         logger --priority "local7.$REAL_LOG_LEVEL" "$LOGGER_MESSAGE"
+        if [ "$REAL_LOG_LEVEL" != "info" ]; then
+            echo "$LOGGER_TIME $TOUPPER_REAL_LOG_LEVEL $LOGGER_MESSAGE"
+        fi
     else
-        TOUPPER_REAL_LOG_LEVEL=$(echo $REAL_LOG_LEVEL | awk '{print toupper($0)}')
         echo "$LOGGER_TIME $TOUPPER_REAL_LOG_LEVEL $LOGGER_MESSAGE"
     fi
 }
