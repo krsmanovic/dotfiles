@@ -8,6 +8,7 @@ SMB_SHARE_PATH="//smb.lan/cher"
 SMB_MOUNT_DIR="/mnt/smb"
 SMB_FSTAB_LINE="$SMB_SHARE_PATH $SMB_MOUNT_DIR cifs credentials=$CREDENTIALS_DIR/$SMB_CREDENTIALS_FILE 0 0"
 NETWORK_MANAGER_CONFIG_OVERRIDES_PATH="/etc/NetworkManager/conf.d/99-overrides.conf"
+NETWORK_IPV6_SETTINGS="/etc/sysctl.d/90-ipv6.conf"
 
 # setup directories
 mkdir -p $CREDENTIALS_DIR || true
@@ -40,12 +41,29 @@ else
     sudo tee --append /etc/fstab > /dev/null <<< "$SMB_FSTAB_LINE"
 fi
 
-# network manager overrides
+# network overrides
 sudo tee $NETWORK_MANAGER_CONFIG_OVERRIDES_PATH > /dev/null << EOF
 [connectivity]
 # disable connectivity checks
-interval=0
+#interval=0
 EOF
+sudo tee $NETWORK_IPV6_SETTINGS > /dev/null << EOF
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+EOF
+
+# look and feel
+if lookandfeeltool --list | grep --silent org.kde.breezedark.desktop; then
+    log_message info "Setting Breeze Dark global KDE theme..."
+    lookandfeeltool --apply org.kde.breezedark.desktop
+fi
+if stat /usr/libexec/plasma-changeicons &> /dev/null; then
+    log_message info "Setting DarK icon theme..."
+    /usr/libexec/plasma-changeicons DarK-svg
+else
+    log_message err "Setting DarK icon theme failed. No Plasma changeicons tool found."
+fi
 
 # convert opensuse logo from svg to raw image format for fastfetch
 # i have only changed green tone; original was fetched from https://en.opensuse.org/images/6/6c/OpenSUSE-hellcp.svg
