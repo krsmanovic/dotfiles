@@ -24,6 +24,11 @@ log_message info "Fixing postfix default configuration..."
 REAL_HOSTNAME=$(cat /etc/hostname)
 sudo sed -i "s/^myhostname =.*/myhostname = $REAL_HOSTNAME/" /etc/postfix/main.cf
 
+# set user groups
+if getent group vboxusers &> /dev/null; then
+  sudo usermod -aG vboxusers $DESKTOP_USER
+fi
+
 # set smb share
 log_message info "Setting up smb..."
 if [ -f $CREDENTIALS_DIR/$SMB_CREDENTIALS_FILE ]; then
