@@ -9,6 +9,7 @@ SMB_MOUNT_DIR="/mnt/smb"
 SMB_FSTAB_LINE="$SMB_SHARE_PATH $SMB_MOUNT_DIR cifs credentials=$CREDENTIALS_DIR/$SMB_CREDENTIALS_FILE 0 0"
 NETWORK_MANAGER_CONFIG_OVERRIDES_PATH="/etc/NetworkManager/conf.d/99-overrides.conf"
 NETWORK_IPV6_SETTINGS="/etc/sysctl.d/90-ipv6.conf"
+KDE_LOOKANDFEEL_CFG_FILE_LOGOUT="/usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/logout/Logout.qml"
 
 # setup directories
 mkdir -p $CREDENTIALS_DIR || true
@@ -64,6 +65,7 @@ if stat /usr/libexec/plasma-changeicons &> /dev/null; then
 else
     log_message err "Setting DarK icon theme failed. No Plasma changeicons tool found."
 fi
+sudo sed -Ei 's/(property real timeout\:).*/\1 5/' $KDE_LOOKANDFEEL_CFG_FILE_LOGOUT
 
 # convert opensuse logo from svg to raw image format for fastfetch
 # i have only changed green tone; original was fetched from https://en.opensuse.org/images/6/6c/OpenSUSE-hellcp.svg
