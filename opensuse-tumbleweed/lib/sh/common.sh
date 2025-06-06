@@ -12,16 +12,7 @@ else
     LOGGING_FACILITY="fd"
 fi
 
-VALID_LOG_LEVEL_NAMES=(
-    emerg
-    alert
-    crit
-    err
-    warning
-    notice
-    info
-    debug
-)
+VALID_LOG_LEVEL_NAMES="emerg alert crit err warning notice info debug"
 
 log_message () {
     local LOGGER_MESSAGE_LEVEL
@@ -34,7 +25,15 @@ log_message () {
 
     TOLOWER_LOGGER_MESSAGE_LEVEL=$(echo $LOGGER_MESSAGE_LEVEL | awk '{print tolower($0)}')
     # validate log level
-    if [ `echo "$VALID_LOG_LEVEL_NAMES" | grep -w -q "$TOLOWER_LOGGER_MESSAGE_LEVEL"` ]; then
+    LOG_LEVEL_MATCH=no
+    for log_level in ${VALID_LOG_LEVEL_NAMES}; do
+        if echo "$log_level" | grep -w -q "$TOLOWER_LOGGER_MESSAGE_LEVEL"; then
+            LOG_LEVEL_MATCH=yes
+            break
+        fi
+    done
+
+    if [ $LOG_LEVEL_MATCH = "yes" ]; then
         REAL_LOG_LEVEL="$TOLOWER_LOGGER_MESSAGE_LEVEL"
     else
         REAL_LOG_LEVEL="info"
