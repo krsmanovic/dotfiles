@@ -26,6 +26,6 @@ if sudo grep "@includedir $SUDOERS_CONFIG_DIR" /usr/etc/sudoers; then
 $DESKTOP_USER ALL=(ALL:ALL) NOPASSWD:/home/$DESKTOP_USER/scripts/setup/01-bootstrap.sh
 EOF
 fi
-# visudo --check suggests 440 permissions
 sudo chmod 440 /usr/etc/sudoers
 sudo chmod 440 $SUDOERS_CONFIG_CUSTOM_PATH
+sudo visudo --check
