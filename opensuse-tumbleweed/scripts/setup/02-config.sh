@@ -61,10 +61,15 @@ sudo tee $NETWORK_MANAGER_CONFIG_OVERRIDES_PATH > /dev/null << EOF
 # disable connectivity checks
 #interval=0
 EOF
+IF_IPV6_DISABLE="# explicitly disable ipv6 on all interfaces"
+for interface in $(ip -brief link | cut -d ' ' -f1); do
+    IF_IPV6_DISABLE="$IF_IPV6_DISABLE
+net.ipv6.conf.$interface.disable_ipv6 = 1"
+done
 sudo tee $NETWORK_IPV6_SETTINGS > /dev/null << EOF
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
-net.ipv6.conf.lo.disable_ipv6 = 1
+$IF_IPV6_DISABLE
 EOF
 
 # look and feel
