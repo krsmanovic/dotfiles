@@ -187,7 +187,7 @@ fi
 if zypper search --installed-only dark-icon-theme &> /dev/null; then
     log_message info "Dark icon theme is already installed."
 else
-    log_message info "Building and isntalling dark icon theme..."
+    log_message info "Building and installing dark icon theme..."
     cd $WORKDIR
     git clone --depth 1 https://gitlab.com/sixsixfive/DarK-icons.git
     cd DarK-icons
