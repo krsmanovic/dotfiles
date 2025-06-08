@@ -8,6 +8,7 @@ fi
 # set up directories
 DESKTOP_USER=che
 HOST_NAME=greenzard
+BASH_LIBRARY_COMMON=/home/$DESKTOP_USER/lib/sh/common.sh
 STEAM_LOCAL_LIBRARY=/home/$DESKTOP_USER/lib/steam/
 WORKDIR="$(mktemp -d)"
 GO_DIR_CACHE=$WORKDIR/cache
@@ -15,7 +16,12 @@ GO_DIR_BIN=$WORKDIR/bin
 mkdir -p $STEAM_LOCAL_LIBRARY $GO_DIR_CACHE $GO_DIR_BIN || true
 
 # load common functions
-source /home/$DESKTOP_USER/lib/sh/common.sh
+if [ -f $BASH_LIBRARY_COMMON ]; then
+    source $BASH_LIBRARY_COMMON
+else
+    echo "Failed to load common shell library."
+    exit 1
+fi
 
 # package manager variables
 CODIUM_LOCAL_REPO_PATH=/etc/zypp/repos.d/vscodium.repo
@@ -61,10 +67,6 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     wine virtualbox \
     deadbeef audacity \
     keepassxc gimp calibre okular k3b qbittorrent nextcloud xorriso
-
-# install rust
-log_message info "Installing rust..."
-rustup toolchain install stable
 
 # install programs from external repos
 log_message info "Installing packages from external repositories..."
@@ -149,29 +151,51 @@ for pak in "${FLATPAK_PACKAGES[@]}"; do
 done
 flatpak override --user --filesystem=$STEAM_LOCAL_LIBRARY com.valvesoftware.Steam
 
+# install rust
+if which cargo &> /dev/null; then
+    log_message info "Rust is already installed."
+else
+    log_message info "Installing rust..."
+    rustup toolchain install stable
+fi
+
 # scripted installations
-cd $WORKDIR
-log_message info "Downloading latest AWS cli version..."
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
+if aws --version &> /dev/null; then
+    log_message info "AWS cli is already installed."
+else
+    cd $WORKDIR
+    log_message info "Downloading latest AWS cli version..."
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    sudo ./aws/install
+fi
 
 # golang program installations
-GOMODCACHE=$GO_DIR_CACHE GOBIN=$GO_DIR_BIN go install github.com/openrdap/rdap/cmd/rdap@master
-sudo cp $GO_DIR_BIN/rdap /usr/local/bin/rdap
+if which rdap &> /dev/null; then
+    log_message info "RDAP is already installed."
+else
+    log_message info "Building and installing RDAP..."
+    GOMODCACHE=$GO_DIR_CACHE GOBIN=$GO_DIR_BIN go install github.com/openrdap/rdap/cmd/rdap@master
+    sudo cp $GO_DIR_BIN/rdap /usr/local/bin/rdap
+fi
 
 # setup plasmoids
 # BW_MONITOR_PLASMOID_NAME="NetworkBandwidthMonitorQt6.plasmoid"
-# wget -O $BW_MONITOR_PLASMOID_NAME "https://ocs-dl.fra1.cdn.digitaloceanspaces.com/data/files/1744930465/NetworkBandwidthMonitorQt6-6.2025.4.20.plasmoid?response-content-disposition=attachment%3B%2520NetworkBandwidthMonitorQt6-6.2025.4.20.plasmoid&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=RWJAQUNCHT7V2NCLZ2AL%2F20250601%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250601T092834Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Signature=e2a72a5cb8e57c6d42fb1fe103c3ffd8ca4746c3f540312474875ff1f35ecf83"
+# wget -O $BW_MONITOR_PLASMOID_NAME "https://ocs-dl.fra1.cdn.digitaloceanspaces.com/data/files/1744930465/NetworkBandwidthMonitorQt6-6.2025.4.20.plasmoid
 # kpackagetool6 -i $BW_MONITOR_PLASMOID_NAME
 
-cd $WORKDIR
-git clone --depth 1 https://gitlab.com/sixsixfive/DarK-icons.git
-cd DarK-icons
-sh build_svg.sh
-cd packaging
-sh build_rpm.sh
-sudo zypper $ZYPPER_PARAMS_QUIET install --allow-unsigned-rpm --no-recommends dark-icon-theme*.rpm
+if zypper search --installed-only dark-icon-theme &> /dev/null; then
+    log_message info "Dark icon theme is already installed."
+else
+    log_message info "Building and isntalling dark icon theme..."
+    cd $WORKDIR
+    git clone --depth 1 https://gitlab.com/sixsixfive/DarK-icons.git
+    cd DarK-icons
+    sh build_svg.sh
+    cd packaging
+    sh build_rpm.sh
+    sudo zypper $ZYPPER_PARAMS_QUIET install --allow-unsigned-rpm --no-recommends dark-icon-theme*.rpm
+fi
 
 # start packagekit
 if systemctl list-unit-files packagekit.service &>/dev/null; then

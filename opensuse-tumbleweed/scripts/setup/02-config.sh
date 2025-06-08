@@ -3,6 +3,7 @@
 # vars
 DESKTOP_USER=che
 CREDENTIALS_DIR=/home/$DESKTOP_USER/.credentials
+BASH_LIBRARY_COMMON=/home/$DESKTOP_USER/lib/sh/common.sh
 SMB_CREDENTIALS_FILE="smb"
 SMB_SHARE_PATH="//smb.lan/cher"
 SMB_MOUNT_DIR="/mnt/smb"
@@ -17,7 +18,12 @@ GTK_SETTINGS_FILES="/home/$DESKTOP_USER/.gtkrc-2.0 /home/$DESKTOP_USER/.config/g
 mkdir -p $CREDENTIALS_DIR || true
 
 # load common functions
-source /home/$DESKTOP_USER/lib/sh/common.sh
+if [ -f $BASH_LIBRARY_COMMON ]; then
+    source $BASH_LIBRARY_COMMON
+else
+    echo "Failed to load common shell library."
+    exit 1
+fi
 
 # fix deafult postfix mess
 log_message info "Fixing postfix default configuration..."
