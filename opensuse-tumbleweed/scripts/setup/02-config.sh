@@ -54,6 +54,7 @@ if grep "$SMB_FSTAB_LINE" /etc/fstab; then
 else
     log_message info "Adding SMB configuration to fstab..."
     sudo tee --append /etc/fstab > /dev/null <<< "$SMB_FSTAB_LINE"
+    sudo mount -a
 fi
 
 # network overrides
