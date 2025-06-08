@@ -13,6 +13,7 @@ NETWORK_IPV6_SETTINGS="/etc/sysctl.d/90-ipv6.conf"
 KDE_LOOKANDFEEL_CFG_FILE_LOGOUT="/usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/logout/Logout.qml"
 GTK_SYSTEM_SOUNDS_OPTIONS="gtk-enable-event-sounds gtk-enable-input-feedback-sounds"
 GTK_SETTINGS_FILES="/home/$DESKTOP_USER/.gtkrc-2.0 /home/$DESKTOP_USER/.config/gtk-3.0/settings.ini /home/$DESKTOP_USER/.config/gtk-4.0/settings.ini"
+KDE_LOGOUT_TIME_SECONDS="5"
 
 # setup directories
 mkdir -p $CREDENTIALS_DIR || true
@@ -83,7 +84,12 @@ if stat /usr/libexec/plasma-changeicons &> /dev/null; then
 else
     log_message err "Setting DarK icon theme failed. No Plasma changeicons tool found."
 fi
-sudo sed -Ei 's/(property real timeout\:).*/\1 5/' $KDE_LOOKANDFEEL_CFG_FILE_LOGOUT
+if [ -f $KDE_LOOKANDFEEL_CFG_FILE_LOGOUT ]; then
+    sudo sed -Ei "s/(property real timeout\:).*/\1 $KDE_LOGOUT_TIME_SECONDS/" $KDE_LOOKANDFEEL_CFG_FILE_LOGOUT
+    log_message info "KDE logout time was set to $KDE_LOGOUT_TIME_SECONDS seconds."
+else
+    log_message err "KDE configuration file $KDE_LOOKANDFEEL_CFG_FILE_LOGOUT could not be found..."
+fi
 
 for gtk_settings_file in $GTK_SETTINGS_FILES; do
     if [ -f "$gtk_settings_file" ]; then
