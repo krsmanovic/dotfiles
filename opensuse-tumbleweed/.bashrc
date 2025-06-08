@@ -34,5 +34,5 @@ fi
 # decide if we want to print duration
 DURATION_SECONDS=$(( SECONDS - INITIAL_SECONDS ))
 if [ $DURATION_SECONDS -gt 0 ]; then
-    echo ".bashrc took ${DURATION_SECONDS}s to complete."
+    echo ".bashrc took ${DURATION_SECONDS}s to load..."
 fi
