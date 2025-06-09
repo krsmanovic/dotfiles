@@ -5,7 +5,7 @@ if systemctl list-unit-files packagekit.service &>/dev/null; then
     sudo systemctl stop --now packagekit
 fi
 
-# set up directories
+# base vars
 DESKTOP_USER=che
 HOST_NAME=greenzard
 BASH_LIBRARY_COMMON=/home/$DESKTOP_USER/lib/sh/common.sh
@@ -43,6 +43,8 @@ FLATPAK_PACKAGES=(
     com.microsoft.Edge
     org.videolan.VLC
 )
+# other vars
+NVIDIA_DRIVER_DRACUT_CONFIG_PATH=/etc/dracut.conf.d/99-nvidia.conf
 
 # set host information
 log_message info "Setting host information..."
@@ -62,6 +64,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     fastfetch neovim fira-code-fonts conky tmux htop btop steam-devices kitty starship timeshift \
     k9s aws-cli azure-cli \
     go go-doc rustup cmake freetype-devel fontconfig-devel libxcb-devel libxkbcommon-devel libstartup-notification-1-0 fakeroot rpmbuild \
+    Mesa-libEGL-devel gstreamer-devel gstreamer-plugins-bad gstreamer-plugins-bad-devel meson \
     flatpak \
     discord telegram-desktop MozillaThunderbird \
     wine virtualbox \
@@ -133,9 +136,27 @@ sudo zypper $ZYPPER_PARAMS_QUIET --gpg-auto-import-keys refresh
 sudo zypper $ZYPPER_PARAMS_QUIET update
 sudo zypper $ZYPPER_PARAMS_QUIET install --allow-vendor-change --from packman ffmpeg gstreamer-plugins-{good,bad,ugly,libav} libavcodec vlc-codecs
 sudo zypper $ZYPPER_PARAMS_QUIET install codium kubectl tofu
-sudo zypper $ZYPPER_PARAMS_QUIET install --auto-agree-with-licenses nvidia-open-driver-G06-signed-kmp-default
-NVIDIA_DRIVER_VERSION=$(rpm -qa --queryformat '%{VERSION}\n' nvidia-open-driver-G06-signed-kmp-default | cut -d "_" -f1 | sort -u | tail -n 1)
-sudo zypper $ZYPPER_PARAMS_QUIET install nvidia-video-G06=${NVIDIA_DRIVER_VERSION} nvidia-compute-utils-G06=${NVIDIA_DRIVER_VERSION}
+# nvidia
+sudo tee $NVIDIA_DRIVER_DRACUT_CONFIG_PATH > /dev/null << EOF
+# early load nvidia driver
+# source: https://wiki.archlinux.org/title/Dracut
+force_drivers+=" nvidia nvidia_modeset nvidia_uvm nvidia_drm "
+EOF
+sudo zypper $ZYPPER_PARAMS_QUIET install --auto-agree-with-licenses nvidia-video-G06
+sudo zypper $ZYPPER_PARAMS_QUIET install --auto-agree-with-licenses nvidia-gl-G06 nvidia-gl-G06-32bit
+sudo zypper $ZYPPER_PARAMS_QUIET install --auto-agree-with-licenses nvidia-compute-G06 and nvidia-compute-utils-G06
+cd $WORKDIR
+git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
+cd nv-codec-headers
+make
+sudo make install
+export PKG_CONFIG_PATH="/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
+cd $WORKDIR
+git clone https://github.com/elFarto/nvidia-vaapi-driver.git
+cd nvidia-vaapi-driver
+meson build
+ninja -C build
+sudo ninja -C build install
 
 # install programs from flathub
 log_message info "Installing flatpack packages..."
@@ -175,6 +196,7 @@ if which rdap &> /dev/null; then
     log_message info "RDAP is already installed."
 else
     log_message info "Building and installing RDAP..."
+    cd $WORKDIR
     GOMODCACHE=$GO_DIR_CACHE GOBIN=$GO_DIR_BIN go install github.com/openrdap/rdap/cmd/rdap@master
     sudo cp $GO_DIR_BIN/rdap /usr/local/bin/rdap
 fi
