@@ -7,7 +7,10 @@ BASH_LIBRARY_COMMON=/home/$DESKTOP_USER/lib/sh/common.sh
 SMB_CREDENTIALS_FILE="smb"
 SMB_SHARE_PATH="//smb.lan/cher"
 SMB_MOUNT_DIR="/mnt/smb"
-SMB_FSTAB_LINE="$SMB_SHARE_PATH $SMB_MOUNT_DIR cifs credentials=$CREDENTIALS_DIR/$SMB_CREDENTIALS_FILE 0 0"
+FSTAB_LINE_SMB="$SMB_SHARE_PATH    $SMB_MOUNT_DIR                cifs   credentials=$CREDENTIALS_DIR/$SMB_CREDENTIALS_FILE 0 0"
+FSTAB_LINE_W="UUID=9056009D56008666 /mnt/w              ntfs   defaults                      0  0"
+FSTAB_LINE_EDU="UUID=3006EF4D06EF12A0 /mnt/edu            ntfs   defaults                      0  0"
+FSTAB_LINE_JUNKYARD="UUID=B280FEB780FE80E1 /mnt/junkyard       ntfs   defaults                      0  0"
 NETWORK_MANAGER_CONFIG_OVERRIDES_PATH="/etc/NetworkManager/conf.d/99-overrides.conf"
 NETWORK_IPV6_SETTINGS="/etc/sysctl.d/90-ipv6.conf"
 KDE_LOOKANDFEEL_CFG_FILE_LOGOUT="/usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/logout/Logout.qml"
@@ -49,11 +52,32 @@ else
     log_message err "No SMB credentials file found. Exiting..."
     exit 1
 fi
-if grep "$SMB_FSTAB_LINE" /etc/fstab; then
+if grep "$FSTAB_LINE_SMB" /etc/fstab; then
     log_message info "SMB configuration is already present in fstab."
 else
     log_message info "Adding SMB configuration to fstab..."
-    sudo tee --append /etc/fstab > /dev/null <<< "$SMB_FSTAB_LINE"
+    sudo tee --append /etc/fstab > /dev/null <<< "$FSTAB_LINE_SMB"
+    sudo mount -a
+fi
+if grep "$FSTAB_LINE_W" /etc/fstab; then
+    log_message info "VM hosting disk configuration is already present in fstab."
+else
+    log_message info "Adding VM hosting disk configuration to fstab..."
+    sudo tee --append /etc/fstab > /dev/null <<< "$FSTAB_LINE_W"
+    sudo mount -a
+fi
+if grep "$FSTAB_LINE_EDU" /etc/fstab; then
+    log_message info "Edu partition configuration is already present in fstab."
+else
+    log_message info "Adding Edu partition configuration to fstab..."
+    sudo tee --append /etc/fstab > /dev/null <<< "$FSTAB_LINE_EDU"
+    sudo mount -a
+fi
+if grep "$FSTAB_LINE_JUNKYARD" /etc/fstab; then
+    log_message info "Junkyard partition configuration is already present in fstab."
+else
+    log_message info "Adding Junkyard partition configuration to fstab..."
+    sudo tee --append /etc/fstab > /dev/null <<< "$FSTAB_LINE_JUNKYARD"
     sudo mount -a
 fi
 
