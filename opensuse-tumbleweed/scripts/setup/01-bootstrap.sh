@@ -45,6 +45,18 @@ FLATPAK_PACKAGES=(
 )
 # other vars
 NVIDIA_DRIVER_DRACUT_CONFIG_PATH=/etc/dracut.conf.d/99-nvidia.conf
+OGG_CODEC_NAME="libogg"
+OGG_CODEC_VERSION="1.3.5"
+OGG_CODEC_ARCHIVE_NAME="$OGG_CODEC_NAME-$OGG_CODEC_VERSION.tar.xz"
+OGG_CODEC_DOWNLOAD_URL="https://ftp.osuosl.org/pub/xiph/releases/ogg/$OGG_CODEC_ARCHIVE_NAME"
+VORBIS_CODEC_NAME="libvorbis"
+VORBIS_CODEC_VERSION="1.3.7"
+VORBIS_CODEC_ARCHIVE_NAME="$VORBIS_CODEC_NAME-$VORBIS_CODEC_VERSION.tar.xz"
+VORBIS_CODEC_DOWNLOAD_URL="https://ftp.osuosl.org/pub/xiph/releases/vorbis/$VORBIS_CODEC_ARCHIVE_NAME"
+THEORA_CODEC_NAME="libtheora"
+THEORA_CODEC_VERSION="1.2.0"
+THEORA_CODEC_ARCHIVE_NAME="$THEORA_CODEC_NAME-$THEORA_CODEC_VERSION.tar.gz"
+THEORA_CODEC_DOWNLOAD_URL="https://ftp.osuosl.org/pub/xiph/releases/theora/$THEORA_CODEC_ARCHIVE_NAME"
 
 # set host information
 log_message info "Setting host information..."
@@ -186,9 +198,43 @@ if aws --version &> /dev/null; then
 else
     cd $WORKDIR
     log_message info "Downloading latest AWS cli version..."
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    curl --silent --show-error "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" --output "awscliv2.zip"
     unzip awscliv2.zip
     sudo ./aws/install
+fi
+if stat /usr/lib64/libogg.so &> /dev/null; then
+    log_message info "$OGG_CODEC_NAME is already installed."
+else
+    cd $WORKDIR
+    curl --silent --show-error $OGG_CODEC_DOWNLOAD_URL --output $OGG_CODEC_ARCHIVE_NAME
+    tar -xvJf "$OGG_CODEC_ARCHIVE_NAME"
+    cd "$OGG_CODEC_NAME-$OGG_CODEC_VERSION"
+    ./configure --prefix=/usr --disable-static --docdir=/usr/share/doc/$OGG_CODEC_NAME-$OGG_CODEC_VERSION
+    make
+    sudo make install
+fi
+if stat /usr/lib64/libvorbis.so.0 &> /dev/null; then
+    log_message info "$VORBIS_CODEC_NAME is already installed."
+else
+    cd $WORKDIR
+    curl --silent --show-error $VORBIS_CODEC_DOWNLOAD_URL --output $VORBIS_CODEC_ARCHIVE_NAME
+    tar -xvJf "$VORBIS_CODEC_ARCHIVE_NAME"
+    cd "$VORBIS_CODEC_NAME-$VORBIS_CODEC_VERSION"
+    ./configure --prefix=/usr --disable-static
+    make
+    sudo make install
+    sudo install -v -m644 doc/Vorbis* /usr/share/doc/$VORBIS_CODEC_NAME-$VORBIS_CODEC_VERSION
+fi
+if stat /usr/lib64/libtheora.so &> /dev/null; then
+    log_message info "$THEORA_CODEC_NAME is already installed."
+else
+    cd $WORKDIR
+    curl --silent --show-error $THEORA_CODEC_DOWNLOAD_URL --output $THEORA_CODEC_ARCHIVE_NAME
+    tar -xvzf "$THEORA_CODEC_ARCHIVE_NAME"
+    cd "$THEORA_CODEC_NAME-$THEORA_CODEC_VERSION"
+    ./configure --prefix=/usr --disable-static
+    make
+    sudo make install
 fi
 
 # golang program installations
@@ -218,6 +264,20 @@ else
     sh build_rpm.sh
     sudo zypper $ZYPPER_PARAMS_QUIET install --allow-unsigned-rpm --no-recommends dark-icon-theme*.rpm
 fi
+
+# fonts
+cd $WORKDIR
+git clone git@github.com:mrbvrz/segoe-ui-linux.git
+cd segoe-ui-linux
+
+curl --silent --show-error --location https://aka.ms/SegoeUIVariable --output SegoeUI-VF.zip
+curl --silent --show-error --location https://aka.ms/SegoeFluentIcons --output Segoe-Fluent-Icons.zip
+unzip -o SegoeUI-VF.zip
+unzip -o Segoe-Fluent-Icons.zip
+mv Segoe*ttf ~/.fonts/
+
+fc-cache -f -v
+
 
 # start packagekit
 if systemctl list-unit-files packagekit.service &>/dev/null; then
