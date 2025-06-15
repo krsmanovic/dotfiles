@@ -18,6 +18,7 @@ GTK_SYSTEM_SOUNDS_OPTIONS="gtk-enable-event-sounds gtk-enable-input-feedback-sou
 GTK_SETTINGS_FILES="/home/$DESKTOP_USER/.gtkrc-2.0 /home/$DESKTOP_USER/.config/gtk-3.0/settings.ini /home/$DESKTOP_USER/.config/gtk-4.0/settings.ini"
 KDE_LOGOUT_TIME_SECONDS="5"
 FC_DISCORD="/etc/fonts/conf.d/99-discord.conf"
+XORG_CONFIG_MONITOR="/etc/X11/xorg.conf.d/90-monitor.conf"
 
 # setup directories
 mkdir -p $CREDENTIALS_DIR || true
@@ -139,6 +140,24 @@ sudo tee $FC_DISCORD > /dev/null << "EOF"
     <test name="prgname"><string>Discord</string></test>
     <edit name="hintstyle" mode="assign"><const>none</const></edit>
 </match>
+EOF
+
+# fix monitor dpi
+# https://wiki.archlinux.org/title/Xorg#Display_size_and_DPI
+# get real monitor geometry
+# edid-decode -o xml  < /sys/class/drm/card1-DP-3/edid
+# ...
+#   Detailed Timing Descriptors:
+#     DTD 1:  1920x1080   60.000000 Hz  16:9     67.500 kHz    148.500000 MHz (527 mm x 297 mm)
+# ...
+# get display id
+# xrandr --prop | grep ' connected'
+# DP-4 connected primary 1920x1080+0+0 (normal left inverted right x axis y axis) 527mm x 297mm
+sudo tee $XORG_CONFIG_MONITOR > /dev/null << "EOF"
+Section "Monitor"
+    Identifier             "DP-4"
+    DisplaySize             527 297
+EndSection
 EOF
 
 # convert opensuse logo from svg to raw image format for fastfetch

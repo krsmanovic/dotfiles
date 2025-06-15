@@ -75,8 +75,8 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     nmap mtr whois samba-client bind-utils wireshark wget \
     fastfetch neovim fira-code-fonts conky tmux htop btop steam-devices kitty starship timeshift \
     k9s aws-cli azure-cli \
-    go go-doc rustup cmake freetype-devel fontconfig-devel libxcb-devel libxkbcommon-devel libstartup-notification-1-0 fakeroot rpmbuild \
-    Mesa-libEGL-devel gstreamer-devel gstreamer-plugins-bad gstreamer-plugins-bad-devel meson \
+    go go-doc rustup cmake freetype-devel fontconfig-devel libxcb-devel libxkbcommon-devel libstartup-notification-1-0 fakeroot rpmbuild meson \
+    Mesa-libEGL-devel gstreamer-devel gstreamer-plugins-bad gstreamer-plugins-bad-devel edid-decode \
     flatpak \
     discord telegram-desktop MozillaThunderbird \
     wine virtualbox \
