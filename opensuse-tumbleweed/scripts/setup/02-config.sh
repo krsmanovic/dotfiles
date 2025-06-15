@@ -17,6 +17,7 @@ KDE_LOOKANDFEEL_CFG_FILE_LOGOUT="/usr/share/plasma/look-and-feel/org.kde.breeze.
 GTK_SYSTEM_SOUNDS_OPTIONS="gtk-enable-event-sounds gtk-enable-input-feedback-sounds"
 GTK_SETTINGS_FILES="/home/$DESKTOP_USER/.gtkrc-2.0 /home/$DESKTOP_USER/.config/gtk-3.0/settings.ini /home/$DESKTOP_USER/.config/gtk-4.0/settings.ini"
 KDE_LOGOUT_TIME_SECONDS="5"
+FC_DISCORD="/etc/fonts/conf.d/99-discord.conf"
 
 # setup directories
 mkdir -p $CREDENTIALS_DIR || true
@@ -131,6 +132,14 @@ for gtk_settings_file in $GTK_SETTINGS_FILES; do
         log_message err "$gtk_settings_file not found."
     fi
 done
+
+# fonts
+sudo tee $FC_DISCORD > /dev/null << "EOF"
+<match>
+    <test name="prgname"><string>Discord</string></test>
+    <edit name="hintstyle" mode="assign"><const>none</const></edit>
+</match>
+EOF
 
 # convert opensuse logo from svg to raw image format for fastfetch
 # i have only changed green tone; original was fetched from https://en.opensuse.org/images/6/6c/OpenSUSE-hellcp.svg
