@@ -42,6 +42,7 @@ FLATPAK_PACKAGES=(
     com.getpostman.Postman
     com.microsoft.Edge
     org.videolan.VLC
+    com.mikrotik.WinBox
 )
 # other vars
 NVIDIA_DRIVER_DRACUT_CONFIG_PATH=/etc/dracut.conf.d/99-nvidia.conf
