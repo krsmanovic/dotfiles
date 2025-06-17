@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# set common variables
+CONCURRENT_EXECUTIONS=$(grep --count processor /proc/cpuinfo)
+
 # standardize stdout timestamp
 stamp_time () {
     TZ="Europe/Belgrade" date "+%Y-%m-%d %H:%M:%S"

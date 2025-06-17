@@ -1,6 +1,9 @@
 # start measuring script duration
 INITIAL_SECONDS=$SECONDS
 
+# set common variables
+CONCURRENT_EXECUTIONS=$(grep --count processor /proc/cpuinfo)
+
 # common shell functions
 if [ -f ~/lib/sh/common.sh ]; then
     source ~/lib/sh/common.sh
