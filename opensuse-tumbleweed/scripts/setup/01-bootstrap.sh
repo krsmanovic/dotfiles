@@ -266,6 +266,11 @@ else
     sudo zypper $ZYPPER_PARAMS_QUIET install --allow-unsigned-rpm --no-recommends dark-icon-theme*.rpm
 fi
 
+cd $WORKDIR
+wget -qO papirus-install https://git.io/papirus-icon-theme-install
+chmod +x papirus-install
+./papirus-install
+
 # fonts
 cd $WORKDIR
 git clone git@github.com:mrbvrz/segoe-ui-linux.git
