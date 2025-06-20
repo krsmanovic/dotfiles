@@ -43,6 +43,7 @@ FLATPAK_PACKAGES=(
     com.microsoft.Edge
     org.videolan.VLC
     com.mikrotik.WinBox
+    com.discordapp.Discord
 )
 # other vars
 NVIDIA_DRIVER_DRACUT_CONFIG_PATH=/etc/dracut.conf.d/99-nvidia.conf
@@ -79,7 +80,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     go go-doc rustup cmake freetype-devel fontconfig-devel libxcb-devel libxkbcommon-devel libstartup-notification-1-0 fakeroot rpmbuild meson \
     Mesa-libEGL-devel gstreamer-devel gstreamer-plugins-bad gstreamer-plugins-bad-devel edid-decode \
     flatpak \
-    discord telegram-desktop MozillaThunderbird \
+    telegram-desktop MozillaThunderbird \
     wine virtualbox \
     deadbeef audacity \
     keepassxc gimp calibre okular k3b qbittorrent nextcloud xorriso
