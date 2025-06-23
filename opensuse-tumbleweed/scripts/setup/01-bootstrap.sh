@@ -13,6 +13,7 @@ STEAM_LOCAL_LIBRARY=/home/$DESKTOP_USER/lib/steam/
 WORKDIR="$(mktemp -d)"
 GO_DIR_CACHE=$WORKDIR/cache
 GO_DIR_BIN=$WORKDIR/bin
+PAPIRUS_THEME_DIR=/usr/share/icons/Papirus
 mkdir -p $STEAM_LOCAL_LIBRARY $GO_DIR_CACHE $GO_DIR_BIN || true
 
 # load common functions
@@ -267,7 +268,7 @@ else
     sudo zypper $ZYPPER_PARAMS_QUIET install --allow-unsigned-rpm --no-recommends dark-icon-theme*.rpm
 fi
 
-if stat /usr/share/icons/Papirus &> /dev/null; then
+if [ -d $PAPIRUS_THEME_DIR ]; then
     log_message info "Papirus icon theme is already intalled."
 else
     cd $WORKDIR
