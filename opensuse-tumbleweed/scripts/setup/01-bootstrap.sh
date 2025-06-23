@@ -71,7 +71,7 @@ fi
 sudo hostnamectl set-chassis $CHASSIS_TYPE
 
 # install packages
-sudo zypper --non-interactive --quiet update
+sudo zypper $ZYPPER_PARAMS_QUIET update
 log_message info "Installing core list of packages..."
 sudo zypper $ZYPPER_PARAMS_QUIET install \
     nmap mtr whois samba-client bind-utils wireshark wget \
@@ -87,14 +87,14 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
 
 # install programs from external repos
 log_message info "Installing packages from external repositories..."
-sudo tee $PACKMAN_LOCAL_REPO_PATH > /dev/null << "EOF"
+sudo tee $PACKMAN_LOCAL_REPO_PATH > /dev/null << EOF
 [packman]
 enabled=1
 autorefresh=1
 baseurl=https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/
 priority=90
 EOF
-sudo tee $CODIUM_LOCAL_REPO_PATH > /dev/null << "EOF" 
+sudo tee $CODIUM_LOCAL_REPO_PATH > /dev/null << EOF
 [vscodium]
 name=VSCodium RPM
 baseurl=https://download.vscodium.com/rpms/
@@ -267,24 +267,27 @@ else
     sudo zypper $ZYPPER_PARAMS_QUIET install --allow-unsigned-rpm --no-recommends dark-icon-theme*.rpm
 fi
 
-cd $WORKDIR
-wget -qO papirus-install https://git.io/papirus-icon-theme-install
-chmod +x papirus-install
-./papirus-install
+if stat /usr/share/icons/Papirus &> /dev/null; then
+    log_message info "Papirus icon theme is already intalled."
+else
+    cd $WORKDIR
+    wget -qO papirus-install https://git.io/papirus-icon-theme-install
+    chmod +x papirus-install
+    ./papirus-install
+fi
 
 # fonts
-cd $WORKDIR
-git clone git@github.com:mrbvrz/segoe-ui-linux.git
-cd segoe-ui-linux
-
-curl --silent --show-error --location https://aka.ms/SegoeUIVariable --output SegoeUI-VF.zip
-curl --silent --show-error --location https://aka.ms/SegoeFluentIcons --output Segoe-Fluent-Icons.zip
-unzip -o SegoeUI-VF.zip
-unzip -o Segoe-Fluent-Icons.zip
-mv Segoe*ttf ~/.fonts/
-
-fc-cache -f -v
-
+if ls -lah ~/.fonts/ | grep "Segoe.*ttf" &> /dev/null; then
+    log_message info "Segoe UI font is already installed."
+else
+    cd $WORKDIR
+    curl --silent --show-error --location https://aka.ms/SegoeUIVariable --output SegoeUI-VF.zip
+    curl --silent --show-error --location https://aka.ms/SegoeFluentIcons --output Segoe-Fluent-Icons.zip
+    unzip -o SegoeUI-VF.zip
+    unzip -o Segoe-Fluent-Icons.zip
+    mv Segoe*ttf ~/.fonts/
+    fc-cache -f -v
+fi
 
 # start packagekit
 if systemctl list-unit-files packagekit.service &>/dev/null; then
