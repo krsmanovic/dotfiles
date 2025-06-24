@@ -81,6 +81,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     go go-doc rustup cmake freetype-devel fontconfig-devel libxcb-devel libxkbcommon-devel libstartup-notification-1-0 fakeroot rpmbuild meson \
     Mesa-libEGL-devel gstreamer-devel gstreamer-plugins-bad gstreamer-plugins-bad-devel edid-decode \
     flatpak \
+    pcsc-ccid \
     telegram-desktop MozillaThunderbird \
     wine virtualbox \
     deadbeef audacity \
