@@ -136,10 +136,26 @@ done
 
 # fonts
 sudo tee $FC_DISCORD > /dev/null << "EOF"
-<match>
-    <test name="prgname"><string>Discord</string></test>
-    <edit name="hintstyle" mode="assign"><const>none</const></edit>
-</match>
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+<fontconfig>
+    <match>
+        <test name="prgname">
+            <string>Discord</string>
+        </test>
+        <edit name="hintstyle" mode="assign">
+            <const>full</const>
+        </edit>
+    </match>
+    <match>
+        <test name="prgname">
+            <string>com.discordapp.Discord</string>
+        </test>
+        <edit name="hintstyle" mode="assign">
+            <const>full</const>
+        </edit>
+    </match>
+</fontconfig>
 EOF
 
 # fix monitor dpi
