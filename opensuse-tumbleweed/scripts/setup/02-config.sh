@@ -99,6 +99,7 @@ net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 $IF_IPV6_DISABLE
 EOF
+sudo sysctl --system
 
 # look and feel
 if lookandfeeltool --list | grep --silent org.kde.breezedark.desktop; then
