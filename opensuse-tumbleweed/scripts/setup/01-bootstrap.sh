@@ -30,6 +30,7 @@ KUBERNETES_LOCAL_REPO_PATH=/etc/zypp/repos.d/kubernetes.repo
 OPENTOFU_LOCAL_REPO_PATH=/etc/zypp/repos.d/opentofu.repo
 NVIDIA_LOCAL_REPO_PATH=/etc/zypp/repos.d/nvidia.repo
 PACKMAN_LOCAL_REPO_PATH=/etc/zypp/repos.d/packman.repo
+MS_EDGE_LOCAL_REPO_PATH=/etc/zypp/repos.d/microsoft-edge.repo
 KUBERNETES_STABLE_VERSION_MINOR=$(curl -L -s https://dl.k8s.io/release/stable.txt | awk -F '.' '{print $1"."$2}')
 ZYPPER_PARAMS_QUIET="--non-interactive --quiet"
 FLATPAK_PARAMS_QUIET="--assumeyes --noninteractive flathub"
@@ -41,7 +42,6 @@ FLATPAK_PACKAGES=(
     com.jgraph.drawio.desktop
     us.zoom.Zoom
     com.getpostman.Postman
-    com.microsoft.Edge
     org.videolan.VLC
     com.mikrotik.WinBox
     com.discordapp.Discord
@@ -148,10 +148,18 @@ baseurl=https://download.nvidia.com/opensuse/tumbleweed
 enabled=1
 autorefresh=1
 EOF
+sudo tee $MS_EDGE_LOCAL_REPO_PATH > /dev/null << EOF
+[microsoft-edge-stable]
+name=microsoft-edge-stable
+enabled=1
+autorefresh=1
+baseurl=https://packages.microsoft.com/yumrepos/edge
+EOF
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 sudo zypper $ZYPPER_PARAMS_QUIET --gpg-auto-import-keys refresh
 sudo zypper $ZYPPER_PARAMS_QUIET update
 sudo zypper $ZYPPER_PARAMS_QUIET install --allow-vendor-change --from packman ffmpeg gstreamer-plugins-{good,bad,ugly,libav} libavcodec vlc-codecs
-sudo zypper $ZYPPER_PARAMS_QUIET install codium kubectl tofu
+sudo zypper $ZYPPER_PARAMS_QUIET install codium kubectl tofu microsoft-edge-stable
 # nvidia
 sudo tee $NVIDIA_DRIVER_DRACUT_CONFIG_PATH > /dev/null << EOF
 # early load nvidia driver
