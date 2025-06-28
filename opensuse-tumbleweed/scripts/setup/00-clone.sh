@@ -12,7 +12,7 @@ sudo zypper --non-interactive --quiet install curl jq git tig
 # do the magic
 cd $WORKDIR
 git clone https://github.com/krsmanovic/dotfiles.git
-rsync --recursive --update dotfiles/opensuse-tumbleweed/ /home/$DESKTOP_USER/
+rsync --recursive --update --times dotfiles/opensuse-tumbleweed/ /home/$DESKTOP_USER/
 sudo chown -R $DESKTOP_USER:$DESKTOP_USER /home/$DESKTOP_USER/
 
 # allow config scripts to mess up the system
