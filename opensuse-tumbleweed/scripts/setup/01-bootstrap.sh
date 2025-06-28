@@ -45,6 +45,7 @@ FLATPAK_PACKAGES=(
     org.videolan.VLC
     com.mikrotik.WinBox
     com.discordapp.Discord
+    org.onlyoffice.desktopeditors
 )
 # other vars
 NVIDIA_DRIVER_DRACUT_CONFIG_PATH=/etc/dracut.conf.d/99-nvidia.conf
