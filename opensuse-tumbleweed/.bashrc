@@ -1,9 +1,6 @@
 # start measuring script duration
 INITIAL_SECONDS=$SECONDS
 
-# set common variables
-CONCURRENT_EXECUTIONS=$(grep --count processor /proc/cpuinfo)
-
 # common shell functions
 if [ -f ~/lib/sh/common.sh ]; then
     source ~/lib/sh/common.sh
@@ -33,6 +30,9 @@ if which tofu &> /dev/null; then
 else
     echo "Failed to load tofu completions."
 fi
+
+# generic aliases
+alias ll="ls -lah"
 
 # decide if we want to print duration
 DURATION_SECONDS=$(( SECONDS - INITIAL_SECONDS ))
