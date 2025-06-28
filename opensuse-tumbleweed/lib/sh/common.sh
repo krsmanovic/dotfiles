@@ -30,7 +30,7 @@ log_message () {
     # validate log level
     LOG_LEVEL_MATCH=no
     for log_level in ${VALID_LOG_LEVEL_NAMES}; do
-        if echo "$log_level" | grep -w -q "$TOLOWER_LOGGER_MESSAGE_LEVEL"; then
+        if echo "$log_level" | grep --word-regexp --quiet "$TOLOWER_LOGGER_MESSAGE_LEVEL"; then
             LOG_LEVEL_MATCH=yes
             break
         fi

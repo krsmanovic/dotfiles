@@ -287,7 +287,7 @@ else
 fi
 
 # fonts
-if ls -lah ~/.fonts/ | grep "Segoe.*ttf" &> /dev/null; then
+if ls -lah ~/.fonts/ | grep --quiet "Segoe.*ttf"; then
     log_message info "Segoe UI font is already installed."
 else
     cd $WORKDIR

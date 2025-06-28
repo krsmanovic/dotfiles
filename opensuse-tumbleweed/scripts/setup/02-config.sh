@@ -54,28 +54,28 @@ else
     log_message err "No SMB credentials file found. Exiting..."
     exit 1
 fi
-if grep "$FSTAB_LINE_SMB" /etc/fstab; then
+if grep --quiet "$FSTAB_LINE_SMB" /etc/fstab; then
     log_message info "SMB configuration is already present in fstab."
 else
     log_message info "Adding SMB configuration to fstab..."
     sudo tee --append /etc/fstab > /dev/null <<< "$FSTAB_LINE_SMB"
     sudo mount -a
 fi
-if grep "$FSTAB_LINE_W" /etc/fstab; then
+if grep --quiet "$FSTAB_LINE_W" /etc/fstab; then
     log_message info "VM hosting disk configuration is already present in fstab."
 else
     log_message info "Adding VM hosting disk configuration to fstab..."
     sudo tee --append /etc/fstab > /dev/null <<< "$FSTAB_LINE_W"
     sudo mount -a
 fi
-if grep "$FSTAB_LINE_EDU" /etc/fstab; then
+if grep --quiet "$FSTAB_LINE_EDU" /etc/fstab; then
     log_message info "Edu partition configuration is already present in fstab."
 else
     log_message info "Adding Edu partition configuration to fstab..."
     sudo tee --append /etc/fstab > /dev/null <<< "$FSTAB_LINE_EDU"
     sudo mount -a
 fi
-if grep "$FSTAB_LINE_JUNKYARD" /etc/fstab; then
+if grep --quiet "$FSTAB_LINE_JUNKYARD" /etc/fstab; then
     log_message info "Junkyard partition configuration is already present in fstab."
 else
     log_message info "Adding Junkyard partition configuration to fstab..."
@@ -102,7 +102,7 @@ EOF
 sudo sysctl --system
 
 # look and feel
-if lookandfeeltool --list | grep --silent org.kde.breezedark.desktop; then
+if lookandfeeltool --list | grep --quiet org.kde.breezedark.desktop; then
     log_message info "Setting Breeze Dark global KDE theme..."
     lookandfeeltool --apply org.kde.breezedark.desktop
 fi
@@ -122,7 +122,7 @@ fi
 for gtk_settings_file in $GTK_SETTINGS_FILES; do
     if [ -f "$gtk_settings_file" ]; then
         for gtk_option in $GTK_SYSTEM_SOUNDS_OPTIONS; do
-            if grep -w -q $gtk_option "$gtk_settings_file"; then
+            if grep --word-regexp --quiet $gtk_option "$gtk_settings_file"; then
                 sed -i "s/\($gtk_option\).*/\1=false/" "$gtk_settings_file"
                 log_message info "GTK option $gtk_option is updated in file $gtk_settings_file."
             else
