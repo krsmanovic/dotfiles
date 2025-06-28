@@ -12,12 +12,13 @@ sudo zypper --non-interactive --quiet install curl jq git tig
 # do the magic
 cd $WORKDIR
 git clone https://github.com/krsmanovic/dotfiles.git
+cd dotfiles
 while read filename; do
     unixtime=$(git log -1 --format="%at" -- "${filename}")
     touchtime=$(date -d @$unixtime +'%Y%m%d%H%M.%S')
     touch -t ${touchtime} "${filename}"
 done < <(git ls-files)
-rsync --recursive --update --times dotfiles/opensuse-tumbleweed/ /home/$DESKTOP_USER/
+rsync --recursive --update --times opensuse-tumbleweed/ /home/$DESKTOP_USER/
 sudo chown -R $DESKTOP_USER:$DESKTOP_USER /home/$DESKTOP_USER/
 
 # allow config scripts to mess up the system
