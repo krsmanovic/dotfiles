@@ -85,7 +85,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     telegram-desktop MozillaThunderbird \
     wine virtualbox \
     deadbeef audacity \
-    keepassxc gimp calibre okular k3b qbittorrent nextcloud xorriso
+    keepassxc gimp calibre okular k3b qbittorrent nextcloud xorriso qimgv
 
 # install programs from external repos
 log_message info "Installing packages from external repositories..."
