@@ -159,7 +159,12 @@ EOF
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 sudo zypper $ZYPPER_PARAMS_QUIET --gpg-auto-import-keys refresh
 sudo zypper $ZYPPER_PARAMS_QUIET update
-sudo zypper $ZYPPER_PARAMS_QUIET install --allow-vendor-change --from packman ffmpeg gstreamer-plugins-{good,bad,ugly,libav} libavcodec vlc-codecs
+sudo zypper $ZYPPER_PARAMS_QUIET install --allow-vendor-change --from packman \
+    ffmpeg \
+    gstreamer-plugins-{good,bad,ugly,libav} \
+    libavcodec \
+    libav-tools \
+    vlc-codecs
 sudo zypper $ZYPPER_PARAMS_QUIET install codium kubectl tofu microsoft-edge-stable
 # nvidia
 sudo tee $NVIDIA_DRIVER_DRACUT_CONFIG_PATH > /dev/null << EOF
