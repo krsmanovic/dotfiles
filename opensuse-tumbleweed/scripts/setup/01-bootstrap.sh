@@ -46,6 +46,7 @@ FLATPAK_PACKAGES=(
     com.mikrotik.WinBox
     com.discordapp.Discord
     org.onlyoffice.desktopeditors
+    org.telegram.desktop
 )
 # other vars
 NVIDIA_DRIVER_DRACUT_CONFIG_PATH=/etc/dracut.conf.d/99-nvidia.conf
@@ -83,7 +84,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     Mesa-libEGL-devel gstreamer-devel gstreamer-plugins-bad gstreamer-plugins-bad-devel edid-decode \
     flatpak \
     pcsc-ccid \
-    telegram-desktop MozillaThunderbird \
+    MozillaThunderbird \
     wine virtualbox \
     deadbeef audacity \
     keepassxc gimp calibre okular k3b qbittorrent nextcloud xorriso qimgv
