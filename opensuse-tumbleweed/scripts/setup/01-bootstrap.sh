@@ -47,7 +47,6 @@ FLATPAK_PACKAGES=(
     com.discordapp.Discord
     org.onlyoffice.desktopeditors
     org.telegram.desktop
-    org.mozilla.firefox
 )
 # other vars
 NVIDIA_DRIVER_DRACUT_CONFIG_PATH=/etc/dracut.conf.d/99-nvidia.conf
