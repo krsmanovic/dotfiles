@@ -175,7 +175,7 @@ force_drivers+=" nvidia nvidia_modeset nvidia_uvm nvidia_drm "
 EOF
 sudo zypper $ZYPPER_PARAMS_QUIET install --auto-agree-with-licenses nvidia-video-G06
 sudo zypper $ZYPPER_PARAMS_QUIET install --auto-agree-with-licenses nvidia-gl-G06 nvidia-gl-G06-32bit
-sudo zypper $ZYPPER_PARAMS_QUIET install --auto-agree-with-licenses nvidia-compute-G06 and nvidia-compute-utils-G06
+sudo zypper $ZYPPER_PARAMS_QUIET install --auto-agree-with-licenses nvidia-compute-G06 nvidia-compute-utils-G06
 cd $WORKDIR
 git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
 cd nv-codec-headers
