@@ -37,8 +37,14 @@ REAL_HOSTNAME=$(cat /etc/hostname)
 sudo sed -i "s/^myhostname =.*/myhostname = $REAL_HOSTNAME/" /etc/postfix/main.cf
 
 # set user groups
-if getent group vboxusers &> /dev/null; then
-  sudo usermod -aG vboxusers $DESKTOP_USER
+if getent group libvirt &> /dev/null; then
+  sudo usermod -aG libvirt $DESKTOP_USER
+fi
+
+# start libvirtd
+if systemctl list-unit-files libvirtd.service &>/dev/null; then
+    sudo systemctl enable libvirtd.service
+    sudo systemctl start --now libvirtd.service
 fi
 
 # set smb share

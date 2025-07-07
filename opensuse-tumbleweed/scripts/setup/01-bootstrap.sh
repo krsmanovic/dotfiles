@@ -85,7 +85,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     flatpak \
     pcsc-ccid \
     MozillaThunderbird \
-    wine virtualbox \
+    wine libvirt virt-manager \
     deadbeef audacity \
     keepassxc gimp calibre okular k3b qbittorrent nextcloud xorriso qimgv
 
