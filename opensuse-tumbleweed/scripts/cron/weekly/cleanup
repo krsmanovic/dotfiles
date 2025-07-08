@@ -9,5 +9,5 @@ for directory in $HOME_DIRECTORIES; do
     find /home/$DESKTOP_USER/$directory/* -type f -mtime +30 -delete
     find /home/$DESKTOP_USER/$directory/* -type d -empty -delete
     SIZE_AFTER=$(du -hd0 /home/$DESKTOP_USER/$directory | awk -F' ' '{print $1}')
-    echo "Size of directory \"/home/$DESKTOP_USER/$directory\" before cleanup is: $SIZE_AFTER"
+    echo "Size of directory \"/home/$DESKTOP_USER/$directory\" after cleanup is: $SIZE_AFTER"
 done
