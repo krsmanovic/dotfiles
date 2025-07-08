@@ -2,6 +2,7 @@
 
 # set common variables
 CONCURRENT_EXECUTIONS=$(grep --count processor /proc/cpuinfo)
+LESS=RX
 
 # standardize stdout timestamp
 stamp_time () {
