@@ -86,7 +86,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     pcsc-ccid \
     MozillaThunderbird \
     wine libvirt virt-manager \
-    deadbeef audacity \
+    strawberry audacity \
     keepassxc gimp calibre okular k3b qbittorrent nextcloud xorriso qimgv
 
 # install programs from external repos
