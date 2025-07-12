@@ -1,0 +1,10 @@
+#!/bin/bash
+oui_dir="/usr/local/share/applications/mac"
+oui_file="$oui_dir/oui.csv"
+oui_ieee_url="http://standards-oui.ieee.org/oui/oui.csv"
+
+if [[ ! -d $oui_dir ]]; then
+  mkdir -p $oui_dir
+fi
+
+wget -O $oui_file $oui_ieee_url

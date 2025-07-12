@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Local copy of Organizationally unique identifiers database, MAC Address Block Large version
+# Taken from http://standards-oui.ieee.org/oui/oui.csv
+# and updated via cron job at /etc/cron.monthly/oui-updater
+oui="/usr/local/share/applications/mac/oui.csv"
+if [ ! -f $oui ]; then
+	echo ""
+	echo "Local database file missing."
+	echo ""
+	exit 1
+fi
+
+# Variable for storing the parsed input
+# Removing all the special characters and converting to upper case
+sanitize=$(echo $1 | sed 's/[^0-9a-fA-F]*//g' | awk '{print toupper($0)}')
+
+# Function for printing out the result
+print_result () {
+if [ -z "$result" ]; then
+	echo "No results for $sanitize."
+	echo ""
+else
+	echo ""
+	echo $result | awk -vFPAT='([^,]*)|("[^"]+")' -vOFS=, 'function GSUB(X) {gsub(/"/, "",$X)} {GSUB(3); GSUB(4); print $3"\n"$4}'
+	echo ""
+fi
+}
+	
+# Analyze length of the input string
+# In case input string is 6 characters long
+if [ ${#sanitize} -eq 6 ]; then
+	result="$(grep $sanitize $oui)"
+	print_result
+
+# If string is non-existent or less than 6 and more than 12 characters long, ask for input
+elif [ ${#sanitize} -lt 6 -o ${#sanitize} -gt 12 ]; then
+	echo ""
+	echo -n "Enter proper MAC adress: "
+	read mac
+	sanitize=$(echo $mac | sed 's/[^0-9a-fA-F]*//g' | awk '{print toupper($0)}')
+	if [ ${#sanitize} -lt 6 -o ${#sanitize} -gt 12 ]; then
+		# We do not want to iterate the same prompt forever
+		echo "Please get sober and try again."
+		echo ""
+	else
+		addr="$(echo $sanitize | cut -c 1-6)"
+		result="$(grep $addr $oui)"
+		print_result
+	fi
+
+# If string is parsable length
+else
+	addr="$(echo $sanitize | cut -c 1-6)"
+	result="$(grep $addr $oui)"
+	print_result
+fi
