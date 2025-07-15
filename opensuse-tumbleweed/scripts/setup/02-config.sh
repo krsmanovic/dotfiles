@@ -19,6 +19,7 @@ GTK_SETTINGS_FILES="/home/$DESKTOP_USER/.gtkrc-2.0 /home/$DESKTOP_USER/.config/g
 KDE_LOGOUT_TIME_SECONDS="5"
 FC_DISCORD="/etc/fonts/conf.d/99-discord.conf"
 XORG_CONFIG_MONITOR="/etc/X11/xorg.conf.d/90-monitor.conf"
+KDE_THEME_NAME="com.github.vinceliuice.Graphite-dark"
 
 # setup directories
 mkdir -p $CREDENTIALS_DIR || true
@@ -108,16 +109,16 @@ EOF
 sudo sysctl --system
 
 # look and feel
-if lookandfeeltool --list | grep --quiet org.kde.breezedark.desktop; then
-    log_message info "Setting Breeze Dark global KDE theme..."
-    lookandfeeltool --apply org.kde.breezedark.desktop
+if lookandfeeltool --list | grep --quiet $KDE_THEME_NAME; then
+    log_message info "Setting global KDE theme..."
+    lookandfeeltool --apply $KDE_THEME_NAME
 fi
-if stat /usr/libexec/plasma-changeicons &> /dev/null; then
-    log_message info "Setting DarK icon theme..."
-    /usr/libexec/plasma-changeicons DarK-svg
-else
-    log_message err "Setting DarK icon theme failed. No Plasma changeicons tool found."
-fi
+# if stat /usr/libexec/plasma-changeicons &> /dev/null; then
+#     log_message info "Setting DarK icon theme..."
+#     /usr/libexec/plasma-changeicons DarK-svg
+# else
+#     log_message err "Setting DarK icon theme failed. No Plasma changeicons tool found."
+# fi
 if [ -f $KDE_LOOKANDFEEL_CFG_FILE_LOGOUT ]; then
     sudo sed -Ei "s/(property real timeout\:).*/\1 $KDE_LOGOUT_TIME_SECONDS/" $KDE_LOOKANDFEEL_CFG_FILE_LOGOUT
     log_message info "KDE logout time was set to $KDE_LOGOUT_TIME_SECONDS seconds."
