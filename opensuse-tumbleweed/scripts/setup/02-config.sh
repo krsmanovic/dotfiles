@@ -18,6 +18,7 @@ GTK_SYSTEM_SOUNDS_OPTIONS="gtk-enable-event-sounds gtk-enable-input-feedback-sou
 GTK_SETTINGS_FILES="/home/$DESKTOP_USER/.gtkrc-2.0 /home/$DESKTOP_USER/.config/gtk-3.0/settings.ini /home/$DESKTOP_USER/.config/gtk-4.0/settings.ini"
 KDE_LOGOUT_TIME_SECONDS="5"
 FC_DISCORD="/etc/fonts/conf.d/99-discord.conf"
+FC_TELEGRAM="/etc/fonts/conf.d/98-telegram.conf"
 XORG_CONFIG_MONITOR="/etc/X11/xorg.conf.d/90-monitor.conf"
 KDE_THEME_NAME="com.github.vinceliuice.Graphite-dark"
 
@@ -152,7 +153,10 @@ sudo tee $FC_DISCORD > /dev/null << "EOF"
             <string>Discord</string>
         </test>
         <edit name="hintstyle" mode="assign">
-            <const>full</const>
+            <const>hintfull</const>
+        </edit>
+        <edit name="lcdfilter" mode="assign">
+            <const>lcddefault</const>
         </edit>
     </match>
     <match>
@@ -160,7 +164,38 @@ sudo tee $FC_DISCORD > /dev/null << "EOF"
             <string>com.discordapp.Discord</string>
         </test>
         <edit name="hintstyle" mode="assign">
-            <const>full</const>
+            <const>hintfull</const>
+        </edit>
+        <edit name="lcdfilter" mode="assign">
+            <const>lcddefault</const>
+        </edit>
+    </match>
+</fontconfig>
+EOF
+sudo tee $FC_TELEGRAM > /dev/null << "EOF"
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+<fontconfig>
+    <match>
+        <test name="prgname">
+            <string>Telegram</string>
+        </test>
+        <edit name="hintstyle" mode="assign">
+            <const>hintmedium</const>
+        </edit>
+        <edit name="lcdfilter" mode="assign">
+            <const>lcddefault</const>
+        </edit>
+    </match>
+    <match>
+        <test name="prgname">
+            <string>org.telegram.desktop</string>
+        </test>
+        <edit name="hintstyle" mode="assign">
+            <const>hintmedium</const>
+        </edit>
+        <edit name="lcdfilter" mode="assign">
+            <const>lcddefault</const>
         </edit>
     </match>
 </fontconfig>
