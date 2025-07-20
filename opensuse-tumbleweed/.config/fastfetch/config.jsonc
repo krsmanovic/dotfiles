@@ -24,29 +24,29 @@
         },
         {
             "type": "cpu",
-            "key": "│ ┌ ",
+            "key": "│ ┌{icon} ",
             "keyColor": "yellow"
         },
         {
             "type": "gpu",
-            "key": "│ ├󰍛 ",
+            "key": "│ ├{icon} ",
             "keyColor": "yellow"
         },
         {
             "type": "memory",
-            "key": "│ ├󰍛 ",
+            "key": "│ ├{icon} ",
             "keyColor": "yellow",
             "format": "{total} ({percentage})"
         },
         {
             "type": "disk",
-            "key": "│ ├ ",
+            "key": "│ ├{icon} ",
             "keyColor": "yellow",
             "format": "{mountpoint} ({filesystem}) {size-total} ({size-percentage})"
         },
         {
             "type": "board",
-            "key": "│ └󰍛 ",
+            "key": "│ └{icon} ",
             "keyColor": "yellow"
         },
         {
@@ -60,27 +60,27 @@
         },
         {
             "type": "os",
-            "key": "│ ┌ ",
+            "key": "│ ┌{icon} ",
             "keyColor": "green"
         },
         {
             "type": "kernel",
-            "key": "│ ├ ",
+            "key": "│ ├󰍛 ",
             "keyColor": "green"
         },
         {
             "type": "bios",
-            "key": "│ ├ ",
+            "key": "│ ├{icon} ",
             "keyColor": "green"
         },
         {
             "type": "packages",
-            "key": "│ ├󰏖 ",
+            "key": "│ ├{icon} ",
             "keyColor": "green"
         },
         {
             "type": "shell",
-            "key": "└ └ ",
+            "key": "└ └{icon} ",
             "keyColor": "green"
         },
         "break",
@@ -91,22 +91,22 @@
         },
         {
             "type": "lm",
-            "key": "│ ├ ",
+            "key": "│ ├{icon} ",
             "keyColor": "green"
         },
         {
             "type": "wm",
-            "key": "│ ├ ",
+            "key": "│ ├{icon} ",
             "keyColor": "green"
         },
         {
             "type": "wmtheme",
-            "key": "│ ├󰉼 ",
+            "key": "│ ├{icon} ",
             "keyColor": "green"
         },
         {
             "type": "terminal",
-            "key": "│ └ ",
+            "key": "│ └{icon} ",
             "keyColor": "green"
         },
         {
