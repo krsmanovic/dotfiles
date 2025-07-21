@@ -33,6 +33,7 @@ else
 fi
 
 # generic aliases
+alias ff="fastfetch"
 alias ll="ls -lah"
 
 # decide if we want to print duration
