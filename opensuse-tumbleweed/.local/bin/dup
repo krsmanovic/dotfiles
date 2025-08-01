@@ -3,6 +3,7 @@
 # vars
 ZYPPER_PARAMS_QUIET="--non-interactive --quiet"
 FLATPAK_PARAMS_QUIET="--noninteractive --assumeyes"
+XDG_DATA_DIRS="/var/lib/flatpak/exports/share:$XDG_DATA_DIRS"
 
 # stop packagekit while we are running cli ops
 if systemctl list-unit-files packagekit.service &>/dev/null; then
@@ -10,7 +11,7 @@ if systemctl list-unit-files packagekit.service &>/dev/null; then
 fi
 
 sudo zypper $ZYPPER_PARAMS_QUIET dist-upgrade --no-allow-vendor-change
-flatpak update $FLATPAK_PARAMS_QUIET
+sudo -E XDG_DATA_DIRS="/root/.local/share/flatpak/exports/share:$XDG_DATA_DIRS" flatpak update $FLATPAK_PARAMS_QUIET
 
 # start packagekit
 if systemctl list-unit-files packagekit.service &>/dev/null; then
