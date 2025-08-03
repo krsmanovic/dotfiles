@@ -81,7 +81,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     fastfetch neovim fira-code-fonts conky tmux htop btop steam-devices kitty starship timeshift dysk \
     k9s aws-cli azure-cli \
     go go-doc rustup cmake freetype-devel fontconfig-devel libxcb-devel libxkbcommon-devel libstartup-notification-1-0 fakeroot rpmbuild meson \
-    Mesa-libEGL-devel gstreamer-devel gstreamer-plugins-bad gstreamer-plugins-bad-devel edid-decode opi \
+    Mesa-libEGL-devel gstreamer-devel gstreamer-plugins-bad gstreamer-plugins-bad-devel edid-decode opi libva-utils \
     flatpak \
     pcsc-ccid \
     MozillaThunderbird \
