@@ -144,62 +144,62 @@ for gtk_settings_file in $GTK_SETTINGS_FILES; do
 done
 
 # fonts
-sudo tee $FC_DISCORD > /dev/null << "EOF"
-<?xml version="1.0"?>
-<!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
-<fontconfig>
-    <match>
-        <test name="prgname">
-            <string>Discord</string>
-        </test>
-        <edit name="hintstyle" mode="assign">
-            <const>hintfull</const>
-        </edit>
-        <edit name="lcdfilter" mode="assign">
-            <const>lcddefault</const>
-        </edit>
-    </match>
-    <match>
-        <test name="prgname">
-            <string>com.discordapp.Discord</string>
-        </test>
-        <edit name="hintstyle" mode="assign">
-            <const>hintfull</const>
-        </edit>
-        <edit name="lcdfilter" mode="assign">
-            <const>lcddefault</const>
-        </edit>
-    </match>
-</fontconfig>
-EOF
-sudo tee $FC_TELEGRAM > /dev/null << "EOF"
-<?xml version="1.0"?>
-<!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
-<fontconfig>
-    <match>
-        <test name="prgname">
-            <string>Telegram</string>
-        </test>
-        <edit name="hintstyle" mode="assign">
-            <const>hintmedium</const>
-        </edit>
-        <edit name="lcdfilter" mode="assign">
-            <const>lcddefault</const>
-        </edit>
-    </match>
-    <match>
-        <test name="prgname">
-            <string>org.telegram.desktop</string>
-        </test>
-        <edit name="hintstyle" mode="assign">
-            <const>hintmedium</const>
-        </edit>
-        <edit name="lcdfilter" mode="assign">
-            <const>lcddefault</const>
-        </edit>
-    </match>
-</fontconfig>
-EOF
+# sudo tee $FC_DISCORD > /dev/null << "EOF"
+# <?xml version="1.0"?>
+# <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+# <fontconfig>
+#     <match>
+#         <test name="prgname">
+#             <string>Discord</string>
+#         </test>
+#         <edit name="hintstyle" mode="assign">
+#             <const>hintfull</const>
+#         </edit>
+#         <edit name="lcdfilter" mode="assign">
+#             <const>lcddefault</const>
+#         </edit>
+#     </match>
+#     <match>
+#         <test name="prgname">
+#             <string>com.discordapp.Discord</string>
+#         </test>
+#         <edit name="hintstyle" mode="assign">
+#             <const>hintfull</const>
+#         </edit>
+#         <edit name="lcdfilter" mode="assign">
+#             <const>lcddefault</const>
+#         </edit>
+#     </match>
+# </fontconfig>
+# EOF
+# sudo tee $FC_TELEGRAM > /dev/null << "EOF"
+# <?xml version="1.0"?>
+# <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+# <fontconfig>
+#     <match>
+#         <test name="prgname">
+#             <string>Telegram</string>
+#         </test>
+#         <edit name="hintstyle" mode="assign">
+#             <const>hintmedium</const>
+#         </edit>
+#         <edit name="lcdfilter" mode="assign">
+#             <const>lcddefault</const>
+#         </edit>
+#     </match>
+#     <match>
+#         <test name="prgname">
+#             <string>org.telegram.desktop</string>
+#         </test>
+#         <edit name="hintstyle" mode="assign">
+#             <const>hintmedium</const>
+#         </edit>
+#         <edit name="lcdfilter" mode="assign">
+#             <const>lcddefault</const>
+#         </edit>
+#     </match>
+# </fontconfig>
+# EOF
 
 # fix monitor dpi
 # https://wiki.archlinux.org/title/Xorg#Display_size_and_DPI
