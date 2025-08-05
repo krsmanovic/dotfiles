@@ -144,6 +144,12 @@ for gtk_settings_file in $GTK_SETTINGS_FILES; do
 done
 
 # fonts
+# https://freetype.org/freetype2/docs/hinting/text-rendering-general.html
+echo 'FREETYPE_PROPERTIES="truetype:interpreter-version=35 cff:no-stem-darkening=0 autofitter:no-stem-darkening=0"' | sudo tee /etc/environment
+sudo ln -s /usr/share/fontconfig/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d/ || true
+sudo ln -s /usr/share/fontconfig/conf.avail/10-autohint.conf /etc/fonts/conf.d/ || true
+sudo ln -s /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d/ || true
+
 # sudo tee $FC_DISCORD > /dev/null << "EOF"
 # <?xml version="1.0"?>
 # <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
@@ -212,12 +218,12 @@ done
 # get display id
 # xrandr --prop | grep ' connected'
 # DP-4 connected primary 1920x1080+0+0 (normal left inverted right x axis y axis) 527mm x 297mm
-sudo tee $XORG_CONFIG_MONITOR > /dev/null << "EOF"
-Section "Monitor"
-    Identifier             "DP-4"
-    DisplaySize             527 297
-EndSection
-EOF
+# sudo tee $XORG_CONFIG_MONITOR > /dev/null << "EOF"
+# Section "Monitor"
+#     Identifier             "DP-4"
+#     DisplaySize             527 297
+# EndSection
+# EOF
 
 # convert opensuse logo from svg to raw image format for fastfetch
 # i have only changed green tone; original was fetched from https://en.opensuse.org/images/6/6c/OpenSUSE-hellcp.svg
