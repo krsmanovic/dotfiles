@@ -2,6 +2,7 @@
 
 # vars
 ZYPPER_PARAMS_QUIET="--non-interactive --quiet"
+ZYPPER_PARAMS_DUP="--no-allow-vendor-change --auto-agree-with-licenses"
 FLATPAK_PARAMS_QUIET="--noninteractive --assumeyes"
 XDG_DATA_DIRS="/var/lib/flatpak/exports/share:$XDG_DATA_DIRS"
 
@@ -10,7 +11,7 @@ if systemctl list-unit-files packagekit.service &>/dev/null; then
     sudo systemctl stop --now packagekit
 fi
 
-sudo zypper $ZYPPER_PARAMS_QUIET dist-upgrade --no-allow-vendor-change --auto-agree-with-licenses
+sudo zypper $ZYPPER_PARAMS_QUIET dist-upgrade $ZYPPER_PARAMS_DUP
 sudo -E XDG_DATA_DIRS="/root/.local/share/flatpak/exports/share:$XDG_DATA_DIRS" flatpak update $FLATPAK_PARAMS_QUIET
 
 # start packagekit
