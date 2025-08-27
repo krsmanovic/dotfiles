@@ -46,7 +46,7 @@
         },
         {
             "type": "board",
-            "key": "│ └{icon} ",
+            "key": "│ └ ",
             "keyColor": "yellow"
         },
         {
@@ -65,7 +65,7 @@
         },
         {
             "type": "kernel",
-            "key": "│ ├󰍛 ",
+            "key": "│ ├ ",
             "keyColor": "green"
         },
         {
@@ -86,7 +86,7 @@
         "break",
         {
             "type": "de",
-            "key": "┌ ┌ ",
+            "key": "┌ ┌󰧨 ",
             "keyColor": "green"
         },
         {
@@ -106,7 +106,7 @@
         },
         {
             "type": "terminal",
-            "key": "│ └{icon} ",
+            "key": "│ └ ",
             "keyColor": "green"
         },
         {
