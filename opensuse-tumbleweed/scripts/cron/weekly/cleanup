@@ -2,10 +2,11 @@
 
 DESKTOP_USER=che
 HOME_DIRECTORIES="Downloads tmp"
+RETENTION_DAYS="30"
 
 for directory in $HOME_DIRECTORIES; do
     SIZE_BEFORE=$(du -hd0 /home/$DESKTOP_USER/$directory | awk -F' ' '{print $1}')
-    find /home/$DESKTOP_USER/$directory/* -type f -mtime +30 -delete
+    find /home/$DESKTOP_USER/$directory/* -type f -mtime +$RETENTION_DAYS -delete
     find /home/$DESKTOP_USER/$directory/* -type d -empty -delete
     SIZE_AFTER=$(du -hd0 /home/$DESKTOP_USER/$directory | awk -F' ' '{print $1}')
     logger -p local0.info -t ${0##*/}[$$] "Size of directory \"/home/$DESKTOP_USER/$directory\" before cleanup was $SIZE_BEFORE, and after cleanup is $SIZE_AFTER."
