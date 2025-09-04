@@ -45,8 +45,8 @@
             "format": "{mountpoint} ({filesystem}) {size-total} ({size-percentage})"
         },
         {
-            "type": "board",
-            "key": "│ └ ",
+            "type": "swap",
+            "key": "│ └{icon} ",
             "keyColor": "yellow"
         },
         {
