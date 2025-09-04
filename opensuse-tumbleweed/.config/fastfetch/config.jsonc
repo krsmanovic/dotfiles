@@ -47,7 +47,8 @@
         {
             "type": "swap",
             "key": "│ └{icon} ",
-            "keyColor": "yellow"
+            "keyColor": "yellow",
+            "format": "swap {total} ({percentage})"
         },
         {
             "type": "custom",
