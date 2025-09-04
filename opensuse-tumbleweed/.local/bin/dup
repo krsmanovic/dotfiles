@@ -2,7 +2,7 @@
 
 # vars
 ZYPPER_PARAMS_QUIET="--non-interactive --quiet"
-ZYPPER_PARAMS_DUP="--no-allow-vendor-change --auto-agree-with-licenses"
+ZYPPER_PARAMS_DUP="--no-allow-vendor-change --auto-agree-with-licenses --no-recommends"
 FLATPAK_PARAMS_QUIET="--noninteractive --assumeyes"
 XDG_DATA_DIRS="/var/lib/flatpak/exports/share:$XDG_DATA_DIRS"
 
