@@ -3,46 +3,52 @@
 **Content tree:**
 
 ```
-├───bunsenlabs
-│   ├───.config
-│   │   ├───alacritty
-│   │   ├───conky
-│   │   │   └───LUA
-│   │   ├───openbox
-│   │   ├───terminator
-│   │   └───tint2
-│   │       └───Scripts
-│   ├───.local
-│   │   └───share
-│   │       └───themes
-│   │           ├───Arc
-│   │           │   └───openbox-3
-│   │           ├───Bunsen-Flat
-│   │           │   └───openbox-3
-│   │           └───Bunsen-Flat-Arc
-│   │               └───openbox-3
-│   └───scripts
-├───opensuse-tumbleweed
-│   ├───.config
-│   │   ├───fastfetch
-│   │   ├───keepassxc
-│   │   ├───kitty
-│   │   │   └───themes
-│   │   └───starship
-│   ├───.credentials
-│   ├───lib
-│   │   └───sh
-│   └───scripts
-│       └───setup
-└───windows
-    ├───.starship
-    ├───PowerShell
-    ├───SublimeText3
-    ├───TotalCommander
-    │   └───GHISLER
-    ├───WindowsTerminal
-    │   ├───Images
-    │   └───LocalState
-    ├───_ScheduledTasks
-    └───_Scripts
+├── bunsenlabs
+│   ├── .config
+│   │   ├── alacritty
+│   │   ├── conky
+│   │   │   └── LUA
+│   │   ├── openbox
+│   │   ├── terminator
+│   │   └── tint2
+│   │       └── Scripts
+│   ├── .local
+│   │   └── share
+│   │       └── themes
+│   │           ├── Arc
+│   │           │   └── openbox-3
+│   │           ├── Bunsen-Flat
+│   │           │   └── openbox-3
+│   │           └── Bunsen-Flat-Arc
+│   │               └── openbox-3
+│   └── scripts
+├── opensuse-tumbleweed
+│   ├── .config
+│   │   ├── fastfetch
+│   │   │   └── images
+│   │   ├── keepassxc
+│   │   ├── kitty
+│   │   │   └── themes
+│   │   └── starship
+│   ├── .credentials
+│   ├── lib
+│   │   └── sh
+│   ├── .local
+│   │   └── bin
+│   └── scripts
+│       ├── cron
+│       │   ├── monthly
+│       │   └── weekly
+│       └── setup
+└── windows
+    ├── PowerShell
+    ├── _ScheduledTasks
+    ├── _Scripts
+    ├── .starship
+    ├── SublimeText3
+    ├── TotalCommander
+    │   └── GHISLER
+    └── WindowsTerminal
+        ├── Images
+        └── LocalState
 ```
