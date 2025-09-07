@@ -35,6 +35,7 @@ fi
 # generic aliases
 alias ff="fastfetch"
 alias ll="ls -lah"
+alias dev="cd ~/code/krsmanovic"
 
 # decide if we want to print duration
 DURATION_SECONDS=$(( SECONDS - INITIAL_SECONDS ))
