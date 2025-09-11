@@ -11,6 +11,7 @@ if systemctl list-unit-files packagekit.service &>/dev/null; then
     sudo systemctl stop --now packagekit
 fi
 
+sudo zypper $ZYPPER_PARAMS_QUIET --gpg-auto-import-keys refresh
 sudo zypper $ZYPPER_PARAMS_QUIET dist-upgrade $ZYPPER_PARAMS_DUP
 sudo -E XDG_DATA_DIRS="/root/.local/share/flatpak/exports/share:$XDG_DATA_DIRS" flatpak update $FLATPAK_PARAMS_QUIET
 
