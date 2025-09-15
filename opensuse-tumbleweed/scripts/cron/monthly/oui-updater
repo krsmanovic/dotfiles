@@ -2,9 +2,23 @@
 oui_dir="/usr/local/share/applications/mac"
 oui_file="$oui_dir/oui.csv"
 oui_ieee_url="http://standards-oui.ieee.org/oui/oui.csv"
+tmp_oui_dir=$(mktemp -d)
+tmp_oui_file="$tmp_oui_dir/oui.csv"
 
 if [[ ! -d $oui_dir ]]; then
   mkdir -p $oui_dir
 fi
 
-wget -O $oui_file $oui_ieee_url
+if curl --silent --location --output $tmp_oui_file $oui_ieee_url; then
+  echo "File $tmp_oui_file is downloaded."
+else
+  logger -p local0.err -t ${0##*/}[$$] "Failed downloading $oui_ieee_url."
+  exit 1
+fi
+
+if cmp $tmp_oui_file $oui_file &> /dev/null; then
+  logger -p local0.info -t ${0##*/}[$$] "No updates for $oui_file."
+else
+  rsync --update --times $tmp_oui_file $oui_file
+  logger -p local0.info -t ${0##*/}[$$] "File $oui_file is updated."
+fi
