@@ -47,6 +47,7 @@ FLATPAK_PACKAGES=(
     com.discordapp.Discord
     org.onlyoffice.desktopeditors
     org.telegram.desktop
+    com.github.tchx84.Flatseal
 )
 # other vars
 NVIDIA_DRIVER_DRACUT_CONFIG_PATH=/etc/dracut.conf.d/99-nvidia.conf
