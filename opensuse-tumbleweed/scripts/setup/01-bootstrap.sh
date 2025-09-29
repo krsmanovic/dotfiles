@@ -197,10 +197,10 @@ XDG_DATA_DIRS="/var/lib/flatpak/exports/share:$XDG_DATA_DIRS"
 XDG_DATA_HOME="/var/lib/flatpak/exports/share:$XDG_DATA_HOME"
 EOF
 source /etc/profile.local
-sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 for pak in "${FLATPAK_PACKAGES[@]}"; do
     log_message info "Installing $pak flatpak..."
-    sudo -E XDG_DATA_DIRS="/root/.local/share/flatpak/exports/share:$XDG_DATA_DIRS" flatpak install $FLATPAK_PARAMS_QUIET $pak
+    flatpak install $FLATPAK_PARAMS_QUIET $pak
 done
 flatpak override --user --filesystem=$STEAM_LOCAL_LIBRARY com.valvesoftware.Steam
 
