@@ -226,5 +226,8 @@ sudo ln -s /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf /etc/fonts
 # EOF
 
 # convert opensuse logo from svg to raw image format for fastfetch
-# i have only changed green tone; original was fetched from https://en.opensuse.org/images/6/6c/OpenSUSE-hellcp.svg
+# i have only changed green tone; original was fetched from:
+# 1) https://en.opensuse.org/images/6/6c/OpenSUSE-hellcp.svg
+# 2) https://github.com/openSUSE/artwork/blob/master/logos/distros/tumbleweed.svg
 # kitten icat -n --align=left --transfer-mode=stream /home/$DESKTOP_USER/.config/fastfetch/images/chameleon-kitty.svg > /home/$DESKTOP_USER/.config/fastfetch/images/chameleon-kitty.bin
+# kitten icat -n --align=left --transfer-mode=stream /home/$DESKTOP_USER/.config/fastfetch/images/tumbleweed.svg > /home/$DESKTOP_USER/.config/fastfetch/images/tumbleweed.bin
