@@ -89,7 +89,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     MozillaThunderbird \
     wine libvirt virt-manager \
     strawberry audacity \
-    keepassxc gimp calibre okular k3b nextcloud xorriso qimgv ImageMagick
+    keepassxc gimp calibre okular k3b nextcloud xorriso qimgv ImageMagick zbar
 
 # install programs from external repos
 log_message info "Installing packages from external repositories..."
