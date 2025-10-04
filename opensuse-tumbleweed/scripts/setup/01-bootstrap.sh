@@ -48,6 +48,7 @@ FLATPAK_PACKAGES=(
     org.onlyoffice.desktopeditors
     org.telegram.desktop
     com.github.tchx84.Flatseal
+    org.qbittorrent.qBittorrent
 )
 # other vars
 NVIDIA_DRIVER_DRACUT_CONFIG_PATH=/etc/dracut.conf.d/99-nvidia.conf
@@ -88,7 +89,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     MozillaThunderbird \
     wine libvirt virt-manager \
     strawberry audacity \
-    keepassxc gimp calibre okular k3b qbittorrent nextcloud xorriso qimgv ImageMagick
+    keepassxc gimp calibre okular k3b nextcloud xorriso qimgv ImageMagick
 
 # install programs from external repos
 log_message info "Installing packages from external repositories..."
