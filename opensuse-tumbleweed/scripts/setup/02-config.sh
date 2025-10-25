@@ -21,6 +21,7 @@ FC_DISCORD="/etc/fonts/conf.d/99-discord.conf"
 FC_TELEGRAM="/etc/fonts/conf.d/98-telegram.conf"
 XORG_CONFIG_MONITOR="/etc/X11/xorg.conf.d/90-monitor.conf"
 KDE_THEME_NAME="com.github.vinceliuice.Graphite-dark"
+SNAPPER_ROOT_CONFIG="/etc/snapper/configs/root"
 
 # setup directories
 mkdir -p $CREDENTIALS_DIR || true
@@ -231,3 +232,69 @@ sudo ln -s /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf /etc/fonts
 # 2) https://github.com/openSUSE/artwork/blob/master/logos/distros/tumbleweed.svg
 # kitten icat -n --align=left --transfer-mode=stream /home/$DESKTOP_USER/.config/fastfetch/images/chameleon-kitty.svg > /home/$DESKTOP_USER/.config/fastfetch/images/chameleon-kitty.bin
 # kitten icat -n --align=left --transfer-mode=stream /home/$DESKTOP_USER/.config/fastfetch/images/tumbleweed.svg > /home/$DESKTOP_USER/.config/fastfetch/images/tumbleweed.bin
+
+sudo tee $SNAPPER_ROOT_CONFIG > /dev/null << EOF
+# subvolume to snapshot
+SUBVOLUME="/"
+
+# filesystem type
+FSTYPE="btrfs"
+
+
+# btrfs qgroup for space aware cleanup algorithms
+QGROUP=""
+
+
+# fraction or absolute size of the filesystems space the snapshots may use
+SPACE_LIMIT="0.5"
+
+# fraction or absolute size of the filesystems space that should be free
+FREE_LIMIT="0.2"
+
+
+# users and groups allowed to work with config
+ALLOW_USERS=""
+ALLOW_GROUPS=""
+
+# sync users and groups from ALLOW_USERS and ALLOW_GROUPS to .snapshots
+# directory
+SYNC_ACL="no"
+
+
+# start comparing pre- and post-snapshot in background after creating
+# post-snapshot
+BACKGROUND_COMPARISON="yes"
+
+
+# run daily number cleanup
+NUMBER_CLEANUP="yes"
+
+# limit for number cleanup
+NUMBER_MIN_AGE="3600"
+NUMBER_LIMIT="50"
+NUMBER_LIMIT_IMPORTANT="10"
+
+
+# create hourly snapshots
+TIMELINE_CREATE="yes"
+
+# cleanup hourly snapshots after some time
+TIMELINE_CLEANUP="yes"
+
+# limits for timeline cleanup
+TIMELINE_MIN_AGE="3600"
+TIMELINE_LIMIT_HOURLY="10"
+TIMELINE_LIMIT_DAILY="10"
+TIMELINE_LIMIT_WEEKLY="0"
+TIMELINE_LIMIT_MONTHLY="10"
+TIMELINE_LIMIT_QUARTERLY="0"
+TIMELINE_LIMIT_YEARLY="10"
+
+
+# cleanup empty pre-post-pairs
+EMPTY_PRE_POST_CLEANUP="yes"
+
+# limits for empty pre-post-pair cleanup
+EMPTY_PRE_POST_MIN_AGE="3600"
+
+EOF
