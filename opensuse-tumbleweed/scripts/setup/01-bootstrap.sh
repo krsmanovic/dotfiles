@@ -41,7 +41,6 @@ FLATPAK_PACKAGES=(
     com.slack.Slack
     com.jgraph.drawio.desktop
     us.zoom.Zoom
-    com.getpostman.Postman
     org.videolan.VLC
     com.mikrotik.WinBox
     com.discordapp.Discord
