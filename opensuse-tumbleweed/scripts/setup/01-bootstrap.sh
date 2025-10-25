@@ -83,6 +83,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
     k9s aws-cli azure-cli \
     go go-doc rustup cmake freetype-devel fontconfig-devel libxcb-devel libxkbcommon-devel libstartup-notification-1-0 fakeroot rpmbuild meson \
     Mesa-libEGL-devel gstreamer-devel gstreamer-plugins-bad gstreamer-plugins-bad-devel edid-decode opi libva-utils \
+    docker docker-compose docker-compose-switch \
     flatpak \
     pcsc-ccid \
     MozillaThunderbird \
@@ -256,6 +257,10 @@ else
     make
     sudo make install
 fi
+
+# docker setup
+sudo systemctl enable docker
+sudo usermod -G docker -a $DESKTOP_USER
 
 # golang program installations
 if which rdap &> /dev/null; then
