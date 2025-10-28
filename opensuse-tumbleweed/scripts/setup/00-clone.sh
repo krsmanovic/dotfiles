@@ -4,6 +4,7 @@
 DESKTOP_USER=che
 WORKDIR="$(mktemp -d)"
 SUDOERS_CONFIG_DIR="/usr/etc/sudoers.d"
+SUDOERS_CONFIG_USER_PATH="$SUDOERS_CONFIG_DIR/98-$DESKTOP_USER"
 SUDOERS_CONFIG_CUSTOM_PATH="$SUDOERS_CONFIG_DIR/99-bootstrap-scripts"
 
 # install essential tools
@@ -31,9 +32,14 @@ if sudo grep --quiet "@includedir $SUDOERS_CONFIG_DIR" /usr/etc/sudoers; then
         sudo mkdir -p $SUDOERS_CONFIG_DIR
     fi
     sudo tee $SUDOERS_CONFIG_CUSTOM_PATH > /dev/null << EOF
+# bootstrap scripts
+$DESKTOP_USER ALL=(ALL:ALL) NOPASSWD:/home/$DESKTOP_USER/scripts/setup/00-clone.sh
 $DESKTOP_USER ALL=(ALL:ALL) NOPASSWD:/home/$DESKTOP_USER/scripts/setup/01-bootstrap.sh
 EOF
+    sudo tee $SUDOERS_CONFIG_USER_PATH > /dev/null << EOF
+# mtr
+$DESKTOP_USER ALL=(root) NOPASSWD:/usr/sbin/mtr
+EOF
 fi
-sudo chmod 440 /usr/etc/sudoers
-sudo chmod 440 $SUDOERS_CONFIG_CUSTOM_PATH
+sudo chmod --recursive 440 $SUDOERS_CONFIG_DIR
 sudo visudo --check

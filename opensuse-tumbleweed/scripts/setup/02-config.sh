@@ -22,7 +22,6 @@ FC_TELEGRAM="/etc/fonts/conf.d/98-telegram.conf"
 XORG_CONFIG_MONITOR="/etc/X11/xorg.conf.d/90-monitor.conf"
 KDE_THEME_NAME="com.github.vinceliuice.Graphite-dark"
 SNAPPER_ROOT_CONFIG="/etc/snapper/configs/root"
-SUDOERS_CONFIG="/etc/sudoers.d/$DESKTOP_USER"
 
 # setup directories
 mkdir -p $CREDENTIALS_DIR || true
@@ -298,10 +297,4 @@ EMPTY_PRE_POST_CLEANUP="yes"
 # limits for empty pre-post-pair cleanup
 EMPTY_PRE_POST_MIN_AGE="3600"
 
-EOF
-
-# sudoers
-sudo tee $SUDOERS_CONFIG > /dev/null << EOF
-# mtr
-$DESKTOP_USER ALL=(root) NOPASSWD: /usr/sbin/mtr
 EOF
