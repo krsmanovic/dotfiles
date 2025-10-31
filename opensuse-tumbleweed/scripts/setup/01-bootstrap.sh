@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# stop packagekit while we are running cli ops
-if systemctl list-unit-files packagekit.service &>/dev/null; then
-    sudo systemctl stop --now packagekit
-fi
-
 # base vars
 DESKTOP_USER=che
 HOST_NAME=greenzard
@@ -73,6 +68,9 @@ else
     CHASSIS_TYPE="desktop"
 fi
 sudo hostnamectl set-chassis $CHASSIS_TYPE
+
+# remove garbage packages
+sudo zypper $ZYPPER_PARAMS_QUIET remove PackageKit
 
 # install packages
 sudo zypper $ZYPPER_PARAMS_QUIET update
@@ -320,8 +318,3 @@ echo "Please run command 'opi codecs' to install all relevant media libraries!"
 # cmake llama.cpp -B llama.cpp/build -DBUILD_SHARED_LIBS=OFF -DGGML_CUDA=ON -DLLAMA_CURL=ON
 # cmake --build llama.cpp/build --config Release -j --clean-first --target llama-cli llama-gguf-split
 # cp llama.cpp/build/bin/llama-* llama.cpp
-
-# start packagekit
-if systemctl list-unit-files packagekit.service &>/dev/null; then
-    sudo systemctl start --now packagekit
-fi
