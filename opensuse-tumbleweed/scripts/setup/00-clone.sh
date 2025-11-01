@@ -12,7 +12,7 @@ sudo zypper --non-interactive --quiet install curl jq git tig
 
 # do the magic
 cd $WORKDIR
-git clone https://github.com/krsmanovic/dotfiles.git
+git clone --depth 1 https://github.com/krsmanovic/dotfiles.git
 cd dotfiles
 while read filename; do
     unixtime=$(git log -1 --format="%at" -- "${filename}")
