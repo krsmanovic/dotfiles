@@ -27,7 +27,7 @@ sudo rsync --recursive --update --times opensuse-tumbleweed/scripts/cron/monthly
 # allow config scripts to mess up the system
 if sudo grep --quiet "@includedir $SUDOERS_CONFIG_DIR" /usr/etc/sudoers; then
     if [ -d $SUDOERS_CONFIG_DIR ]; then
-        echo
+        echo "/usr/etc/sudoers is already up to date..."
     else
         sudo mkdir -p $SUDOERS_CONFIG_DIR
     fi
