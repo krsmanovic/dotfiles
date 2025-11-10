@@ -5,6 +5,11 @@ ZYPPER_PARAMS_QUIET="--non-interactive --quiet"
 ZYPPER_PARAMS_DUP="--no-allow-vendor-change --auto-agree-with-licenses --no-recommends"
 FLATPAK_PARAMS_QUIET="--noninteractive --assumeyes"
 
+echo "Running zypper refresh..."
 sudo zypper $ZYPPER_PARAMS_QUIET --gpg-auto-import-keys refresh
+
+echo "Running zypper dist-upgrade..."
 sudo zypper $ZYPPER_PARAMS_QUIET dist-upgrade $ZYPPER_PARAMS_DUP
+
+echo "Running flatpak update..."
 flatpak update $FLATPAK_PARAMS_QUIET
