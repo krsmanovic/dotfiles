@@ -31,12 +31,12 @@ if sudo grep --quiet "@includedir $SUDOERS_CONFIG_DIR" /usr/etc/sudoers; then
     else
         sudo mkdir -p $SUDOERS_CONFIG_DIR
     fi
-    sudo tee $SUDOERS_CONFIG_CUSTOM_PATH > /dev/null << EOF
+    sudo dd status=none of=$SUDOERS_CONFIG_CUSTOM_PATH << EOF
 # bootstrap scripts
 $DESKTOP_USER ALL=(ALL:ALL) NOPASSWD:/home/$DESKTOP_USER/scripts/setup/00-clone.sh
 $DESKTOP_USER ALL=(ALL:ALL) NOPASSWD:/home/$DESKTOP_USER/scripts/setup/01-bootstrap.sh
 EOF
-    sudo tee $SUDOERS_CONFIG_USER_PATH > /dev/null << EOF
+    sudo dd status=none of=$SUDOERS_CONFIG_USER_PATH << EOF
 # mtr
 $DESKTOP_USER ALL=(root) NOPASSWD:/usr/sbin/mtr
 EOF

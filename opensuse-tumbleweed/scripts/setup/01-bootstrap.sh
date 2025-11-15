@@ -91,14 +91,14 @@ sudo zypper $ZYPPER_PARAMS_QUIET install \
 
 # install programs from external repos
 log_message info "Installing packages from external repositories..."
-sudo tee $PACKMAN_LOCAL_REPO_PATH > /dev/null << EOF
+sudo dd status=none of=$PACKMAN_LOCAL_REPO_PATH << EOF
 [packman]
 enabled=1
 autorefresh=1
 baseurl=https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/
 priority=90
 EOF
-sudo tee $CODIUM_LOCAL_REPO_PATH > /dev/null << EOF
+sudo dd status=none of=$CODIUM_LOCAL_REPO_PATH << EOF
 [vscodium]
 name=VSCodium RPM
 baseurl=https://download.vscodium.com/rpms/
@@ -110,7 +110,7 @@ autorefresh=1
 gpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg
 metadata_expire=1h
 EOF
-sudo tee $KUBERNETES_LOCAL_REPO_PATH > /dev/null << EOF
+sudo dd status=none of=$KUBERNETES_LOCAL_REPO_PATH << EOF
 [kubernetes]
 name=Kubernetes
 baseurl=https://pkgs.k8s.io/core:/stable:/$KUBERNETES_STABLE_VERSION_MINOR/rpm/
@@ -118,7 +118,7 @@ enabled=1
 gpgcheck=1
 gpgkey=https://pkgs.k8s.io/core:/stable:/$KUBERNETES_STABLE_VERSION_MINOR/rpm/repodata/repomd.xml.key
 EOF
-sudo tee $OPENTOFU_LOCAL_REPO_PATH > /dev/null << EOF
+sudo dd status=none of=$OPENTOFU_LOCAL_REPO_PATH << EOF
 [opentofu]
 name=opentofu
 baseurl=https://packages.opentofu.org/opentofu/tofu/rpm_any/rpm_any/\$basearch
@@ -143,14 +143,14 @@ sslverify=1
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 metadata_expire=300
 EOF
-sudo tee $NVIDIA_LOCAL_REPO_PATH > /dev/null << EOF
+sudo dd status=none of=$NVIDIA_LOCAL_REPO_PATH << EOF
 [nvidia]
 name=nvidia-opensource
 baseurl=https://download.nvidia.com/opensuse/tumbleweed
 enabled=1
 autorefresh=1
 EOF
-sudo tee $MS_EDGE_LOCAL_REPO_PATH > /dev/null << EOF
+sudo dd status=none of=$MS_EDGE_LOCAL_REPO_PATH << EOF
 [microsoft-edge-stable]
 name=microsoft-edge-stable
 enabled=1
@@ -168,7 +168,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install --allow-vendor-change --from packman \
     vlc-codecs
 sudo zypper $ZYPPER_PARAMS_QUIET install codium kubectl tofu microsoft-edge-stable
 # nvidia
-sudo tee $NVIDIA_DRIVER_DRACUT_CONFIG_PATH > /dev/null << EOF
+sudo dd status=none of=$NVIDIA_DRIVER_DRACUT_CONFIG_PATH << EOF
 # early load nvidia driver
 # source: https://wiki.archlinux.org/title/Dracut
 force_drivers+=" nvidia nvidia_modeset nvidia_uvm nvidia_drm "
@@ -191,7 +191,7 @@ sudo ninja -C build install
 
 # install programs from flathub
 log_message info "Installing flatpack packages..."
-sudo tee /etc/profile.local > /dev/null << "EOF"
+sudo dd status=none of=/etc/profile.local << "EOF"
 XDG_DATA_DIRS="/var/lib/flatpak/exports/share:$XDG_DATA_DIRS"
 XDG_DATA_HOME="/var/lib/flatpak/exports/share:$XDG_DATA_HOME"
 EOF

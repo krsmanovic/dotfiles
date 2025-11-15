@@ -67,33 +67,33 @@ if grep --quiet "$FSTAB_LINE_SMB" /etc/fstab; then
     log_message info "SMB configuration is already present in fstab."
 else
     log_message info "Adding SMB configuration to fstab..."
-    sudo tee --append /etc/fstab > /dev/null <<< "$FSTAB_LINE_SMB"
+    sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_SMB"
     sudo mount -a
 fi
 if grep --quiet "$FSTAB_LINE_W" /etc/fstab; then
     log_message info "VM hosting disk configuration is already present in fstab."
 else
     log_message info "Adding VM hosting disk configuration to fstab..."
-    sudo tee --append /etc/fstab > /dev/null <<< "$FSTAB_LINE_W"
+    sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_W"
     sudo mount -a
 fi
 if grep --quiet "$FSTAB_LINE_EDU" /etc/fstab; then
     log_message info "Edu partition configuration is already present in fstab."
 else
     log_message info "Adding Edu partition configuration to fstab..."
-    sudo tee --append /etc/fstab > /dev/null <<< "$FSTAB_LINE_EDU"
+    sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_EDU"
     sudo mount -a
 fi
 if grep --quiet "$FSTAB_LINE_JUNKYARD" /etc/fstab; then
     log_message info "Junkyard partition configuration is already present in fstab."
 else
     log_message info "Adding Junkyard partition configuration to fstab..."
-    sudo tee --append /etc/fstab > /dev/null <<< "$FSTAB_LINE_JUNKYARD"
+    sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_JUNKYARD"
     sudo mount -a
 fi
 
 # network overrides
-sudo tee $NETWORK_MANAGER_CONFIG_OVERRIDES_PATH > /dev/null << EOF
+sudo dd status=none of=$NETWORK_MANAGER_CONFIG_OVERRIDES_PATH << EOF
 [connectivity]
 # disable connectivity checks
 #interval=0
@@ -103,7 +103,7 @@ for interface in $(ip -brief link | cut -d ' ' -f1); do
     IF_IPV6_DISABLE="$IF_IPV6_DISABLE
 net.ipv6.conf.$interface.disable_ipv6 = 1"
 done
-sudo tee $NETWORK_IPV6_SETTINGS > /dev/null << EOF
+sudo dd status=none of=$NETWORK_IPV6_SETTINGS << EOF
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 $IF_IPV6_DISABLE
@@ -146,12 +146,12 @@ done
 
 # fonts
 # https://freetype.org/freetype2/docs/hinting/text-rendering-general.html
-echo 'FREETYPE_PROPERTIES="truetype:interpreter-version=35 cff:no-stem-darkening=0 autofitter:no-stem-darkening=0"' | sudo tee /etc/environment
+echo 'FREETYPE_PROPERTIES="truetype:interpreter-version=35 cff:no-stem-darkening=0 autofitter:no-stem-darkening=0"' | sudo dd status=none of=/etc/environment
 sudo ln -s /usr/share/fontconfig/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d/ || true
 sudo ln -s /usr/share/fontconfig/conf.avail/10-autohint.conf /etc/fonts/conf.d/ || true
 sudo ln -s /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d/ || true
 
-# sudo tee $FC_DISCORD > /dev/null << "EOF"
+# sudo dd status=none of=$FC_DISCORD << "EOF"
 # <?xml version="1.0"?>
 # <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
 # <fontconfig>
@@ -179,7 +179,7 @@ sudo ln -s /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf /etc/fonts
 #     </match>
 # </fontconfig>
 # EOF
-# sudo tee $FC_TELEGRAM > /dev/null << "EOF"
+# sudo dd status=none of=$FC_TELEGRAM << "EOF"
 # <?xml version="1.0"?>
 # <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
 # <fontconfig>
@@ -219,7 +219,7 @@ sudo ln -s /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf /etc/fonts
 # get display id
 # xrandr --prop | grep ' connected'
 # DP-4 connected primary 1920x1080+0+0 (normal left inverted right x axis y axis) 527mm x 297mm
-# sudo tee $XORG_CONFIG_MONITOR > /dev/null << "EOF"
+# sudo dd status=none of=$XORG_CONFIG_MONITOR << "EOF"
 # Section "Monitor"
 #     Identifier             "DP-4"
 #     DisplaySize             527 297
@@ -233,7 +233,7 @@ sudo ln -s /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf /etc/fonts
 # kitten icat -n --align=left --transfer-mode=stream /home/$DESKTOP_USER/.config/fastfetch/images/chameleon-kitty.svg > /home/$DESKTOP_USER/.config/fastfetch/images/chameleon-kitty.bin
 # kitten icat -n --align=left --transfer-mode=stream /home/$DESKTOP_USER/.config/fastfetch/images/tumbleweed.svg > /home/$DESKTOP_USER/.config/fastfetch/images/tumbleweed.bin
 
-sudo tee $SNAPPER_ROOT_CONFIG > /dev/null << EOF
+sudo dd status=none of=$SNAPPER_ROOT_CONFIG << EOF
 # subvolume to snapshot
 SUBVOLUME="/"
 
