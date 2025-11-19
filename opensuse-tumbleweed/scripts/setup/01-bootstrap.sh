@@ -70,7 +70,10 @@ fi
 sudo hostnamectl set-chassis $CHASSIS_TYPE
 
 # remove garbage packages
-sudo zypper $ZYPPER_PARAMS_QUIET remove PackageKit
+if systemctl list-unit-files packagekit.service &>/dev/null; then
+    echo "Cleaning up PackageKit garbage..."
+    sudo zypper $ZYPPER_PARAMS_QUIET remove PackageKit
+fi
 
 # install packages
 sudo zypper $ZYPPER_PARAMS_QUIET update
