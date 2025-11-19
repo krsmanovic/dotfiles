@@ -191,11 +191,6 @@ sudo ninja -C build install
 
 # install programs from flathub
 log_message info "Installing flatpack packages..."
-sudo dd status=none of=/etc/profile.local << "EOF"
-XDG_DATA_DIRS="/var/lib/flatpak/exports/share:$XDG_DATA_DIRS"
-XDG_DATA_HOME="/var/lib/flatpak/exports/share:$XDG_DATA_HOME"
-EOF
-source /etc/profile.local
 flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 for pak in "${FLATPAK_PACKAGES[@]}"; do
     log_message info "Installing $pak flatpak..."
