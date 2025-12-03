@@ -17,11 +17,9 @@ KDE_LOOKANDFEEL_CFG_FILE_LOGOUT="/usr/share/plasma/look-and-feel/org.kde.breeze.
 GTK_SYSTEM_SOUNDS_OPTIONS="gtk-enable-event-sounds gtk-enable-input-feedback-sounds"
 GTK_SETTINGS_FILES="/home/$DESKTOP_USER/.gtkrc-2.0 /home/$DESKTOP_USER/.config/gtk-3.0/settings.ini /home/$DESKTOP_USER/.config/gtk-4.0/settings.ini"
 KDE_LOGOUT_TIME_SECONDS="5"
-FC_DISCORD="/etc/fonts/conf.d/99-discord.conf"
-FC_TELEGRAM="/etc/fonts/conf.d/98-telegram.conf"
-XORG_CONFIG_MONITOR="/etc/X11/xorg.conf.d/90-monitor.conf"
 KDE_THEME_NAME="com.github.vinceliuice.Graphite-dark"
 SNAPPER_ROOT_CONFIG="/etc/snapper/configs/root"
+SNAPPER_CLEANUP_TIMER_UNIT="/usr/lib/systemd/system/snapper-cleanup.timer"
 
 # setup directories
 mkdir -p $CREDENTIALS_DIR || true
@@ -151,87 +149,22 @@ sudo ln -s /usr/share/fontconfig/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/con
 sudo ln -s /usr/share/fontconfig/conf.avail/10-autohint.conf /etc/fonts/conf.d/ || true
 sudo ln -s /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d/ || true
 
-# sudo dd status=none of=$FC_DISCORD << "EOF"
-# <?xml version="1.0"?>
-# <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
-# <fontconfig>
-#     <match>
-#         <test name="prgname">
-#             <string>Discord</string>
-#         </test>
-#         <edit name="hintstyle" mode="assign">
-#             <const>hintfull</const>
-#         </edit>
-#         <edit name="lcdfilter" mode="assign">
-#             <const>lcddefault</const>
-#         </edit>
-#     </match>
-#     <match>
-#         <test name="prgname">
-#             <string>com.discordapp.Discord</string>
-#         </test>
-#         <edit name="hintstyle" mode="assign">
-#             <const>hintfull</const>
-#         </edit>
-#         <edit name="lcdfilter" mode="assign">
-#             <const>lcddefault</const>
-#         </edit>
-#     </match>
-# </fontconfig>
-# EOF
-# sudo dd status=none of=$FC_TELEGRAM << "EOF"
-# <?xml version="1.0"?>
-# <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
-# <fontconfig>
-#     <match>
-#         <test name="prgname">
-#             <string>Telegram</string>
-#         </test>
-#         <edit name="hintstyle" mode="assign">
-#             <const>hintmedium</const>
-#         </edit>
-#         <edit name="lcdfilter" mode="assign">
-#             <const>lcddefault</const>
-#         </edit>
-#     </match>
-#     <match>
-#         <test name="prgname">
-#             <string>org.telegram.desktop</string>
-#         </test>
-#         <edit name="hintstyle" mode="assign">
-#             <const>hintmedium</const>
-#         </edit>
-#         <edit name="lcdfilter" mode="assign">
-#             <const>lcddefault</const>
-#         </edit>
-#     </match>
-# </fontconfig>
-# EOF
+# snapper
+sudo dd status=none of=$SNAPPER_CLEANUP_TIMER_UNIT << EOF
+[Unit]
+Description=Hourly Cleanup of Snapper Snapshots
+Documentation=man:snapper(8) man:snapper-configs(5)
 
-# fix monitor dpi
-# https://wiki.archlinux.org/title/Xorg#Display_size_and_DPI
-# get real monitor geometry
-# edid-decode -o xml  < /sys/class/drm/card1-DP-3/edid
-# ...
-#   Detailed Timing Descriptors:
-#     DTD 1:  1920x1080   60.000000 Hz  16:9     67.500 kHz    148.500000 MHz (527 mm x 297 mm)
-# ...
-# get display id
-# xrandr --prop | grep ' connected'
-# DP-4 connected primary 1920x1080+0+0 (normal left inverted right x axis y axis) 527mm x 297mm
-# sudo dd status=none of=$XORG_CONFIG_MONITOR << "EOF"
-# Section "Monitor"
-#     Identifier             "DP-4"
-#     DisplaySize             527 297
-# EndSection
-# EOF
+[Timer]
+# OnBootSec=10m
+# OnUnitActiveSec=1h
+OnCalendar=Wed..Sun 04:00:00
 
-# convert opensuse logo from svg to raw image format for fastfetch
-# i have only changed green tone; original was fetched from:
-# 1) https://en.opensuse.org/images/6/6c/OpenSUSE-hellcp.svg
-# 2) https://github.com/openSUSE/artwork/blob/master/logos/distros/tumbleweed.svg
-# kitten icat -n --align=left --transfer-mode=stream /home/$DESKTOP_USER/.config/fastfetch/images/chameleon-kitty.svg > /home/$DESKTOP_USER/.config/fastfetch/images/chameleon-kitty.bin
-# kitten icat -n --align=left --transfer-mode=stream /home/$DESKTOP_USER/.config/fastfetch/images/tumbleweed.svg > /home/$DESKTOP_USER/.config/fastfetch/images/tumbleweed.bin
+[Install]
+WantedBy=timers.target
+
+EOF
+sudo systemctl daemon-reload
 
 sudo dd status=none of=$SNAPPER_ROOT_CONFIG << EOF
 # subvolume to snapshot
