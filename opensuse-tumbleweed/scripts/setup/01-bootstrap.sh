@@ -9,7 +9,7 @@ WORKDIR="$(mktemp -d)"
 GO_DIR_CACHE=$WORKDIR/cache
 GO_DIR_BIN=$WORKDIR/bin
 PAPIRUS_THEME_DIR=/usr/share/icons/Papirus
-mkdir -p $STEAM_LOCAL_LIBRARY $GO_DIR_CACHE $GO_DIR_BIN || true
+CURL_PARAMS="--silent --show-error --location"
 
 # load common functions
 if [ -f $BASH_LIBRARY_COMMON ]; then
@@ -19,6 +19,8 @@ else
     exit 1
 fi
 
+mkdir -p $STEAM_LOCAL_LIBRARY $GO_DIR_CACHE $GO_DIR_BIN || true
+
 # package manager variables
 CODIUM_LOCAL_REPO_PATH=/etc/zypp/repos.d/vscodium.repo
 KUBERNETES_LOCAL_REPO_PATH=/etc/zypp/repos.d/kubernetes.repo
@@ -26,8 +28,10 @@ OPENTOFU_LOCAL_REPO_PATH=/etc/zypp/repos.d/opentofu.repo
 NVIDIA_LOCAL_REPO_PATH=/etc/zypp/repos.d/nvidia.repo
 PACKMAN_LOCAL_REPO_PATH=/etc/zypp/repos.d/packman.repo
 MS_EDGE_LOCAL_REPO_PATH=/etc/zypp/repos.d/microsoft-edge.repo
-KUBERNETES_STABLE_VERSION_MINOR=$(curl -L -s https://dl.k8s.io/release/stable.txt | awk -F '.' '{print $1"."$2}')
+KUBERNETES_STABLE_VERSION_MINOR=$(curl $CURL_PARAMS https://dl.k8s.io/release/stable.txt | awk -F '.' '{print $1"."$2}')
 ZYPPER_PARAMS_QUIET="--non-interactive --quiet"
+ZYPPER_INSTALL_PARAMS_BASE="--no-recommends"
+ZYPPER_INSTALL_PARAMS_CLOSED_SOURCE="$ZYPPER_INSTALL_PARAMS_BASE --auto-agree-with-licenses"
 FLATPAK_PARAMS_QUIET="--assumeyes --noninteractive flathub"
 FLATPAK_PACKAGES=(
     com.valvesoftware.Steam
@@ -78,7 +82,7 @@ fi
 # install packages
 sudo zypper $ZYPPER_PARAMS_QUIET update
 log_message info "Installing core list of packages..."
-sudo zypper $ZYPPER_PARAMS_QUIET install \
+sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_BASE \
     nmap mtr whois samba-client bind-utils wireshark wget \
     fastfetch neovim fira-code-fonts conky tmux htop btop steam-devices kitty starship timeshift dysk \
     k9s azure-cli \
@@ -163,22 +167,22 @@ EOF
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 sudo zypper $ZYPPER_PARAMS_QUIET --gpg-auto-import-keys refresh
 sudo zypper $ZYPPER_PARAMS_QUIET update
-sudo zypper $ZYPPER_PARAMS_QUIET install --allow-vendor-change --from packman \
+sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_BASE --allow-vendor-change --from packman \
     ffmpeg \
     gstreamer-plugins-{good,bad,ugly,libav} \
     libavcodec \
     libav-tools \
     vlc-codecs
-sudo zypper $ZYPPER_PARAMS_QUIET install codium kubectl tofu microsoft-edge-stable
+sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_BASE codium kubectl tofu microsoft-edge-stable
 # nvidia
 sudo dd status=none of=$NVIDIA_DRIVER_DRACUT_CONFIG_PATH << EOF
 # early load nvidia driver
 # source: https://wiki.archlinux.org/title/Dracut
 force_drivers+=" nvidia nvidia_modeset nvidia_uvm nvidia_drm "
 EOF
-sudo zypper $ZYPPER_PARAMS_QUIET install --auto-agree-with-licenses nvidia-video-G06
-sudo zypper $ZYPPER_PARAMS_QUIET install --auto-agree-with-licenses nvidia-gl-G06 nvidia-gl-G06-32bit
-sudo zypper $ZYPPER_PARAMS_QUIET install --auto-agree-with-licenses nvidia-compute-G06 nvidia-compute-utils-G06
+sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_CLOSED_SOURCE nvidia-video-G06
+sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_CLOSED_SOURCE nvidia-gl-G06 nvidia-gl-G06-32bit
+sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_CLOSED_SOURCE nvidia-compute-G06 nvidia-compute-utils-G06
 cd $WORKDIR
 git clone --depth 1 https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
 cd nv-codec-headers
@@ -215,7 +219,7 @@ if aws --version &> /dev/null; then
 else
     cd $WORKDIR
     log_message info "Downloading latest AWS cli version..."
-    curl --silent --show-error "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" --output "awscliv2.zip"
+    curl $CURL_PARAMS "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" --output "awscliv2.zip"
     unzip awscliv2.zip
     sudo ./aws/install
 fi
@@ -223,7 +227,7 @@ if stat /usr/lib64/libogg.so &> /dev/null; then
     log_message info "$OGG_CODEC_NAME is already installed."
 else
     cd $WORKDIR
-    curl --silent --show-error $OGG_CODEC_DOWNLOAD_URL --output $OGG_CODEC_ARCHIVE_NAME
+    curl $CURL_PARAMS $OGG_CODEC_DOWNLOAD_URL --output $OGG_CODEC_ARCHIVE_NAME
     tar -xvJf "$OGG_CODEC_ARCHIVE_NAME"
     cd "$OGG_CODEC_NAME-$OGG_CODEC_VERSION"
     ./configure --prefix=/usr --disable-static --docdir=/usr/share/doc/$OGG_CODEC_NAME-$OGG_CODEC_VERSION
@@ -234,7 +238,7 @@ if stat /usr/lib64/libvorbis.so.0 &> /dev/null; then
     log_message info "$VORBIS_CODEC_NAME is already installed."
 else
     cd $WORKDIR
-    curl --silent --show-error $VORBIS_CODEC_DOWNLOAD_URL --output $VORBIS_CODEC_ARCHIVE_NAME
+    curl $CURL_PARAMS $VORBIS_CODEC_DOWNLOAD_URL --output $VORBIS_CODEC_ARCHIVE_NAME
     tar -xvJf "$VORBIS_CODEC_ARCHIVE_NAME"
     cd "$VORBIS_CODEC_NAME-$VORBIS_CODEC_VERSION"
     ./configure --prefix=/usr --disable-static
@@ -246,7 +250,7 @@ if stat /usr/lib64/libtheora.so &> /dev/null; then
     log_message info "$THEORA_CODEC_NAME is already installed."
 else
     cd $WORKDIR
-    curl --silent --show-error $THEORA_CODEC_DOWNLOAD_URL --output $THEORA_CODEC_ARCHIVE_NAME
+    curl $CURL_PARAMS $THEORA_CODEC_DOWNLOAD_URL --output $THEORA_CODEC_ARCHIVE_NAME
     tar -xvzf "$THEORA_CODEC_ARCHIVE_NAME"
     cd "$THEORA_CODEC_NAME-$THEORA_CODEC_VERSION"
     ./configure --prefix=/usr --disable-static
@@ -283,7 +287,7 @@ else
     sh build_svg.sh
     cd packaging
     sh build_rpm.sh
-    sudo zypper $ZYPPER_PARAMS_QUIET install --allow-unsigned-rpm --no-recommends dark-icon-theme*.rpm
+    sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_BASE --allow-unsigned-rpm dark-icon-theme*.rpm
 fi
 
 if [ -d $PAPIRUS_THEME_DIR ]; then
@@ -300,8 +304,8 @@ if ls -lah ~/.fonts/ | grep --quiet "Segoe.*ttf"; then
     log_message info "Segoe UI font is already installed."
 else
     cd $WORKDIR
-    curl --silent --show-error --location https://aka.ms/SegoeUIVariable --output SegoeUI-VF.zip
-    curl --silent --show-error --location https://aka.ms/SegoeFluentIcons --output Segoe-Fluent-Icons.zip
+    curl $CURL_PARAMS https://aka.ms/SegoeUIVariable --output SegoeUI-VF.zip
+    curl $CURL_PARAMS https://aka.ms/SegoeFluentIcons --output Segoe-Fluent-Icons.zip
     unzip -o SegoeUI-VF.zip
     unzip -o Segoe-Fluent-Icons.zip
     mv Segoe*ttf ~/.fonts/
