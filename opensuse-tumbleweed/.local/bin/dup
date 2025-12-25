@@ -27,7 +27,7 @@ flatpak update $FLATPAK_PARAMS_QUIET
 # post-upgrade checks
 echo "Performing post-upgrade system configuration checks..."
 
-dd status=none of=$SNAPPER_CLEANUP_TIMER_UNIT << EOF
+dd status=none of=$SNAPPER_CLEANUP_TIMER_UNIT_TEMP << EOF
 [Unit]
 Description=Hourly Cleanup of Snapper Snapshots
 Documentation=man:snapper(8) man:snapper-configs(5)
