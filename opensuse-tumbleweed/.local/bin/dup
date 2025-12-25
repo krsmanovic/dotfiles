@@ -4,7 +4,17 @@
 ZYPPER_PARAMS_QUIET="--non-interactive --quiet"
 ZYPPER_PARAMS_DUP="--no-allow-vendor-change --auto-agree-with-licenses --no-recommends"
 FLATPAK_PARAMS_QUIET="--noninteractive --assumeyes"
+WORKDIR="$(mktemp -d)"
+SYSTEMD_NEEDS_RELOAD="no"
+SNAPPER_ROOT_CONFIG="/etc/snapper/configs/root"
+SNAPPER_ROOT_CONFIG_TEMP="$WORKDIR/snapper-root"
+SNAPPER_CLEANUP_TIMER_UNIT="/usr/lib/systemd/system/snapper-cleanup.timer"
+SNAPPER_CLEANUP_TIMER_UNIT_TEMP="$WORKDIR/snapper-cleanup.timer"
+# declate pairs of temporary and system files for comparison
+SYSTEM_FILES=("$SNAPPER_ROOT_CONFIG_TEMP $SNAPPER_ROOT_CONFIG"
+"$SNAPPER_CLEANUP_TIMER_UNIT_TEMP $SNAPPER_CLEANUP_TIMER_UNIT")
 
+# upgrade procedure
 echo "Running zypper refresh..."
 sudo zypper $ZYPPER_PARAMS_QUIET --gpg-auto-import-keys refresh
 
@@ -13,3 +23,103 @@ sudo zypper $ZYPPER_PARAMS_QUIET dist-upgrade $ZYPPER_PARAMS_DUP
 
 echo "Running flatpak update..."
 flatpak update $FLATPAK_PARAMS_QUIET
+
+# post-upgrade checks
+echo "Performing post-upgrade system configuration checks..."
+
+dd status=none of=$SNAPPER_CLEANUP_TIMER_UNIT << EOF
+[Unit]
+Description=Hourly Cleanup of Snapper Snapshots
+Documentation=man:snapper(8) man:snapper-configs(5)
+
+[Timer]
+# OnBootSec=10m
+# OnUnitActiveSec=1h
+OnCalendar=Wed..Sun 04:00:00
+
+[Install]
+WantedBy=timers.target
+
+EOF
+
+dd status=none of=$SNAPPER_ROOT_CONFIG_TEMP << EOF
+# subvolume to snapshot
+SUBVOLUME="/"
+
+# filesystem type
+FSTYPE="btrfs"
+
+
+# btrfs qgroup for space aware cleanup algorithms
+QGROUP=""
+
+
+# fraction or absolute size of the filesystems space the snapshots may use
+SPACE_LIMIT="0.5"
+
+# fraction or absolute size of the filesystems space that should be free
+FREE_LIMIT="0.2"
+
+
+# users and groups allowed to work with config
+ALLOW_USERS=""
+ALLOW_GROUPS=""
+
+# sync users and groups from ALLOW_USERS and ALLOW_GROUPS to .snapshots
+# directory
+SYNC_ACL="no"
+
+
+# start comparing pre- and post-snapshot in background after creating
+# post-snapshot
+BACKGROUND_COMPARISON="yes"
+
+
+# run daily number cleanup
+NUMBER_CLEANUP="yes"
+
+# limit for number cleanup
+NUMBER_MIN_AGE="3600"
+NUMBER_LIMIT="50"
+NUMBER_LIMIT_IMPORTANT="10"
+
+
+# create hourly snapshots
+TIMELINE_CREATE="yes"
+
+# cleanup hourly snapshots after some time
+TIMELINE_CLEANUP="yes"
+
+# limits for timeline cleanup
+TIMELINE_MIN_AGE="3600"
+TIMELINE_LIMIT_HOURLY="10"
+TIMELINE_LIMIT_DAILY="10"
+TIMELINE_LIMIT_WEEKLY="0"
+TIMELINE_LIMIT_MONTHLY="10"
+TIMELINE_LIMIT_QUARTERLY="0"
+TIMELINE_LIMIT_YEARLY="10"
+
+
+# cleanup empty pre-post-pairs
+EMPTY_PRE_POST_CLEANUP="yes"
+
+# limits for empty pre-post-pair cleanup
+EMPTY_PRE_POST_MIN_AGE="3600"
+
+EOF
+
+for ((i = 0; i < ${#SYSTEM_FILES[@]}; i++)); do
+    SYSTEM_FILE=$(echo "${SYSTEM_FILES[$i]}" | cut -d " " -f2)
+    if cmp ${SYSTEM_FILES[$i]} &>/dev/null; then
+        echo "File $SYSTEM_FILE is not reset by previous system update."
+    else
+        SYSTEMD_NEEDS_RELOAD="yes"
+        echo "File $SYSTEM_FILE has been reset by previous system update. Revereting proper version..."
+        sudo cp ${SYSTEM_FILES[$i]}
+    fi
+done
+
+if [ "$SYSTEMD_NEEDS_RELOAD" = "yes" ]; then
+    echo "Running systemctl daemon-reload..."
+    sudo systemctl daemon-reload
+fi
