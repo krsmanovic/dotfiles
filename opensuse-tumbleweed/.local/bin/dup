@@ -110,7 +110,7 @@ EOF
 
 for ((i = 0; i < ${#SYSTEM_FILES[@]}; i++)); do
     SYSTEM_FILE=$(echo "${SYSTEM_FILES[$i]}" | cut -d " " -f2)
-    if cmp ${SYSTEM_FILES[$i]} &>/dev/null; then
+    if sudo cmp ${SYSTEM_FILES[$i]} &>/dev/null; then
         echo "File $SYSTEM_FILE is not reset by previous system update."
     else
         SYSTEMD_NEEDS_RELOAD="yes"
