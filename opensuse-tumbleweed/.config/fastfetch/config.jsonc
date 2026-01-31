@@ -70,9 +70,10 @@
             "keyColor": "green"
         },
         {
-            "type": "bios",
-            "key": "│ ├{icon} ",
-            "keyColor": "green"
+            "type": "command",
+            "key": "│ ├ ",
+            "keyColor": "green",
+            "text": "echo nVidia driver $(nvidia-smi --version | grep DRIVER | cut -d ':' -f2)"
         },
         {
             "type": "packages",
