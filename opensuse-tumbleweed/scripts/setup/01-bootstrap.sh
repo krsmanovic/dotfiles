@@ -89,7 +89,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_BASE \
     go go-doc rustup cmake freetype-devel fontconfig-devel libxcb-devel libxkbcommon-devel libstartup-notification-1-0 fakeroot rpmbuild meson \
     Mesa-libEGL-devel gstreamer-devel gstreamer-plugins-bad gstreamer-plugins-bad-devel edid-decode opi libva-utils \
     docker docker-compose docker-compose-switch \
-    flatpak \
+    flatpak npm \
     pcsc-ccid \
     MozillaThunderbird \
     wine libvirt virt-manager \
@@ -212,6 +212,9 @@ else
     log_message info "Installing rust..."
     rustup toolchain install stable
 fi
+
+# install npm packages
+sudo npm install --global vscode-json-languageserver
 
 # scripted installations
 if aws --version &> /dev/null; then
