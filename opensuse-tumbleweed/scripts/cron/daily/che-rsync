@@ -1,0 +1,15 @@
+#!/bin/bash
+
+DIR_SOURCE='/home/che/'
+DIR_DESTINATION='/mnt/smb/backups/che-home/'
+
+rsync -avzHP \
+    --mkpath \
+    --exclude '.cache/' \
+    --exclude '.local/' \
+    --exclude '.cursor/' \
+    --exclude '.dbus/' \
+    --exclude '.docker/' \
+    --exclude '.eclipse/' \
+    --exclude '.rustup/' \
+    $DIR_SOURCE $DIR_DESTINATION

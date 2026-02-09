@@ -21,8 +21,9 @@ while read filename; do
 done < <(git ls-files)
 rsync --recursive --update --times opensuse-tumbleweed/ /home/$DESKTOP_USER/
 sudo chown -R $DESKTOP_USER:$DESKTOP_USER /home/$DESKTOP_USER/
-sudo rsync --recursive --update --times opensuse-tumbleweed/scripts/cron/weekly/ /etc/cron.weekly
-sudo rsync --recursive --update --times opensuse-tumbleweed/scripts/cron/monthly/ /etc/cron.monthly
+for dir in $(ls -1 opensuse-tumbleweed/scripts/cron); do
+    sudo rsync --recursive --update --times opensuse-tumbleweed/scripts/cron/$dir/ /etc/cron.$dir
+done
 
 # allow config scripts to mess up the system
 if sudo grep --quiet "@includedir $SUDOERS_CONFIG_DIR" /usr/etc/sudoers; then
