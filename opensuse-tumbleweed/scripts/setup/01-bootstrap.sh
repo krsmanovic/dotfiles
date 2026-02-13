@@ -275,6 +275,11 @@ else
     sudo cp $GO_DIR_BIN/rdap /usr/local/bin/rdap
 fi
 
+# argocd cli tool
+cd $WORKDIR
+curl $CURL_PARAMS https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64 --output argocd
+sudo install -m 555 argocd /usr/local/bin/argocd
+
 # setup plasmoids
 # BW_MONITOR_PLASMOID_NAME="NetworkBandwidthMonitorQt6.plasmoid"
 # wget -O $BW_MONITOR_PLASMOID_NAME "https://ocs-dl.fra1.cdn.digitaloceanspaces.com/data/files/1744930465/NetworkBandwidthMonitorQt6-6.2025.4.20.plasmoid
