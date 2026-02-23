@@ -16,9 +16,9 @@ SYSTEM_FILES=("$SNAPPER_ROOT_CONFIG_TEMP $SNAPPER_ROOT_CONFIG"
 
 # if common shell functions are loaded
 if [ "$COMMON_BASH_LIB_LOADED" = "yes" ]; then
-    LOGCMD="echo"
-else
     LOGCMD="log_message info"
+else
+    LOGCMD="echo"
 fi
 
 # upgrade procedure
