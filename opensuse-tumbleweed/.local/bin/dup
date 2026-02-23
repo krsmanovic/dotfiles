@@ -14,18 +14,29 @@ SNAPPER_CLEANUP_TIMER_UNIT_TEMP="$WORKDIR/snapper-cleanup.timer"
 SYSTEM_FILES=("$SNAPPER_ROOT_CONFIG_TEMP $SNAPPER_ROOT_CONFIG"
 "$SNAPPER_CLEANUP_TIMER_UNIT_TEMP $SNAPPER_CLEANUP_TIMER_UNIT")
 
+# if common shell functions are loaded
+if [ "$COMMON_BASH_LIB_LOADED" = "yes" ]; then
+    LOGCMD="echo"
+else
+    LOGCMD="log_message info"
+fi
+
 # upgrade procedure
-echo "Running zypper refresh..."
+$LOGCMD "Running zypper refresh..."
 sudo zypper $ZYPPER_PARAMS_QUIET --gpg-auto-import-keys refresh
+echo
 
-echo "Running zypper dist-upgrade..."
+$LOGCMD "Running zypper dist-upgrade..."
 sudo zypper $ZYPPER_PARAMS_QUIET dist-upgrade $ZYPPER_PARAMS_DUP
+echo
 
-echo "Running flatpak update..."
+$LOGCMD "Running flatpak update..."
 flatpak update $FLATPAK_PARAMS_QUIET
+echo
 
 # post-upgrade checks
-echo "Performing post-upgrade system configuration checks..."
+$LOGCMD "Performing post-upgrade system configuration checks..."
+echo
 
 dd status=none of=$SNAPPER_CLEANUP_TIMER_UNIT_TEMP << EOF
 [Unit]
@@ -111,15 +122,15 @@ EOF
 for ((i = 0; i < ${#SYSTEM_FILES[@]}; i++)); do
     SYSTEM_FILE=$(echo "${SYSTEM_FILES[$i]}" | cut -d " " -f2)
     if sudo cmp ${SYSTEM_FILES[$i]} &>/dev/null; then
-        echo "File $SYSTEM_FILE is not reset by previous system update."
+        $LOGCMD "$SYSTEM_FILE is as expected."
     else
         SYSTEMD_NEEDS_RELOAD="yes"
-        echo "File $SYSTEM_FILE has been reset by previous system update. Revereting proper version..."
         sudo cp ${SYSTEM_FILES[$i]}
+        $LOGCMD "$SYSTEM_FILE file is fixed."
     fi
 done
 
 if [ "$SYSTEMD_NEEDS_RELOAD" = "yes" ]; then
-    echo "Running systemctl daemon-reload..."
+    $LOGCMD "Running systemctl daemon-reload..."
     sudo systemctl daemon-reload
 fi

@@ -6,7 +6,7 @@ DIR_DESTINATION='/mnt/smb/backups/che-home/'
 rsync -avzHP \
     --mkpath \
     --exclude '.cache/' \
-    --exclude '.local/' \
+    --exclude '.local/share' \
     --exclude '.cursor/' \
     --exclude '.dbus/' \
     --exclude '.docker/' \

@@ -37,6 +37,9 @@ alias ff="fastfetch"
 alias ll="ls -lah"
 alias dev="cd ~/code/krsmanovic"
 alias mtr="sudo mtr"
+if which rdap &> /dev/null; then
+    alias whois="echo Using rdap -w instead...;echo;rdap -w"
+fi
 
 # decide if we want to print duration
 DURATION_SECONDS=$(( SECONDS - INITIAL_SECONDS ))

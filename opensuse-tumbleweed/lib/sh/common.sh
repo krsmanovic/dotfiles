@@ -4,6 +4,7 @@
 CONCURRENT_EXECUTIONS=$(grep --count processor /proc/cpuinfo)
 LESS=RX
 LC_ALL=en_US.utf8
+COMMON_BASH_LIB_LOADED="yes"
 
 # standardize stdout timestamp
 stamp_time () {
