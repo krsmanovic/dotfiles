@@ -122,11 +122,11 @@ EOF
 for ((i = 0; i < ${#SYSTEM_FILES[@]}; i++)); do
     SYSTEM_FILE=$(echo "${SYSTEM_FILES[$i]}" | cut -d " " -f2)
     if sudo cmp ${SYSTEM_FILES[$i]} &>/dev/null; then
-        $LOGCMD "$SYSTEM_FILE is as expected."
+        $LOGCMD "No need to fix file: $SYSTEM_FILE."
     else
         SYSTEMD_NEEDS_RELOAD="yes"
         sudo cp ${SYSTEM_FILES[$i]}
-        $LOGCMD "$SYSTEM_FILE file is fixed."
+        $LOGCMD "Fixed file: $SYSTEM_FILE."
     fi
 done
 
