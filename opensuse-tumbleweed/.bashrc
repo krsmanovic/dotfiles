@@ -8,6 +8,13 @@ else
     echo "Failed to load common shell library."
 fi
 
+# ops shell functions
+if [ -f ~/lib/sh/ops.sh ]; then
+    source ~/lib/sh/ops.sh
+else
+    echo "Failed to load ops shell library."
+fi
+
 # starship
 if [ -f ~/.config/starship/starship.toml ] && which starship &> /dev/null; then
     export STARSHIP_CONFIG=~/.config/starship/starship.toml
@@ -40,6 +47,7 @@ alias mtr="sudo mtr"
 if which rdap &> /dev/null; then
     alias whois="echo Using rdap -w instead...;echo;rdap -w"
 fi
+alias code="codium"
 
 # decide if we want to print duration
 DURATION_SECONDS=$(( SECONDS - INITIAL_SECONDS ))
