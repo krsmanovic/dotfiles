@@ -45,7 +45,7 @@ alias ll="ls -lah"
 alias dev="cd ~/code/krsmanovic"
 alias mtr="sudo mtr"
 if which rdap &> /dev/null; then
-    alias whois="echo Using rdap -w instead...;echo;rdap -w"
+    alias whois="echo Using rdap -w instead...;echo;rdap --whois --type=domain"
 fi
 alias code="codium"
 
