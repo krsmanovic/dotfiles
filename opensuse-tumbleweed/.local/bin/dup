@@ -16,26 +16,33 @@ SYSTEM_FILES=("$SNAPPER_ROOT_CONFIG_TEMP $SNAPPER_ROOT_CONFIG"
 
 # if common shell functions are loaded
 if [ "$COMMON_BASH_LIB_LOADED" = "yes" ]; then
-    LOGCMD="log_message info"
+    logcmd () {
+        log_message info "${@}"
+    }
 else
-    LOGCMD="echo"
+    stamp_time () {
+        TZ="Europe/Belgrade" date "+%Y-%m-%d %H:%M:%S"
+    }
+    logcmd () {
+        echo $(stamp_time) INFO "${@}"
+    }
 fi
 
 # upgrade procedure
-$LOGCMD "Running zypper refresh..."
+logcmd "Running zypper refresh..."
 sudo zypper $ZYPPER_PARAMS_QUIET --gpg-auto-import-keys refresh
 echo
 
-$LOGCMD "Running zypper dist-upgrade..."
+logcmd "Running zypper dist-upgrade..."
 sudo zypper $ZYPPER_PARAMS_QUIET dist-upgrade $ZYPPER_PARAMS_DUP
 echo
 
-$LOGCMD "Running flatpak update..."
+logcmd "Running flatpak update..."
 flatpak update $FLATPAK_PARAMS_QUIET
 echo
 
 # post-upgrade checks
-$LOGCMD "Performing post-upgrade system configuration checks..."
+logcmd "Performing post-upgrade system configuration checks..."
 echo
 
 dd status=none of=$SNAPPER_CLEANUP_TIMER_UNIT_TEMP << EOF
@@ -122,15 +129,15 @@ EOF
 for ((i = 0; i < ${#SYSTEM_FILES[@]}; i++)); do
     SYSTEM_FILE=$(echo "${SYSTEM_FILES[$i]}" | cut -d " " -f2)
     if sudo cmp ${SYSTEM_FILES[$i]} &>/dev/null; then
-        $LOGCMD "No need to fix file: $SYSTEM_FILE."
+        logcmd "No need to fix file: $SYSTEM_FILE."
     else
         SYSTEMD_NEEDS_RELOAD="yes"
         sudo cp ${SYSTEM_FILES[$i]}
-        $LOGCMD "Fixed file: $SYSTEM_FILE."
+        logcmd "Fixed file: $SYSTEM_FILE."
     fi
 done
 
 if [ "$SYSTEMD_NEEDS_RELOAD" = "yes" ]; then
-    $LOGCMD "Running systemctl daemon-reload..."
+    logcmd "Running systemctl daemon-reload..."
     sudo systemctl daemon-reload
 fi
