@@ -215,6 +215,7 @@ fi
 
 # install npm packages
 sudo npm install --global vscode-json-languageserver
+sudo npm install --global yaml-language-server
 
 # scripted installations
 if aws --version &> /dev/null; then
