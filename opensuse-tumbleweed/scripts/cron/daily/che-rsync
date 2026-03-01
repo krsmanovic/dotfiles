@@ -3,8 +3,15 @@
 DIR_SOURCE='/home/che/'
 DIR_DESTINATION='/mnt/smb/backups/che-home/'
 
-rsync -avzHP \
+rsync \
+    --times \
+    --verbose \
+    --compress \
+    --hard-links \
+    --partial \
+    --progress \
     --mkpath \
+    --recursive \
     --exclude '.cache/' \
     --exclude '.local/share' \
     --exclude '.cursor/' \
@@ -12,4 +19,5 @@ rsync -avzHP \
     --exclude '.docker/' \
     --exclude '.eclipse/' \
     --exclude '.rustup/' \
+    --exclude 'Downloads/' \
     $DIR_SOURCE $DIR_DESTINATION
