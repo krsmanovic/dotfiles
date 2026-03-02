@@ -2,6 +2,26 @@
 
 DIR_SOURCE='/home/che/'
 DIR_DESTINATION='/mnt/smb/backups/che-home/'
+LOG_SCRIPT='/var/log/cron-che-rsync.log'
+LOG_RSYNC="/var/log/rsync-$(date +%Y-%m-%d).log"
+
+if [ ! -f $LOG_SCRIPT ]; then
+    install --mode 644 /dev/null $LOG_SCRIPT
+fi
+if [ ! -f $LOG_RSYNC ]; then
+    install --mode 640 /dev/null $LOG_RSYNC
+fi
+
+stamp_time () {
+    TZ="Europe/Belgrade" date "+%Y-%m-%d %H:%M:%S"
+}
+logcmd () {
+    echo $(stamp_time) INFO "${@}" >> $LOG_SCRIPT
+    echo $(stamp_time) INFO "${@}" >> $LOG_RSYNC
+    logger --priority "local7.info" "${@}"
+}
+
+logcmd "Starting rsync backup..."
 
 rsync \
     --times \
@@ -12,6 +32,7 @@ rsync \
     --progress \
     --mkpath \
     --recursive \
+    --log-file=$LOG_RSYNC \
     --exclude '.cache/' \
     --exclude '.local/share' \
     --exclude '.cursor/' \
@@ -21,3 +42,5 @@ rsync \
     --exclude '.rustup/' \
     --exclude 'Downloads/' \
     $DIR_SOURCE $DIR_DESTINATION
+
+logcmd "End of rsync backup."
