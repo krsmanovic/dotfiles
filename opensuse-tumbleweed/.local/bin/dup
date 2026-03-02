@@ -13,11 +13,17 @@ SNAPPER_CLEANUP_TIMER_UNIT_TEMP="$WORKDIR/snapper-cleanup.timer"
 # declate pairs of temporary and system files for comparison
 SYSTEM_FILES=("$SNAPPER_ROOT_CONFIG_TEMP $SNAPPER_ROOT_CONFIG"
 "$SNAPPER_CLEANUP_TIMER_UNIT_TEMP $SNAPPER_CLEANUP_TIMER_UNIT")
+LOG_SCRIPT="/var/log/dup.log"
+
+if [ ! -f $LOG_SCRIPT ]; then
+    sudo install --mode 644 /dev/null $LOG_SCRIPT
+fi
 
 # if common shell functions are loaded
 if [ "$COMMON_BASH_LIB_LOADED" = "yes" ]; then
     logcmd () {
         log_message info "${@}"
+        sudo dd status=none oflag=append conv=notrunc of=$LOG_SCRIPT <<< "$(stamp_time) INFO ${@}"
     }
 else
     stamp_time () {
@@ -25,6 +31,7 @@ else
     }
     logcmd () {
         echo $(stamp_time) INFO "${@}"
+        sudo dd status=none oflag=append conv=notrunc of=$LOG_SCRIPT <<< "$(stamp_time) INFO ${@}"
     }
 fi
 
