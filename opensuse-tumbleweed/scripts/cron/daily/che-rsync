@@ -2,9 +2,13 @@
 
 DIR_SOURCE='/home/che/'
 DIR_DESTINATION='/mnt/smb/backups/che-home/'
+DIR_RSYNC_BACKUP_LOGS='/var/log/rsync-backup'
 LOG_SCRIPT='/var/log/cron-che-rsync.log'
-LOG_RSYNC="/var/log/rsync-$(date +%Y-%m-%d).log"
+LOG_RSYNC="$DIR_RSYNC_BACKUP_LOGS/$(date +%Y-%m-%d).log"
 
+if [ ! -d $DIR_RSYNC_BACKUP_LOGS ]; then
+    install --mode 750 --directory $DIR_RSYNC_BACKUP_LOGS
+fi
 if [ ! -f $LOG_SCRIPT ]; then
     install --mode 644 /dev/null $LOG_SCRIPT
 fi
