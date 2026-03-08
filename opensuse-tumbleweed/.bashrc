@@ -48,6 +48,7 @@ if which rdap &> /dev/null; then
     alias whois="echo Using rdap -w instead...;echo;rdap --whois --type=domain"
 fi
 alias code="codium"
+alias kamera="ffplay -fs /dev/video0"
 
 # decide if we want to print duration
 DURATION_SECONDS=$(( SECONDS - INITIAL_SECONDS ))
