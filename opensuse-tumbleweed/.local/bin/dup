@@ -50,13 +50,13 @@ logcmd "Performing post-upgrade system configuration checks..."
 
 dd status=none of=$SNAPPER_CLEANUP_TIMER_UNIT_TEMP << EOF
 [Unit]
-Description=Hourly Cleanup of Snapper Snapshots
+Description=Scheduled Cleanup of Snapper Snapshots
 Documentation=man:snapper(8) man:snapper-configs(5)
 
 [Timer]
 # OnBootSec=10m
 # OnUnitActiveSec=1h
-OnCalendar=Wed..Sun 04:00:00
+OnCalendar=Mon,Wed,Fri,Sun 04:00:00
 
 [Install]
 WantedBy=timers.target
@@ -76,7 +76,7 @@ QGROUP=""
 
 
 # fraction or absolute size of the filesystems space the snapshots may use
-SPACE_LIMIT="0.5"
+SPACE_LIMIT="0.2"
 
 # fraction or absolute size of the filesystems space that should be free
 FREE_LIMIT="0.2"
@@ -101,7 +101,7 @@ NUMBER_CLEANUP="yes"
 
 # limit for number cleanup
 NUMBER_MIN_AGE="3600"
-NUMBER_LIMIT="50"
+NUMBER_LIMIT="10"
 NUMBER_LIMIT_IMPORTANT="10"
 
 
@@ -109,7 +109,7 @@ NUMBER_LIMIT_IMPORTANT="10"
 TIMELINE_CREATE="no"
 
 # cleanup hourly snapshots after some time
-TIMELINE_CLEANUP="yes"
+TIMELINE_CLEANUP="no"
 
 # limits for timeline cleanup
 TIMELINE_MIN_AGE="3600"
