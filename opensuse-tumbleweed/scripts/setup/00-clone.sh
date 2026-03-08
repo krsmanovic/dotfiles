@@ -3,6 +3,7 @@
 # vars
 DESKTOP_USER=che
 WORKDIR="$(mktemp -d)"
+SUDOERS_FILE="/usr/etc/sudoers"
 SUDOERS_CONFIG_DIR="/usr/etc/sudoers.d"
 SUDOERS_CONFIG_USER_PATH="$SUDOERS_CONFIG_DIR/98-$DESKTOP_USER"
 SUDOERS_CONFIG_CUSTOM_PATH="$SUDOERS_CONFIG_DIR/99-bootstrap-scripts"
@@ -26,9 +27,9 @@ for dir in $(ls -1 opensuse-tumbleweed/scripts/cron); do
 done
 
 # allow config scripts to mess up the system
-if sudo grep --quiet "@includedir $SUDOERS_CONFIG_DIR" /usr/etc/sudoers; then
+if sudo grep --quiet "@includedir $SUDOERS_CONFIG_DIR" $SUDOERS_FILE; then
     if [ -d $SUDOERS_CONFIG_DIR ]; then
-        echo "/usr/etc/sudoers is already up to date..."
+        echo "$SUDOERS_FILE is already up to date..."
     else
         sudo mkdir -p $SUDOERS_CONFIG_DIR
     fi
@@ -42,5 +43,7 @@ EOF
 $DESKTOP_USER ALL=(root) NOPASSWD:/usr/sbin/mtr
 EOF
 fi
+# for some reason distribution produces wrong permissions on sudoers config files
+sudo chmod 440 $SUDOERS_FILE
 sudo chmod --recursive 440 $SUDOERS_CONFIG_DIR
 sudo visudo --check
