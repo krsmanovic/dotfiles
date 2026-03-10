@@ -8,9 +8,8 @@ SMB_CREDENTIALS_FILE="smb"
 SMB_SHARE_PATH="//smb.lan/cher"
 SMB_MOUNT_DIR="/mnt/smb"
 FSTAB_LINE_SMB="$SMB_SHARE_PATH    $SMB_MOUNT_DIR                cifs   credentials=$CREDENTIALS_DIR/$SMB_CREDENTIALS_FILE,nofail 0 0"
-FSTAB_LINE_W="UUID=9056009D56008666 /mnt/w              ntfs   defaults,nofail                0  0"
-FSTAB_LINE_EDU="UUID=3006EF4D06EF12A0 /mnt/edu            ntfs   defaults,nofail                0  0"
-FSTAB_LINE_JUNKYARD="UUID=B280FEB780FE80E1 /mnt/junkyard       ntfs   defaults,nofail                0  0"
+FSTAB_LINE_GAMES="UUID=6214e21e-a726-4f65-850a-55a7b76c085c  /data/games             ext4   data=ordered                  0  2"
+FSTAB_LINE_EDU="UUID=7288d909-462e-4cbf-be8d-7005ea3f18a5  /data/edu               ext4   data=ordered                  0  2"
 NETWORK_MANAGER_CONFIG_OVERRIDES_PATH="/etc/NetworkManager/conf.d/99-overrides.conf"
 NETWORK_IPV6_SETTINGS="/etc/sysctl.d/90-ipv6.conf"
 KDE_LOOKANDFEEL_CFG_FILE_LOGOUT="/usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/logout/Logout.qml"
@@ -68,11 +67,11 @@ else
     sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_SMB"
     sudo mount -a
 fi
-if grep --quiet "$FSTAB_LINE_W" /etc/fstab; then
-    log_message info "VM hosting disk configuration is already present in fstab."
+if grep --quiet "$FSTAB_LINE_GAMES" /etc/fstab; then
+    log_message info "Gaming disk configuration is already present in fstab."
 else
-    log_message info "Adding VM hosting disk configuration to fstab..."
-    sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_W"
+    log_message info "Adding Gaming disk configuration to fstab..."
+    sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_GAMES"
     sudo mount -a
 fi
 if grep --quiet "$FSTAB_LINE_EDU" /etc/fstab; then
@@ -80,13 +79,6 @@ if grep --quiet "$FSTAB_LINE_EDU" /etc/fstab; then
 else
     log_message info "Adding Edu partition configuration to fstab..."
     sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_EDU"
-    sudo mount -a
-fi
-if grep --quiet "$FSTAB_LINE_JUNKYARD" /etc/fstab; then
-    log_message info "Junkyard partition configuration is already present in fstab."
-else
-    log_message info "Adding Junkyard partition configuration to fstab..."
-    sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_JUNKYARD"
     sudo mount -a
 fi
 
