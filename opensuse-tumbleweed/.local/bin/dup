@@ -144,3 +144,7 @@ if [ "$SYSTEMD_NEEDS_RELOAD" = "yes" ]; then
     logcmd "Running systemctl daemon-reload..."
     sudo systemctl daemon-reload
 fi
+
+# load settings from all system configuration files
+logcmd "Loading settings from all system configuration files..."
+sudo sysctl --system
