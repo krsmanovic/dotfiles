@@ -10,6 +10,7 @@ SNAPPER_ROOT_CONFIG="/etc/snapper/configs/root"
 SNAPPER_ROOT_CONFIG_TEMP="$WORKDIR/snapper-root"
 SNAPPER_CLEANUP_TIMER_UNIT="/usr/lib/systemd/system/snapper-cleanup.timer"
 SNAPPER_CLEANUP_TIMER_UNIT_TEMP="$WORKDIR/snapper-cleanup.timer"
+LIBVIRT_DEFAULT_NETWORK_IF_CONFIG="$WORKDIR/libvirt-default.xml "
 # declate pairs of temporary and system files for comparison
 SYSTEM_FILES=("$SNAPPER_ROOT_CONFIG_TEMP $SNAPPER_ROOT_CONFIG"
 "$SNAPPER_CLEANUP_TIMER_UNIT_TEMP $SNAPPER_CLEANUP_TIMER_UNIT")
@@ -145,6 +146,50 @@ if [ "$SYSTEMD_NEEDS_RELOAD" = "yes" ]; then
     sudo systemctl daemon-reload
 fi
 
+# check if virt manager default interface has been lost
+if sudo test ! -f "/var/lib/libvirt/network/default.xml"; then
+    if sudo virsh net-list --all | grep '^\s*default' | awk '{print $2}'| grep --quiet "active"; then
+        logcmd "Virtual manager default network is already active..."
+    else
+        logcmd "Applying virtual manager networking configuration..."
+        dd status=none of=$LIBVIRT_DEFAULT_NETWORK_IF_CONFIG << EOF
+<network>
+    <name>default</name>
+    <forward mode='nat'>
+        <nat>
+            <port start='1024' end='65535' />
+        </nat>
+    </forward>
+    <bridge name='virbr0' stp='on' delay='0' />
+    <ip address='100.64.0.1' netmask='255.255.255.0'>
+        <dhcp>
+            <range start='100.64.0.2' end='100.64.0.254' />
+        </dhcp>
+    </ip>
+</network>
+EOF
+        sudo zypper $ZYPPER_PARAMS_QUIET install --force libvirt virt-manager
+        sudo sed -i 's/^FirewallBackend=.*/FirewallBackend=iptables/' /etc/firewalld/firewalld.conf
+        sudo sed -i 's/^firewall_backend =.*/firewall_backend = "iptables"/' /etc/libvirt/network.conf
+        sudo systemctl restart firewalld
+        if ip link show virbr0 &> /dev/null; then
+            logcmd "Recreating virbr0 bridge interface using virsh cli..."
+
+            sudo virsh net-undefine default &> /dev/null
+            sudo virsh net-destroy default &> /dev/null
+            sudo systemctl enable --now libvirtd
+            sudo systemctl enable virtlogd.socket
+            sudo systemctl restart libvirtd.service
+
+            sudo virsh net-define $LIBVIRT_DEFAULT_NETWORK_IF_CONFIG
+            sudo virsh net-autostart default
+            sudo firewall-cmd --complete-reload
+            sudo virsh net-start default
+
+        fi
+    fi
+fi
+
 # load settings from all system configuration files
 logcmd "Loading settings from all system configuration files..."
-sudo sysctl --system
+sudo sysctl --system --quiet
