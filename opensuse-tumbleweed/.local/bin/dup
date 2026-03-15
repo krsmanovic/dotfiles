@@ -10,7 +10,7 @@ SNAPPER_ROOT_CONFIG="/etc/snapper/configs/root"
 SNAPPER_ROOT_CONFIG_TEMP="$WORKDIR/snapper-root"
 SNAPPER_CLEANUP_TIMER_UNIT="/usr/lib/systemd/system/snapper-cleanup.timer"
 SNAPPER_CLEANUP_TIMER_UNIT_TEMP="$WORKDIR/snapper-cleanup.timer"
-LIBVIRT_DEFAULT_NETWORK_IF_CONFIG="$WORKDIR/libvirt-default.xml "
+LIBVIRT_DEFAULT_NETWORK_IF_CONFIG="$WORKDIR/libvirt-default.xml"
 # declate pairs of temporary and system files for comparison
 SYSTEM_FILES=("$SNAPPER_ROOT_CONFIG_TEMP $SNAPPER_ROOT_CONFIG"
 "$SNAPPER_CLEANUP_TIMER_UNIT_TEMP $SNAPPER_CLEANUP_TIMER_UNIT")
