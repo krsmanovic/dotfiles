@@ -93,7 +93,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_BASE \
     pcsc-ccid \
     MozillaThunderbird \
     wine libvirt virt-manager \
-    strawberry audacity \
+    strawberry audacity elisa \
     keepassxc gimp calibre okular k3b nextcloud xorriso qimgv ImageMagick zbar gpick
 
 # install programs from external repos
