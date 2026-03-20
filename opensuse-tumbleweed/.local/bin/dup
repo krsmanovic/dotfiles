@@ -1,19 +1,21 @@
 #!/bin/bash
 
 # vars
+DESKTOP_USER=che
+TEMPLATES_DIR="/home/$DESKTOP_USER/lib/templates"
 ZYPPER_PARAMS_QUIET="--non-interactive --quiet"
 ZYPPER_PARAMS_DUP="--no-allow-vendor-change --auto-agree-with-licenses --no-recommends"
 FLATPAK_PARAMS_QUIET="--noninteractive --assumeyes"
 WORKDIR="$(mktemp -d)"
 SYSTEMD_NEEDS_RELOAD="no"
 SNAPPER_ROOT_CONFIG="/etc/snapper/configs/root"
-SNAPPER_ROOT_CONFIG_TEMP="$WORKDIR/snapper-root"
+SNAPPER_ROOT_CONFIG_TPL="$TEMPLATES_DIR/snapper-root.conf"
 SNAPPER_CLEANUP_TIMER_UNIT="/usr/lib/systemd/system/snapper-cleanup.timer"
-SNAPPER_CLEANUP_TIMER_UNIT_TEMP="$WORKDIR/snapper-cleanup.timer"
-LIBVIRT_DEFAULT_NETWORK_IF_CONFIG="$WORKDIR/libvirt-default.xml"
-# declate pairs of temporary and system files for comparison
-SYSTEM_FILES=("$SNAPPER_ROOT_CONFIG_TEMP $SNAPPER_ROOT_CONFIG"
-"$SNAPPER_CLEANUP_TIMER_UNIT_TEMP $SNAPPER_CLEANUP_TIMER_UNIT")
+SNAPPER_CLEANUP_TIMER_UNIT_TPL="$TEMPLATES_DIR/snapper-cleanup.timer"
+LIBVIRT_DEFAULT_NETWORK_TPL="$TEMPLATES_DIR/libvirt-default-virbr0.xml"
+# declate pairs of template and target system files for comparison
+SYSTEM_FILES=("$SNAPPER_ROOT_CONFIG_TPL $SNAPPER_ROOT_CONFIG"
+"$SNAPPER_CLEANUP_TIMER_UNIT_TPL $SNAPPER_CLEANUP_TIMER_UNIT")
 LOG_SCRIPT="/var/log/dup.log"
 
 if [ ! -f $LOG_SCRIPT ]; then
@@ -48,88 +50,6 @@ flatpak update $FLATPAK_PARAMS_QUIET
 
 # post-upgrade checks
 logcmd "Performing post-upgrade system configuration checks..."
-
-dd status=none of=$SNAPPER_CLEANUP_TIMER_UNIT_TEMP << EOF
-[Unit]
-Description=Scheduled Cleanup of Snapper Snapshots
-Documentation=man:snapper(8) man:snapper-configs(5)
-
-[Timer]
-# OnBootSec=10m
-# OnUnitActiveSec=1h
-OnCalendar=Mon,Wed,Fri,Sun 04:00:00
-
-[Install]
-WantedBy=timers.target
-
-EOF
-
-dd status=none of=$SNAPPER_ROOT_CONFIG_TEMP << EOF
-# subvolume to snapshot
-SUBVOLUME="/"
-
-# filesystem type
-FSTYPE="btrfs"
-
-
-# btrfs qgroup for space aware cleanup algorithms
-QGROUP=""
-
-
-# fraction or absolute size of the filesystems space the snapshots may use
-SPACE_LIMIT="0.2"
-
-# fraction or absolute size of the filesystems space that should be free
-FREE_LIMIT="0.2"
-
-
-# users and groups allowed to work with config
-ALLOW_USERS=""
-ALLOW_GROUPS=""
-
-# sync users and groups from ALLOW_USERS and ALLOW_GROUPS to .snapshots
-# directory
-SYNC_ACL="no"
-
-
-# start comparing pre- and post-snapshot in background after creating
-# post-snapshot
-BACKGROUND_COMPARISON="yes"
-
-
-# run daily number cleanup
-NUMBER_CLEANUP="yes"
-
-# limit for number cleanup
-NUMBER_MIN_AGE="3600"
-NUMBER_LIMIT="10"
-NUMBER_LIMIT_IMPORTANT="10"
-
-
-# create hourly snapshots
-TIMELINE_CREATE="no"
-
-# cleanup hourly snapshots after some time
-TIMELINE_CLEANUP="no"
-
-# limits for timeline cleanup
-TIMELINE_MIN_AGE="3600"
-TIMELINE_LIMIT_HOURLY="10"
-TIMELINE_LIMIT_DAILY="10"
-TIMELINE_LIMIT_WEEKLY="0"
-TIMELINE_LIMIT_MONTHLY="10"
-TIMELINE_LIMIT_QUARTERLY="0"
-TIMELINE_LIMIT_YEARLY="10"
-
-
-# cleanup empty pre-post-pairs
-EMPTY_PRE_POST_CLEANUP="yes"
-
-# limits for empty pre-post-pair cleanup
-EMPTY_PRE_POST_MIN_AGE="3600"
-
-EOF
-
 for ((i = 0; i < ${#SYSTEM_FILES[@]}; i++)); do
     SYSTEM_FILE=$(echo "${SYSTEM_FILES[$i]}" | cut -d " " -f2)
     if sudo cmp ${SYSTEM_FILES[$i]} &>/dev/null; then
@@ -149,31 +69,15 @@ fi
 # check if virt manager default interface has been lost
 if sudo test ! -f "/var/lib/libvirt/network/default.xml"; then
     if sudo virsh net-list --all | grep '^\s*default' | awk '{print $2}'| grep --quiet "active"; then
-        logcmd "Virtual manager default network is already active..."
+        logcmd "Virtual manager default network is already configured and active. Nothing to do."
     else
-        logcmd "Applying virtual manager networking configuration..."
-        dd status=none of=$LIBVIRT_DEFAULT_NETWORK_IF_CONFIG << EOF
-<network>
-    <name>default</name>
-    <forward mode='nat'>
-        <nat>
-            <port start='1024' end='65535' />
-        </nat>
-    </forward>
-    <bridge name='virbr0' stp='on' delay='0' />
-    <ip address='100.64.0.1' netmask='255.255.255.0'>
-        <dhcp>
-            <range start='100.64.0.2' end='100.64.0.254' />
-        </dhcp>
-    </ip>
-</network>
-EOF
+        logcmd "Reinstalling libvirt and virt-manager packages..."
         sudo zypper $ZYPPER_PARAMS_QUIET install --force libvirt virt-manager
         sudo sed -i 's/^FirewallBackend=.*/FirewallBackend=iptables/' /etc/firewalld/firewalld.conf
         sudo sed -i 's/^firewall_backend =.*/firewall_backend = "iptables"/' /etc/libvirt/network.conf
         sudo systemctl restart firewalld
         if ip link show virbr0 &> /dev/null; then
-            logcmd "Recreating virbr0 bridge interface using virsh cli..."
+            logcmd "Recreating virbr0 bridge interface..."
 
             sudo virsh net-undefine default &> /dev/null
             sudo virsh net-destroy default &> /dev/null
@@ -181,11 +85,11 @@ EOF
             sudo systemctl enable virtlogd.socket
             sudo systemctl restart libvirtd.service
 
-            sudo virsh net-define $LIBVIRT_DEFAULT_NETWORK_IF_CONFIG
+            logcmd "Applying virtual manager default network configuration..."
+            sudo virsh net-define $LIBVIRT_DEFAULT_NETWORK_TPL
             sudo virsh net-autostart default
             sudo firewall-cmd --complete-reload
             sudo virsh net-start default
-
         fi
     fi
 fi

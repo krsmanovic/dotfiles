@@ -1,0 +1,11 @@
+[Unit]
+Description=Scheduled Cleanup of Snapper Snapshots
+Documentation=man:snapper(8) man:snapper-configs(5)
+
+[Timer]
+# OnBootSec=10m
+# OnUnitActiveSec=1h
+OnCalendar=Mon,Wed,Fri,Sun 04:00:00
+
+[Install]
+WantedBy=timers.target

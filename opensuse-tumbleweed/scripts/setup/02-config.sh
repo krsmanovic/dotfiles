@@ -3,6 +3,7 @@
 # vars
 DESKTOP_USER=che
 CREDENTIALS_DIR=/home/$DESKTOP_USER/.credentials
+TEMPLATES_DIR="/home/$DESKTOP_USER/lib/templates"
 BASH_LIBRARY_COMMON=/home/$DESKTOP_USER/lib/sh/common.sh
 SMB_CREDENTIALS_FILE="smb"
 SMB_SHARE_PATH="//smb.lan/cher"
@@ -18,7 +19,9 @@ GTK_SETTINGS_FILES="/home/$DESKTOP_USER/.gtkrc-2.0 /home/$DESKTOP_USER/.config/g
 KDE_LOGOUT_TIME_SECONDS="5"
 KDE_THEME_NAME="com.github.vinceliuice.Graphite-dark"
 SNAPPER_ROOT_CONFIG="/etc/snapper/configs/root"
+SNAPPER_ROOT_CONFIG_TPL="$TEMPLATES_DIR/snapper-root.conf"
 SNAPPER_CLEANUP_TIMER_UNIT="/usr/lib/systemd/system/snapper-cleanup.timer"
+SNAPPER_CLEANUP_TIMER_UNIT_TPL="$TEMPLATES_DIR/snapper-cleanup.timer"
 
 # setup directories
 mkdir -p $CREDENTIALS_DIR || true
@@ -30,6 +33,11 @@ else
     echo "Failed to load common shell library."
     exit 1
 fi
+
+# use iptables backend for firewalld and libvirt
+sudo sed -i 's/^FirewallBackend=.*/FirewallBackend=iptables/' /etc/firewalld/firewalld.conf
+sudo sed -i 's/^firewall_backend =.*/firewall_backend = "iptables"/' /etc/libvirt/network.conf
+sudo firewall-cmd --complete-reload
 
 # fix deafult postfix mess
 log_message info "Fixing postfix default configuration..."
@@ -98,7 +106,7 @@ net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 $IF_IPV6_DISABLE
 EOF
-sudo sysctl --system
+sudo sysctl --system --quiet
 
 # look and feel
 if lookandfeeltool --list | grep --quiet $KDE_THEME_NAME; then
@@ -142,84 +150,7 @@ sudo ln -s /usr/share/fontconfig/conf.avail/10-autohint.conf /etc/fonts/conf.d/ 
 sudo ln -s /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d/ || true
 
 # snapper
-sudo dd status=none of=$SNAPPER_CLEANUP_TIMER_UNIT << EOF
-[Unit]
-Description=Hourly Cleanup of Snapper Snapshots
-Documentation=man:snapper(8) man:snapper-configs(5)
-
-[Timer]
-# OnBootSec=10m
-# OnUnitActiveSec=1h
-OnCalendar=Wed..Sun 04:00:00
-
-[Install]
-WantedBy=timers.target
-
-EOF
+sudo dd status=none if=$SNAPPER_CLEANUP_TIMER_UNIT_TPL of=$SNAPPER_CLEANUP_TIMER_UNIT
 sudo systemctl daemon-reload
 
-sudo dd status=none of=$SNAPPER_ROOT_CONFIG << EOF
-# subvolume to snapshot
-SUBVOLUME="/"
-
-# filesystem type
-FSTYPE="btrfs"
-
-
-# btrfs qgroup for space aware cleanup algorithms
-QGROUP=""
-
-
-# fraction or absolute size of the filesystems space the snapshots may use
-SPACE_LIMIT="0.5"
-
-# fraction or absolute size of the filesystems space that should be free
-FREE_LIMIT="0.2"
-
-
-# users and groups allowed to work with config
-ALLOW_USERS=""
-ALLOW_GROUPS=""
-
-# sync users and groups from ALLOW_USERS and ALLOW_GROUPS to .snapshots
-# directory
-SYNC_ACL="no"
-
-
-# start comparing pre- and post-snapshot in background after creating
-# post-snapshot
-BACKGROUND_COMPARISON="yes"
-
-
-# run daily number cleanup
-NUMBER_CLEANUP="yes"
-
-# limit for number cleanup
-NUMBER_MIN_AGE="3600"
-NUMBER_LIMIT="50"
-NUMBER_LIMIT_IMPORTANT="10"
-
-
-# create hourly snapshots
-TIMELINE_CREATE="no"
-
-# cleanup hourly snapshots after some time
-TIMELINE_CLEANUP="yes"
-
-# limits for timeline cleanup
-TIMELINE_MIN_AGE="3600"
-TIMELINE_LIMIT_HOURLY="10"
-TIMELINE_LIMIT_DAILY="10"
-TIMELINE_LIMIT_WEEKLY="0"
-TIMELINE_LIMIT_MONTHLY="10"
-TIMELINE_LIMIT_QUARTERLY="0"
-TIMELINE_LIMIT_YEARLY="10"
-
-
-# cleanup empty pre-post-pairs
-EMPTY_PRE_POST_CLEANUP="yes"
-
-# limits for empty pre-post-pair cleanup
-EMPTY_PRE_POST_MIN_AGE="3600"
-
-EOF
+sudo dd status=none if=$SNAPPER_ROOT_CONFIG_TPL of=$SNAPPER_ROOT_CONFIG
