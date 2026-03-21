@@ -13,10 +13,10 @@ SNAPPER_ROOT_CONFIG_TPL="$TEMPLATES_DIR/snapper-root.conf"
 SNAPPER_CLEANUP_TIMER_UNIT="/usr/lib/systemd/system/snapper-cleanup.timer"
 SNAPPER_CLEANUP_TIMER_UNIT_TPL="$TEMPLATES_DIR/snapper-cleanup.timer"
 LIBVIRT_DEFAULT_NETWORK_TPL="$TEMPLATES_DIR/libvirt-default-virbr0.xml"
+LOG_SCRIPT="/var/log/dup.log"
 # declate pairs of template and target system files for comparison
 SYSTEM_FILES=("$SNAPPER_ROOT_CONFIG_TPL $SNAPPER_ROOT_CONFIG"
 "$SNAPPER_CLEANUP_TIMER_UNIT_TPL $SNAPPER_CLEANUP_TIMER_UNIT")
-LOG_SCRIPT="/var/log/dup.log"
 
 if [ ! -f $LOG_SCRIPT ]; then
     sudo install --mode 644 /dev/null $LOG_SCRIPT
@@ -37,6 +37,8 @@ else
         sudo dd status=none oflag=append conv=notrunc of=$LOG_SCRIPT <<< "$(stamp_time) INFO ${@}"
     }
 fi
+
+logcmd "========================Start of dup script========================"
 
 # upgrade procedure
 logcmd "Running zypper refresh..."
