@@ -49,6 +49,7 @@ if which rdap &> /dev/null; then
 fi
 alias code="codium"
 alias kamera="ffplay -fs /dev/video0"
+alias clonedot="bash ~/scripts/setup/00-clone.sh"
 
 # decide if we want to print duration
 DURATION_SECONDS=$(( SECONDS - INITIAL_SECONDS ))
