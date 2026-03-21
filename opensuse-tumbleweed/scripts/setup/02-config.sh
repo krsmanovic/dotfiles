@@ -22,6 +22,8 @@ SNAPPER_ROOT_CONFIG="/etc/snapper/configs/root"
 SNAPPER_ROOT_CONFIG_TPL="$TEMPLATES_DIR/snapper-root.conf"
 SNAPPER_CLEANUP_TIMER_UNIT="/usr/lib/systemd/system/snapper-cleanup.timer"
 SNAPPER_CLEANUP_TIMER_UNIT_TPL="$TEMPLATES_DIR/snapper-cleanup.timer"
+SYSCTL_OVERRIDES="/etc/sysctl.d/91-ipv4.conf"
+SYSCTL_OVERRIDES_TPL="$TEMPLATES_DIR/sysctl-ipv4.conf"
 
 # setup directories
 mkdir -p $CREDENTIALS_DIR || true
@@ -106,6 +108,7 @@ net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 $IF_IPV6_DISABLE
 EOF
+sudo dd status=none if=$SYSCTL_OVERRIDES_TPL of=$SYSCTL_OVERRIDES
 sudo sysctl --system --quiet
 
 # look and feel
