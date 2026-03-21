@@ -1,8 +1,8 @@
-## Configuration files from my [openSUSE Tumbleweed](./opensuse-tumbleweed/), [BunsenLabs](./bunsenlabs/) and [Windows 10](./windows/) workstation
+# Configuration files from my [openSUSE Tumbleweed](./opensuse-tumbleweed/), [BunsenLabs](./bunsenlabs/) and [Windows 10](./windows/) workstation
 
 **Content tree:**
 
-```
+```text
 ├── bunsenlabs
 │   ├── .config
 │   │   ├── alacritty
