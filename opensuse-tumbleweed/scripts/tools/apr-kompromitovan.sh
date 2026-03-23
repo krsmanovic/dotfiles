@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "======================= Provera da je JMBG deo procurelih podataka ======================="
+echo "====================== Provera da li je JMBG u procurelim podacima  ======================"
 echo "====================== Koristim API sajta https://kompromitovan.com ======================"
 echo
 
