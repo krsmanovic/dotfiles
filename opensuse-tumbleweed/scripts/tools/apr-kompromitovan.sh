@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "=======================Provera da je JMBG deo procurelih podataka======================="
-echo "======================Koristim API sajta https://kompromitovan.com======================"
+echo "======================= Provera da je JMBG deo procurelih podataka ======================="
+echo "====================== Koristim API sajta https://kompromitovan.com ======================"
 echo
 
 WORKDIR="$(mktemp -d)"
@@ -65,3 +65,4 @@ if grep -q "$HASH" $HASH_PREFIXES_FILE; then
 else
     echo "JMBG nije pronadjen u bazi!"
 fi
+echo
