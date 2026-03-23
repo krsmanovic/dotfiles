@@ -41,7 +41,7 @@ MODULO=$(( SUMA % 11 ))
 if [ $MODULO -eq 0 ]; then
     KONTROLNA_CIFRA=$MODULO
 elif [ $MODULO -eq 1 ]; then
-    echo "Pogresan maticni broj. Mrzi me da pisem loop za rekalkulciju."
+    echo "Pogresan maticni broj."
     exit 1
 elif [ $MODULO -gt 1 ]; then
     KONTROLNA_CIFRA=$(( 11 - MODULO ))
@@ -49,7 +49,7 @@ else
     echo "Pokvario ti se konjpjuktor."
     exit 1
 fi
-if [ ${jmbg:11:1} -ne $KONTROLNA_CIFRA ]; then
+if [ ${jmbg:12:1} -ne $KONTROLNA_CIFRA ]; then
     echo "Kontrolna cifra se ne poklapa."
     exit 1
 fi
