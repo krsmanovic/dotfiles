@@ -22,14 +22,14 @@ fi
 
 # lokalna validacija datuma rodjenja
 if [ ${jmbg:4:1}${jmbg:5:1}${jmbg:6:1} -gt 900 ]; then
-    STOLECE="1"
+    MILENIJUM="1"
 elif [ ${jmbg:4:1}${jmbg:5:1}${jmbg:6:1} -lt $(date +%y) ]; then
-    STOLECE="2"
+    MILENIJUM="2"
 else
     echo "Pogresno unesecna godina rodjenja."
     exit 1
 fi
-DATUM_RODJENJA="$STOLECE${jmbg:4:1}${jmbg:5:1}${jmbg:6:1}-${jmbg:2:1}${jmbg:3:1}-${jmbg:0:1}${jmbg:1:1}"
+DATUM_RODJENJA="$MILENIJUM${jmbg:4:1}${jmbg:5:1}${jmbg:6:1}-${jmbg:2:1}${jmbg:3:1}-${jmbg:0:1}${jmbg:1:1}"
 if ! [[ "$(date +%F -d $DATUM_RODJENJA)" == "$DATUM_RODJENJA" ]]; then
     echo "Pogresan datum rodnjenja."
     exit 1
@@ -65,4 +65,5 @@ if grep -q "$HASH" $HASH_PREFIXES_FILE; then
 else
     echo "JMBG nije pronadjen u bazi!"
 fi
+rm -rf $WORKDIR
 echo
