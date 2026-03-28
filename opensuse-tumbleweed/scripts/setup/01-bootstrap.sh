@@ -44,7 +44,6 @@ FLATPAK_PACKAGES=(
     com.mikrotik.WinBox
     com.discordapp.Discord
     org.onlyoffice.desktopeditors
-    org.telegram.desktop
     com.github.tchx84.Flatseal
     org.qbittorrent.qBittorrent
 )
@@ -91,7 +90,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_BASE \
     docker docker-compose docker-compose-switch \
     flatpak npm \
     pcsc-ccid \
-    MozillaThunderbird \
+    MozillaThunderbird telegram-desktop \
     wine libvirt virt-manager \
     strawberry audacity elisa \
     keepassxc gimp calibre okular k3b nextcloud xorriso qimgv ImageMagick zbar gpick
