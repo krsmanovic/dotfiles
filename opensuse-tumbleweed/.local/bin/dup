@@ -18,7 +18,8 @@ LIBVIRT_DEFAULT_NETWORK_TPL="$TEMPLATES_DIR/libvirt-default-virbr0.xml"
 LOG_SCRIPT="/var/log/dup.log"
 # declate pairs of template and target system files for comparison
 SYSTEM_FILES=("$SNAPPER_ROOT_CONFIG_TPL $SNAPPER_ROOT_CONFIG"
-"$SNAPPER_CLEANUP_TIMER_UNIT_TPL $SNAPPER_CLEANUP_TIMER_UNIT")
+"$SNAPPER_CLEANUP_TIMER_UNIT_TPL $SNAPPER_CLEANUP_TIMER_UNIT"
+"$JOURNALD_CONFIG_TPL $JOURNALD_CONFIG")
 
 if [ ! -f $LOG_SCRIPT ]; then
     sudo install --mode 644 /dev/null $LOG_SCRIPT
