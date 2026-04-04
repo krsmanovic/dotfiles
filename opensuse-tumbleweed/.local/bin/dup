@@ -12,6 +12,8 @@ SNAPPER_ROOT_CONFIG="/etc/snapper/configs/root"
 SNAPPER_ROOT_CONFIG_TPL="$TEMPLATES_DIR/snapper-root.conf"
 SNAPPER_CLEANUP_TIMER_UNIT="/usr/lib/systemd/system/snapper-cleanup.timer"
 SNAPPER_CLEANUP_TIMER_UNIT_TPL="$TEMPLATES_DIR/snapper-cleanup.timer"
+JOURNALD_CONFIG="/etc/systemd/journald.conf.d/99-overrides.conf"
+JOURNALD_CONFIG_TPL="$TEMPLATES_DIR/journald.conf"
 LIBVIRT_DEFAULT_NETWORK_TPL="$TEMPLATES_DIR/libvirt-default-virbr0.xml"
 LOG_SCRIPT="/var/log/dup.log"
 # declate pairs of template and target system files for comparison
