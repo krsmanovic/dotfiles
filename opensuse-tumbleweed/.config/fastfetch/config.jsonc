@@ -60,9 +60,10 @@
             "format": "\u001b[32m┌──────────────────────Software──────────────────────┐"
         },
         {
-            "type": "os",
-            "key": "│ ┌{icon} ",
-            "keyColor": "green"
+            "type": "command",
+            "key": "│ ┌ ",
+            "keyColor": "green",
+            "text": "source /etc/os-release; echo \"$PRETTY_NAME ($VERSION_ID)\";"
         },
         {
             "type": "kernel",
