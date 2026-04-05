@@ -63,7 +63,7 @@
             "type": "command",
             "key": "│ ┌ ",
             "keyColor": "green",
-            "text": "source /etc/os-release; echo \"$PRETTY_NAME ($VERSION_ID)\";"
+            "text": "source /etc/os-release; echo \"$PRETTY_NAME, snapshot $VERSION_ID\";"
         },
         {
             "type": "kernel",
