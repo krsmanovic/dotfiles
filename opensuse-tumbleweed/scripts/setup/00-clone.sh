@@ -37,6 +37,7 @@ if sudo grep --quiet "@includedir $SUDOERS_CONFIG_DIR" $SUDOERS_FILE; then
 # bootstrap scripts
 $DESKTOP_USER ALL=(ALL:ALL) NOPASSWD:/home/$DESKTOP_USER/scripts/setup/00-clone.sh
 $DESKTOP_USER ALL=(ALL:ALL) NOPASSWD:/home/$DESKTOP_USER/scripts/setup/01-bootstrap.sh
+$DESKTOP_USER ALL=(ALL:ALL) NOPASSWD:/home/$DESKTOP_USER/.local/bin/dup
 EOF
     sudo dd status=none of=$SUDOERS_CONFIG_USER_PATH << EOF
 # mtr
