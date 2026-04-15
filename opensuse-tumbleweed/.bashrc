@@ -49,7 +49,7 @@ if which rdap &> /dev/null; then
 fi
 alias code="codium"
 alias kamera="ffplay -fs /dev/video0"
-alias clonedot="bash ~/scripts/setup/00-clone.sh"
+alias clonedot="sudo /home/che/scripts/setup/00-clone.sh"
 alias osu="sudo /home/che/.local/bin/dup"
 
 # decide if we want to print duration
