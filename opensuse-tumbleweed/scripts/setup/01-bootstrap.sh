@@ -161,7 +161,9 @@ sudo dd status=none of=$MS_EDGE_LOCAL_REPO_PATH << EOF
 name=microsoft-edge-stable
 enabled=1
 autorefresh=1
-baseurl=https://packages.microsoft.com/yumrepos/edge
+baseurl=https://packages.microsoft.com/yumrepos/edge/
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc
 EOF
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 sudo zypper $ZYPPER_PARAMS_QUIET --gpg-auto-import-keys refresh
