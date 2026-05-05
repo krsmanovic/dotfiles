@@ -14,12 +14,15 @@ SNAPPER_CLEANUP_TIMER_UNIT="/usr/lib/systemd/system/snapper-cleanup.timer"
 SNAPPER_CLEANUP_TIMER_UNIT_TPL="$TEMPLATES_DIR/snapper-cleanup.timer"
 JOURNALD_CONFIG="/etc/systemd/journald.conf.d/99-overrides.conf"
 JOURNALD_CONFIG_TPL="$TEMPLATES_DIR/journald.conf"
+LOGROTATE_CONFIG="/etc/logrotate.conf"
+LOGROTATE_CONFIG_TPL="$TEMPLATES_DIR/logrotate.conf"
 LIBVIRT_DEFAULT_NETWORK_TPL="$TEMPLATES_DIR/libvirt-default-virbr0.xml"
 LOG_SCRIPT="/var/log/dup.log"
 # declate pairs of template and target system files for comparison
 SYSTEM_FILES=("$SNAPPER_ROOT_CONFIG_TPL $SNAPPER_ROOT_CONFIG"
 "$SNAPPER_CLEANUP_TIMER_UNIT_TPL $SNAPPER_CLEANUP_TIMER_UNIT"
-"$JOURNALD_CONFIG_TPL $JOURNALD_CONFIG")
+"$JOURNALD_CONFIG_TPL $JOURNALD_CONFIG"
+"$LOGROTATE_CONFIG_TPL $LOGROTATE_CONFIG")
 
 if [ ! -f $LOG_SCRIPT ]; then
     install --mode 644 /dev/null $LOG_SCRIPT
