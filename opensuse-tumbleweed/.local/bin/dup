@@ -76,7 +76,7 @@ fi
 
 # check if virt manager default interface has been lost
 if test ! -f "/var/lib/libvirt/network/default.xml"; then
-    if virsh net-list --all | grep '^\s*default' | awk '{print $2}'| grep --quiet "active"; then
+    if LC_ALL=en_US.UTF-8 virsh net-list --all | grep '^\s*default' | awk '{print $2}'| grep --quiet "active"; then
         logcmd "Virtual manager default network is already configured and active. Nothing to do."
     else
         logcmd "Reinstalling libvirt and virt-manager packages..."
