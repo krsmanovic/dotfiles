@@ -8,7 +8,7 @@ STEAM_LOCAL_LIBRARY=/home/$DESKTOP_USER/lib/steam/
 WORKDIR="$(mktemp -d)"
 GO_DIR_CACHE=$WORKDIR/cache
 GO_DIR_BIN=$WORKDIR/bin
-SLOT_DARK_ICONS_THEME_DIR="/home/$DESKTOP_USER/local/share/icons/Slot-Dark-Icons/"
+SLOT_DARK_ICONS_THEME_DIR="/home/$DESKTOP_USER/.local/share/icons/Slot-Dark-Icons/"
 CURL_PARAMS="--silent --show-error --location"
 
 # load common functions
