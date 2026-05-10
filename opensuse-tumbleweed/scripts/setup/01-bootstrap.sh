@@ -8,7 +8,7 @@ STEAM_LOCAL_LIBRARY=/home/$DESKTOP_USER/lib/steam/
 WORKDIR="$(mktemp -d)"
 GO_DIR_CACHE=$WORKDIR/cache
 GO_DIR_BIN=$WORKDIR/bin
-PAPIRUS_THEME_DIR=/usr/share/icons/Papirus
+SLOT_DARK_ICONS_THEME_DIR="/home/$DESKTOP_USER/local/share/icons/Slot-Dark-Icons/"
 CURL_PARAMS="--silent --show-error --location"
 
 # load common functions
@@ -287,26 +287,12 @@ sudo install -m 555 argocd /usr/local/bin/argocd
 # wget -O $BW_MONITOR_PLASMOID_NAME "https://ocs-dl.fra1.cdn.digitaloceanspaces.com/data/files/1744930465/NetworkBandwidthMonitorQt6-6.2025.4.20.plasmoid
 # kpackagetool6 -i $BW_MONITOR_PLASMOID_NAME
 
-if zypper search --installed-only dark-icon-theme &> /dev/null; then
-    log_message info "Dark icon theme is already installed."
-else
-    log_message info "Building and installing dark icon theme..."
-    cd $WORKDIR
-    git clone --depth 1 https://gitlab.com/sixsixfive/DarK-icons.git
-    cd DarK-icons
-    sh build_svg.sh
-    cd packaging
-    sh build_rpm.sh
-    sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_BASE --allow-unsigned-rpm dark-icon-theme*.rpm
-fi
-
-if [ -d $PAPIRUS_THEME_DIR ]; then
-    log_message info "Papirus icon theme is already intalled."
+if [ -d $SLOT_DARK_ICONS_THEME_DIR ]; then
+    log_message info "Slot Dark icon theme is already intalled."
 else
     cd $WORKDIR
-    wget -qO papirus-install https://git.io/papirus-icon-theme-install
-    chmod +x papirus-install
-    ./papirus-install
+    git clone --depth 1 https://github.com/L4ki/Slot-Plasma-Themes.git
+    rsync --recursive --update --times "Slot-Plasma-Themes/Slot Icons Themes/Slot-Dark-Icons/" "$SLOT_DARK_ICONS_THEME_DIR"
 fi
 
 # fonts
