@@ -51,6 +51,7 @@ alias code="codium"
 alias kamera="ffplay -fs /dev/video0"
 alias clonedot="sudo /home/che/scripts/setup/00-clone.sh"
 alias osu="sudo /home/che/.local/bin/dup"
+alias python="python3"
 
 # decide if we want to print duration
 DURATION_SECONDS=$(( SECONDS - INITIAL_SECONDS ))
