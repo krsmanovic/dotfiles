@@ -91,7 +91,7 @@ sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_BASE \
     docker docker-compose docker-compose-switch \
     flatpak npm \
     pcsc-ccid \
-    MozillaThunderbird telegram-desktop \
+    MozillaThunderbird telegram-desktop zapzap \
     wine libvirt virt-manager \
     strawberry audacity elisa \
     keepassxc gimp calibre okular k3b nextcloud xorriso qimgv ImageMagick zbar gpick
