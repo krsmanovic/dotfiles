@@ -11,6 +11,7 @@ SMB_MOUNT_DIR="/mnt/smb"
 FSTAB_LINE_SMB="$SMB_SHARE_PATH    $SMB_MOUNT_DIR                cifs   credentials=$CREDENTIALS_DIR/$SMB_CREDENTIALS_FILE,nofail 0 0"
 FSTAB_LINE_GAMES="UUID=6214e21e-a726-4f65-850a-55a7b76c085c  /data/games             ext4   data=ordered                  0  2"
 FSTAB_LINE_EDU="UUID=7288d909-462e-4cbf-be8d-7005ea3f18a5  /data/edu               ext4   data=ordered                  0  2"
+FSTAB_LINE_BACKUP="UUID=0da89334-d5e1-4f9b-ae08-38bc6dc32fd9  /data/backup            ext4   user,data=ordered             0  2"
 NETWORK_MANAGER_CONFIG_OVERRIDES_PATH="/etc/NetworkManager/conf.d/99-overrides.conf"
 NETWORK_IPV6_SETTINGS="/etc/sysctl.d/90-ipv6.conf"
 KDE_LOOKANDFEEL_CFG_FILE_LOGOUT="/usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/logout/Logout.qml"
@@ -89,6 +90,13 @@ if grep --quiet "$FSTAB_LINE_EDU" /etc/fstab; then
 else
     log_message info "Adding Edu partition configuration to fstab..."
     sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_EDU"
+    sudo mount -a
+fi
+if grep --quiet "$FSTAB_LINE_BACKUP" /etc/fstab; then
+    log_message info "Backup partition configuration is already present in fstab."
+else
+    log_message info "Adding Backup partition configuration to fstab..."
+    sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_BACKUP"
     sudo mount -a
 fi
 
