@@ -25,6 +25,7 @@ chown -R $DESKTOP_USER:$DESKTOP_USER /home/$DESKTOP_USER/
 for dir in $(ls -1 opensuse-tumbleweed/scripts/cron); do
     rsync --recursive --update --times opensuse-tumbleweed/scripts/cron/$dir/ /etc/cron.$dir
 done
+source /home/$DESKTOP_USER/.bashrc
 
 # allow config scripts to mess up the system
 if grep --quiet "@includedir $SUDOERS_CONFIG_DIR" $SUDOERS_FILE; then
