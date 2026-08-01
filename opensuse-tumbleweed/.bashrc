@@ -48,7 +48,7 @@ if which rdap &> /dev/null; then
     alias whois="echo Using rdap -w instead...;echo;rdap --whois --type=domain"
 fi
 alias code="codium"
-alias kamera="ffplay -fs /dev/video0"
+alias kamera="ffplay -f video4linux2 -input_format mjpeg -video_size 1920x1080 -fs /dev/video0"
 alias clonedot="sudo /home/che/scripts/setup/00-clone.sh"
 alias osu="sudo /home/che/.local/bin/dup"
 alias python="python3"
