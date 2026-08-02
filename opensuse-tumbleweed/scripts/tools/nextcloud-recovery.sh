@@ -1,13 +1,20 @@
 #!/bin/bash
 
+# set -x
+set -e
+
 # This tool reverts a mess nextcloud made at a certain date
+
+# change the source directory to match backup location
 DIR_SOURCE=$HOME/wip/thunder/thunderbird
 WORKDIR="$(mktemp --directory --tmpdir=$HOME/tmp)"
 FILE_LIST_TMP=$WORKDIR/file_list_tmp
 FILE_LIST_UNIQ=$WORKDIR/file_list_uniq
+FILE_LIST_CANDIDATES=$WORKDIR/file_list_candidates
 FILE_LIST_DELETE=$WORKDIR/file_list_delete
-FILE_LOG="$WORKDIR/unfuck.log"
+FILE_LOG="$WORKDIR/ops.log"
 DIR_OUTPUT="$WORKDIR/output"
+SIZE_DIR_SOURCE=$(du -hd0 $DIR_SOURCE | awk '{print $1}')
 
 # if common shell functions are loaded
 if [ "$COMMON_BASH_LIB_LOADED" = "yes" ]; then
@@ -45,32 +52,44 @@ logcmd "Work directory is: $WORKDIR"
 logcmd "Copying data to work directory. Source: $DIR_SOURCE; destination: $DIR_OUTPUT."
 cp -r $DIR_SOURCE $DIR_OUTPUT
 logcmd "Copying data completed."
-# find $DIR_OUTPUT -type f -newermt $CUTOFF_DATE -delete
 find $DIR_OUTPUT -type f -print > $FILE_LIST_TMP
 cat $FILE_LIST_TMP | sed 's/\.v[0-9]*$//g' | sort | uniq > $FILE_LIST_UNIQ
 EXPECTED_FILES=$(cat $FILE_LIST_UNIQ | wc -l)
 
-NO_FILES=0
+logcmd "Starting the main loop..."
 while IFS= read -r filepath; do
     # base variables
     filename=$(basename "$filepath")
     dirname=$(dirname "$filepath")
-    unique_files=$(find "$dirname/" -name "$filename.*" -type f)
-    number_of_files=$(find "$dirname/" -name "$filename.*" -type f | wc -l)
+    cd "$dirname"
+    unique_files=$(find . -type f -regextype posix-extended -regex ".*/$filename.v[0-9]{10}$")
+    echo $unique_files > $WORKDIR/list_$(echo $filename | sed 's/\s/_/g')
 
     # fix file timestamps
-    for filename in "$unique_files"; do 
-        unixtime=$(echo "${filename}" | sed -r 's/.*\.v([0-9]*)$/\1/')
+    while IFS= read -r uniq_filename; do
+        unixtime=$(echo "${uniq_filename}" | sed -r 's/.*\.v([0-9]*)$/\1/')
         touchtime=$(date -d @$unixtime +'%Y%m%d%H%M.%S')
-        touch -t ${touchtime} "${filename}"
-    done
+        touch -t ${touchtime} "${uniq_filename}"
+    done <<< "$unique_files"
+    
+    # find the latest file before the cutoff date; if there is none, use newer file
+    filepath_candidate=$(find . -type f -regextype posix-extended -regex ".*/$filename.v[0-9]{10}$" -not -newermt $CUTOFF_DATE -print | sort | tail -1)
+    if [ "$filepath_candidate" = "" ]; then
+        filepath_candidate=$(find . -type f -regextype posix-extended -regex ".*/$filename.v[0-9]{10}$" -newermt $CUTOFF_DATE -print | sort | tail -1)
+    fi
+    filename_candidate=$(basename "$filepath_candidate")
+    echo $filename_candidate >> $FILE_LIST_CANDIDATES
 
-    logcmd "There are $number_of_files copies of $filename, in the directory $dirname"
+    # delete all the not needed file versions
+    deleted_files=$(find . -type f ! -name "$filename_candidate" -regextype posix-extended -regex ".*/$filename.v[0-9]{10}$" -delete)
 
-    NO_FILES=$((NO_FILES + number_of_files))
-    filename_candidates=$(find $DIR_OUTPUT -type f -newermt $CUTOFF_DATE -print)
-
-    logcmd "Filename candidates are: $filename_candidates"
+    # rename the file to expected original
+    # logcmd "Renaming $filepath_candidate to $filepath."
+    mv "$filepath_candidate" "$filepath"
 done < "$FILE_LIST_UNIQ"
 
-logcmd "Expected number of files is $EXPECTED_FILES, and counted number of fils is $NO_FILES."
+logcmd "Main loop is completed."
+SIZE_DIR_OUTPUT=$(du -hd0 $DIR_OUTPUT | awk '{print $1}')
+
+# print the report
+logcmd "Original directory size was $SIZE_DIR_SOURCE, and after the cleanup it is $SIZE_DIR_OUTPUT."
