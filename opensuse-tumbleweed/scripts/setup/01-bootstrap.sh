@@ -38,7 +38,6 @@ FLATPAK_PACKAGES=(
     io.dbeaver.DBeaverCommunity
     tv.kodi.Kodi
     com.slack.Slack
-    com.jgraph.drawio.desktop
     us.zoom.Zoom
     org.videolan.VLC
     com.mikrotik.WinBox
@@ -262,6 +261,15 @@ else
     ./configure --prefix=/usr --disable-static
     make
     sudo make install
+fi
+if drawio --version &> /dev/null; then
+    log_message info "draw.io is already installed."
+else
+    cd $WORKDIR
+    DRAWIO_DOWNDLOAD_URL=$(curl $CURL_PARAMS "https://api.github.com/repos/jgraph/drawio-desktop/releases/latest" | jq -r '.assets[] | select((.name | contains ("rpm")) and (.name | contains("x86_64"))) | .browser_download_url')
+    log_message info "Downloading latest draw.io version..."
+    curl $CURL_PARAMS "$DRAWIO_DOWNDLOAD_URL" --output "drawio.rpm"
+    sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_BASE --allow-unsigned-rpm drawio.rpm
 fi
 
 # docker setup
