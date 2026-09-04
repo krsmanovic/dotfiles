@@ -18,7 +18,7 @@ KDE_LOOKANDFEEL_CFG_FILE_LOGOUT="/usr/share/plasma/look-and-feel/org.kde.breeze.
 GTK_SYSTEM_SOUNDS_OPTIONS="gtk-enable-event-sounds gtk-enable-input-feedback-sounds"
 GTK_SETTINGS_FILES="/home/$DESKTOP_USER/.gtkrc-2.0 /home/$DESKTOP_USER/.config/gtk-3.0/settings.ini /home/$DESKTOP_USER/.config/gtk-4.0/settings.ini"
 KDE_LOGOUT_TIME_SECONDS="5"
-KDE_THEME_NAME="com.github.vinceliuice.Graphite-dark"
+KDE_THEME_NAME="Edna"
 SNAPPER_ROOT_CONFIG="/etc/snapper/configs/root"
 SNAPPER_ROOT_CONFIG_TPL="$TEMPLATES_DIR/snapper-root.conf"
 SNAPPER_CLEANUP_TIMER_UNIT="/usr/lib/systemd/system/snapper-cleanup.timer"
@@ -78,6 +78,7 @@ else
     sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_SMB"
     sudo mount -a
 fi
+# set game disk
 if grep --quiet "$FSTAB_LINE_GAMES" /etc/fstab; then
     log_message info "Gaming disk configuration is already present in fstab."
 else
@@ -85,6 +86,7 @@ else
     sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_GAMES"
     sudo mount -a
 fi
+# set edu disk
 if grep --quiet "$FSTAB_LINE_EDU" /etc/fstab; then
     log_message info "Edu partition configuration is already present in fstab."
 else
@@ -92,6 +94,7 @@ else
     sudo dd status=none oflag=append conv=notrunc of=/etc/fstab <<< "$FSTAB_LINE_EDU"
     sudo mount -a
 fi
+# set backup disk
 if grep --quiet "$FSTAB_LINE_BACKUP" /etc/fstab; then
     log_message info "Backup partition configuration is already present in fstab."
 else
@@ -120,9 +123,9 @@ sudo dd status=none if=$SYSCTL_OVERRIDES_TPL of=$SYSCTL_OVERRIDES
 sudo sysctl --system --quiet
 
 # look and feel
-if lookandfeeltool --list | grep --quiet $KDE_THEME_NAME; then
+if LC_ALL=en_US.UTF-8 lookandfeeltool --list | grep --quiet $KDE_THEME_NAME; then
     log_message info "Setting global KDE theme..."
-    lookandfeeltool --apply $KDE_THEME_NAME
+    LC_ALL=en_US.UTF-8 lookandfeeltool --apply $KDE_THEME_NAME
 fi
 # if stat /usr/libexec/plasma-changeicons &> /dev/null; then
 #     log_message info "Setting DarK icon theme..."
