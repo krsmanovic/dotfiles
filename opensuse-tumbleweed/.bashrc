@@ -53,6 +53,16 @@ alias clonedot="sudo /home/che/scripts/setup/00-clone.sh"
 alias osu="sudo /home/che/.local/bin/dup"
 alias python="python3"
 
+# functions
+function show_disk_wait () {
+    while true; do
+        date
+        ps aux | awk '{if ( $8 == "D" ) print $0;}'
+        echo
+        sleep 1
+    done
+}
+
 # decide if we want to print duration
 DURATION_SECONDS=$(( SECONDS - INITIAL_SECONDS ))
 if [ $DURATION_SECONDS -gt 0 ]; then
