@@ -17,12 +17,14 @@ JOURNALD_CONFIG_TPL="$TEMPLATES_DIR/journald.conf"
 LOGROTATE_CONFIG="/etc/logrotate.conf"
 LOGROTATE_CONFIG_TPL="$TEMPLATES_DIR/logrotate.conf"
 LIBVIRT_DEFAULT_NETWORK_TPL="$TEMPLATES_DIR/libvirt-default-virbr0.xml"
-LOG_SCRIPT="/var/log/dup.log"
+LOG_SCRIPT="/var/log/osu.log"
 # declate pairs of template and target system files for comparison
 SYSTEM_FILES=("$SNAPPER_ROOT_CONFIG_TPL $SNAPPER_ROOT_CONFIG"
 "$SNAPPER_CLEANUP_TIMER_UNIT_TPL $SNAPPER_CLEANUP_TIMER_UNIT"
 "$JOURNALD_CONFIG_TPL $JOURNALD_CONFIG"
 "$LOGROTATE_CONFIG_TPL $LOGROTATE_CONFIG")
+DUP_GOOD=0
+DUP_FIXED=0
 
 if [ ! -f $LOG_SCRIPT ]; then
     install --mode 644 /dev/null $LOG_SCRIPT
@@ -44,6 +46,12 @@ else
     }
 fi
 
+# script must be run as root
+if [[ $EUID -ne 0 ]]; then
+   logcmd "The OS update script must be run as root." 2>/dev/null
+   exit 1
+fi
+
 logcmd "========================Start of dup script========================"
 
 # upgrade procedure
@@ -61,8 +69,9 @@ logcmd "Performing post-upgrade system configuration checks..."
 for ((i = 0; i < ${#SYSTEM_FILES[@]}; i++)); do
     SYSTEM_FILE=$(echo "${SYSTEM_FILES[$i]}" | cut -d " " -f2)
     if cmp ${SYSTEM_FILES[$i]} &>/dev/null; then
-        logcmd "No need to fix file: $SYSTEM_FILE."
+        DUP_GOOD=$((DUP_GOOD + 1))
     else
+        DUP_FIXED=$((DUP_FIXED + 1))
         SYSTEMD_NEEDS_RELOAD="yes"
         cp ${SYSTEM_FILES[$i]}
         logcmd "Fixed file: $SYSTEM_FILE."
@@ -77,14 +86,17 @@ fi
 # check if virt manager default interface has been lost
 if test ! -f "/var/lib/libvirt/network/default.xml"; then
     if LC_ALL=en_US.UTF-8 virsh net-list --all | grep '^\s*default' | awk '{print $2}'| grep --quiet "active"; then
-        logcmd "Virtual manager default network is already configured and active. Nothing to do."
+        DUP_GOOD=$((DUP_GOOD + 1))
     else
-        logcmd "Reinstalling libvirt and virt-manager packages..."
+        DUP_FIXED=$((DUP_FIXED + 1))
+        logcmd "Fixing virtual manager:"
+        logcmd "Reinstalling libvirt and virt-manager packages."
         zypper $ZYPPER_PARAMS_QUIET install --force libvirt virt-manager
         sed -i 's/^FirewallBackend=.*/FirewallBackend=iptables/' /etc/firewalld/firewalld.conf
         sed -i 's/^firewall_backend =.*/firewall_backend = "iptables"/' /etc/libvirt/network.conf
         systemctl restart firewalld
         if ip link show virbr0 &> /dev/null; then
+            DUP_FIXED=$((DUP_FIXED + 1))
             logcmd "Recreating virbr0 bridge interface..."
 
             virsh net-undefine default &> /dev/null
@@ -105,3 +117,6 @@ fi
 # load settings from all system configuration files
 logcmd "Loading settings from all system configuration files..."
 sysctl --system --quiet
+
+# print quality status of the command
+logcmd "STATUS: the update applied $DUP_GOOD standard and $DUP_FIXED fixed changes."
