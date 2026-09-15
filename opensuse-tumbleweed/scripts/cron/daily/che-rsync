@@ -30,7 +30,7 @@ logcmd "Starting rsync backup..."
 rsync \
     --times \
     --verbose \
-    --compress \
+    --whole-file \
     --hard-links \
     --partial \
     --progress \
