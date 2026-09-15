@@ -45,6 +45,7 @@ rsync \
     --exclude '.eclipse/' \
     --exclude '.rustup/' \
     --exclude 'Downloads/' \
+    --exclude 'tmp/' \
     $DIR_SOURCE $DIR_DESTINATION
 
 logcmd "End of rsync backup."
