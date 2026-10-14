@@ -22,12 +22,12 @@ fi
 mkdir -p $STEAM_LOCAL_LIBRARY $GO_DIR_CACHE $GO_DIR_BIN || true
 
 # package manager variables
-CODIUM_LOCAL_REPO_PATH=/etc/zypp/repos.d/vscodium.repo
-KUBERNETES_LOCAL_REPO_PATH=/etc/zypp/repos.d/kubernetes.repo
-OPENTOFU_LOCAL_REPO_PATH=/etc/zypp/repos.d/opentofu.repo
-NVIDIA_LOCAL_REPO_PATH=/etc/zypp/repos.d/nvidia.repo
-PACKMAN_LOCAL_REPO_PATH=/etc/zypp/repos.d/packman.repo
-MS_EDGE_LOCAL_REPO_PATH=/etc/zypp/repos.d/microsoft-edge.repo
+ZYPPER_REPO_FILE_PATH_CODIUM=/etc/zypp/repos.d/vscodium.repo
+ZYPPER_REPO_FILE_PATH_KUBERNETES=/etc/zypp/repos.d/kubernetes.repo
+ZYPPER_REPO_FILE_PATH_TOFU=/etc/zypp/repos.d/opentofu.repo
+ZYPPER_REPO_FILE_PATH_NVIDIA=/etc/zypp/repos.d/nvidia.repo
+ZYPPER_REPO_FILE_PATH_PACKMAN=/etc/zypp/repos.d/packman.repo
+ZYPPER_REPO_FILE_PATH_EDGE=/etc/zypp/repos.d/microsoft-edge.repo
 KUBERNETES_STABLE_VERSION_MINOR=$(curl $CURL_PARAMS https://dl.k8s.io/release/stable.txt | awk -F '.' '{print $1"."$2}')
 ZYPPER_PARAMS_QUIET="--non-interactive --quiet"
 ZYPPER_INSTALL_PARAMS_BASE="--no-recommends"
@@ -36,7 +36,6 @@ FLATPAK_PARAMS_QUIET="--assumeyes --noninteractive flathub"
 FLATPAK_PACKAGES=(
     com.valvesoftware.Steam
     io.dbeaver.DBeaverCommunity
-    tv.kodi.Kodi
     com.slack.Slack
     us.zoom.Zoom
     org.videolan.VLC
@@ -74,7 +73,7 @@ sudo hostnamectl set-chassis $CHASSIS_TYPE
 
 # remove garbage packages
 if systemctl list-unit-files packagekit.service &>/dev/null; then
-    echo "Cleaning up PackageKit garbage..."
+    log_message info "Cleaning up PackageKit garbage..."
     sudo zypper $ZYPPER_PARAMS_QUIET remove PackageKit
 fi
 
@@ -97,14 +96,14 @@ sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_BASE \
 
 # install programs from external repos
 log_message info "Installing packages from external repositories..."
-sudo dd status=none of=$PACKMAN_LOCAL_REPO_PATH << EOF
+sudo dd status=none of=$ZYPPER_REPO_FILE_PATH_PACKMAN << EOF
 [packman]
 enabled=1
 autorefresh=1
 baseurl=https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/
 priority=90
 EOF
-sudo dd status=none of=$CODIUM_LOCAL_REPO_PATH << EOF
+sudo dd status=none of=$ZYPPER_REPO_FILE_PATH_CODIUM << EOF
 [vscodium]
 name=VSCodium RPM
 baseurl=https://download.vscodium.com/rpms/
@@ -116,7 +115,7 @@ autorefresh=1
 gpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg
 metadata_expire=1h
 EOF
-sudo dd status=none of=$KUBERNETES_LOCAL_REPO_PATH << EOF
+sudo dd status=none of=$ZYPPER_REPO_FILE_PATH_KUBERNETES << EOF
 [kubernetes]
 name=Kubernetes
 baseurl=https://pkgs.k8s.io/core:/stable:/$KUBERNETES_STABLE_VERSION_MINOR/rpm/
@@ -124,7 +123,7 @@ enabled=1
 gpgcheck=1
 gpgkey=https://pkgs.k8s.io/core:/stable:/$KUBERNETES_STABLE_VERSION_MINOR/rpm/repodata/repomd.xml.key
 EOF
-sudo dd status=none of=$OPENTOFU_LOCAL_REPO_PATH << EOF
+sudo dd status=none of=$ZYPPER_REPO_FILE_PATH_TOFU << EOF
 [opentofu]
 name=opentofu
 baseurl=https://packages.opentofu.org/opentofu/tofu/rpm_any/rpm_any/\$basearch
@@ -149,14 +148,14 @@ sslverify=1
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 metadata_expire=300
 EOF
-sudo dd status=none of=$NVIDIA_LOCAL_REPO_PATH << EOF
+sudo dd status=none of=$ZYPPER_REPO_FILE_PATH_NVIDIA << EOF
 [nvidia]
 name=nvidia-opensource
 baseurl=https://download.nvidia.com/opensuse/tumbleweed
 enabled=1
 autorefresh=1
 EOF
-sudo dd status=none of=$MS_EDGE_LOCAL_REPO_PATH << EOF
+sudo dd status=none of=$ZYPPER_REPO_FILE_PATH_EDGE << EOF
 [microsoft-edge-stable]
 name=microsoft-edge-stable
 enabled=1
