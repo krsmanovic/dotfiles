@@ -97,10 +97,10 @@ sudo zypper $ZYPPER_PARAMS_QUIET install $ZYPPER_INSTALL_PARAMS_BASE \
 # install programs from external repos
 log_message info "Installing packages from external repositories..."
 sudo dd status=none of=$ZYPPER_REPO_FILE_PATH_PACKMAN << EOF
-[packman]
+[packman-essentials]
 enabled=1
 autorefresh=1
-baseurl=https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/
+baseurl=https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/Essentials
 priority=90
 EOF
 sudo dd status=none of=$ZYPPER_REPO_FILE_PATH_CODIUM << EOF
